@@ -1,27 +1,51 @@
-import { useEffect } from 'react'
-import supabase from '../../lib/supabase';
+import { useState } from "react";
 
-export default function Home() {
+const Home = () => {
+  const [fetchError, setFetchError] = useState(null);
+  const [smoothies, setSmoothies] = useState(null);
 
-  useEffect(()=> {
-    console.log('useEffect');
-    
-    const db = async () => {
-      console.log('444');
-      // const { data: menu, error } = await supabase.from('menu').select('*')
-      const { data, error } = await supabase.from('group').select(`
-  id, 
-  name, 
-  menu ( id, name )
-`)
-      console.log("data",data);
-      
-    }
-    db()
-  },[])
+  const groups = [
+    {
+      id: 1,
+      name: "coffee",
+      menus: [
+        {
+          id: 1,
+          name: "americano",
+          price: 120,
+        },
+        {
+          id: 2,
+          name: "ice coffee",
+        },
+      ],
+    },
+    {
+      id: 2,
+      name: "fff",
+      menus: [],
+    },
+    {
+      id: 3,
+      name: "Soda",
+      menus: [],
+    },
+  ];
 
   return (
     <div>
+      <ul>
+        {groups.map((group) => (
+          <li>
+            {group.name} :
+            {group.menus.map((menu) => (
+              <span>{menu.name},</span>
+            ))}
+          </li>
+        ))}
+      </ul>
     </div>
-  )
-}
+  );
+};
+
+export default Home;
