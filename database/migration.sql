@@ -45,7 +45,7 @@ CREATE TABLE "public"."order_list" (
     PRIMARY KEY ("id")
 );
 
-CREATE TABLE "public"."menu_add_option" (
+CREATE TABLE "public"."menu_add_on" (
     "id" SERIAL,
     "menu_id"INT,
     "filter_menu_id" INT,
@@ -76,7 +76,7 @@ CREATE TABLE "public"."group_menu" (
     PRIMARY KEY ("id")
 );
 
-CREATE TABLE "public"."group_menu_option" (
+CREATE TABLE "public"."group_menu_on" (
     "id" SERIAL,
     "sort" INT,
     "name" text,

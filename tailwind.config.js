@@ -14,7 +14,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        tajawal: ["var(--font-tajawal)"],
+        Roboto: ["var(--font-roboto)"],
         // mono: ['var(--font-roboto-mono)'],
       },
       backgroundImage: {
