@@ -26,7 +26,7 @@ const Home = () => {
             >
               <div
                 key={group.name}
-                className="text-topic m-[10px] flex align-center justify-between m-[20px]"
+                className="text-topic flex align-center justify-between m-[20px]"
               >
                 <div>
                   <input

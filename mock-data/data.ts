@@ -5,16 +5,19 @@ export const groups = [
     menus: [
       {
         id: 1,
+        picture: "",
         name: "Black coffee",
         price: 60,
       },
       {
         id: 2,
+        picture: "",
         name: "Americano",
         price: 60,
       },
       {
         id: 3,
+        picture: "",
         name: "Espresso",
         price: 60,
       },

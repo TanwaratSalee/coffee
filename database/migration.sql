@@ -1,8 +1,8 @@
 CREATE TABLE "public"."users" (
     "id" SERIAL,
     "name" text,
-    "email" text,
-    "password" text,
+    "Email" text,
+    "Password" text,
     "role {user|admin}" text,
     "inserted_at" timestamptz NOT NULL DEFAULT timezone('utc'::text, now()),
     "updated_at" timestamptz NOT NULL DEFAULT timezone('utc'::text, now()),
@@ -60,7 +60,7 @@ CREATE TABLE "public"."menu_add_on" (
 CREATE TABLE "public"."order_list_filter_menu" (
     "id" SERIAL,
     "order_list_id"int references "order_list",
-    "menu_filter_id"int references "menu_filter",
+    "menu_filter_id"int references "menu_add_on",
     "inserted_at" timestamptz NOT NULL DEFAULT timezone('utc'::text, now()),
     "updated_at" timestamptz NOT NULL DEFAULT timezone('utc'::text, now()),
     PRIMARY KEY ("id")
@@ -76,7 +76,7 @@ CREATE TABLE "public"."group_menu" (
     PRIMARY KEY ("id")
 );
 
-CREATE TABLE "public"."group_menu_on" (
+CREATE TABLE "public"."group_add_on" (
     "id" SERIAL,
     "sort" INT,
     "name" text,
@@ -85,7 +85,7 @@ CREATE TABLE "public"."group_menu_on" (
     PRIMARY KEY ("id")
 );
 
-CREATE TABLE "public"."option_filter" (
+CREATE TABLE "public"."add_on" (
     "id" SERIAL,
     "name" text,
     "is_public" BOOLEAN,

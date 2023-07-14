@@ -1,8 +1,14 @@
+import Link from "next/link";
+
 export default function navmenu() {
   return (
     <main className="text-base bg-[#212325] text-white flex">
-      <h1 className=" p-[10px_10px]"> Order </h1>
-      <h1 className=" p-[10px_10px]">Create and Edit Menu</h1>
+      <Link href="/admin/order" className=" p-[10px_10px]">
+        Order
+      </Link>
+      <Link href="/admin/menu" className=" p-[10px_10px]">
+        Create and Edit Menu
+      </Link>
     </main>
   );
 }
