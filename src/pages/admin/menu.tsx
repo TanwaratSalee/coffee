@@ -24,10 +24,7 @@ const Home = () => {
               key={group.name}
               className="border border-black rounded-lg p-[25px_10px] m-[10px] "
             >
-              <div
-                key={group.name}
-                className="text-topic flex align-center justify-between m-[20px]"
-              >
+              <div className="text-topic flex align-center justify-between m-[20px]">
                 <div>
                   <input
                     type="checkbox"
@@ -46,13 +43,15 @@ const Home = () => {
               </div>
               <div className="flex flex-wrap">
                 {group.menus.map((menu) => (
-                  <span className="border border-black rounded-lg p-[15px_12px] m-[0px_5px]">
+                  <span
+                    key={menu.name}
+                    className="border border-black rounded-lg p-[15px_12px] m-[0px_5px]"
+                  >
                     <input
                       type="checkbox"
                       id="vehicle1"
                       name="vehicle1"
                       value="Bike"
-                      key={menu.name}
                     ></input>
                     {menu.name}
                   </span>
@@ -72,11 +71,12 @@ const Home = () => {
         </div>
         <ul className="border border-black rounded-lg p-[30px_25px] m-[20px]">
           {addons.map((addon) => (
-            <li className="border border-black rounded-lg p-[30px_25px] m-[10px]">
+            <li
+              key={addon.name}
+              className="border border-black rounded-lg p-[30px_25px] m-[10px]"
+            >
               <div className="flex">
-                <div key={addon.name} className="text-topic m-[15px_0px]">
-                  {addon.name}
-                </div>
+                <div className="text-topic m-[15px_0px]">{addon.name}</div>
                 <Link
                   href="../admin/group-addon/addmenu"
                   className="border border-black rounded-lg p-[10px_15px] m-5"

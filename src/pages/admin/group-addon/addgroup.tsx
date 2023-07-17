@@ -1,10 +1,17 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export default function addgroup() {
+type Error = {
+  code: string;
+  path: [];
+  message: string;
+};
+
+export default function Addgroup() {
   const router = useRouter();
   const { id } = router.query;
-  const [name, setName] = useState();
+  const [name, setName] = useState("");
+  const [errors, setErrors] = useState<Error[]>([]);
 
   useEffect(() => {
     if (!id) {
@@ -30,26 +37,33 @@ export default function addgroup() {
     fetchUser();
   }, [id]);
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch("/api/admin/group_add", {
+    const response = await fetch("../../api/admin/group_add_on", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({}),
+      body: JSON.stringify({
+        name: name,
+        is_public: true,
+      }),
     });
 
     if (!response.ok) {
-      throw new Error(`Error: ${response.status}`);
+      const data = await response.json();
+      setErrors(data.errors);
+    } else {
+      const data = await response.json();
+      console.log("POST: ", data);
     }
-
-    const data = await response.json();
-    console.log("POST: ", data);
   };
 
   return (
     <main className="text-topic">
+      {errors.map((error) => (
+        <p key={error.message}>{error.message}</p>
+      ))}
       <form onSubmit={onSubmit}>
         <h1 className="text-heading text-center font-medium">Add Group</h1>
         <div>

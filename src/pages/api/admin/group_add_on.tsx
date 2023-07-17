@@ -15,7 +15,14 @@ export default async function handler(
 ) {
   if (req.method == "POST") {
     const schema = z.object({
-      name: z.string(),
+      name: z
+        .string({
+          required_error: "name is require",
+          invalid_type_error: "name only string",
+        })
+        .nonempty({
+          message: "name Can't be empty!",
+        }),
       is_public: z.boolean(),
     });
 
@@ -37,7 +44,7 @@ export default async function handler(
       .from("group_add_on")
       .insert({
         name: name,
-        is_public: is_public,
+        // is_public: is_public,
       })
       .select();
 
