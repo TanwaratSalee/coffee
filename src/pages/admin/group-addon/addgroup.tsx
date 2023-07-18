@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-type Error = {
+export interface Error {
   code: string;
   path: [];
   message: string;
-};
+}
 
 export default function Addgroup() {
   const router = useRouter();
