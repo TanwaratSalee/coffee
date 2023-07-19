@@ -15,8 +15,16 @@ export default async function handler(
 ) {
   if (req.method == "POST") {
     const schema = z.object({
-      name: z.string(),
-      price_add_on: z.string(),
+      name: z
+        .string({
+          required_error: "name is require",
+        })
+        .nonempty({
+          message: "name Can't be empty!",
+        }),
+      price_add_on: z.number({
+        required_error: "Require price",
+      }),
       is_public: z.boolean(),
     });
 
@@ -38,28 +46,28 @@ export default async function handler(
       .from("add_on")
       .insert({
         name: name,
-        price: price_add_on,
+        price_add_on: price_add_on,
         is_public: is_public,
       })
       .select();
 
     if (!insertError) {
-      return res.status(500).json({
+      return res.status(200).json({
         success: true,
         message: "ok",
         data: insertData,
       });
     }
 
-    return res.status(200).json({
+    return res.status(500).json({
       success: false,
       message: "error" + insertError.message,
-      data: [],
+      errors: [],
     });
   }
   return res.status(405).json({
     success: false,
     message: "method not allowed",
-    data: [],
+    errors: [],
   });
 }

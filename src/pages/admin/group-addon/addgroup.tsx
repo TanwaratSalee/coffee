@@ -7,7 +7,7 @@ type Error = {
   message: string;
 };
 
-export default function Addgroup() {
+export default function AddgroupAddon() {
   const router = useRouter();
   const { id } = router.query;
   const [name, setName] = useState("");
@@ -39,7 +39,7 @@ export default function Addgroup() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch("../../api/admin/group_add_on", {
+    const response = await fetch("../../api/admin/group-add-on", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
