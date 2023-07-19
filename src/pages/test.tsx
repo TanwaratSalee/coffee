@@ -15,50 +15,10 @@ export const getServerSideProps: GetServerSideProps = async () => {
 export default function Home({ postdata }: any) {
   // ดึงตรงจาก api ไม่เก็บข้อมูล
 
-  const [posts, setPosts] = useState<Post[]>(postdata);
   const [data, setData] = useState([]) || null;
   const [order, setOrder] = useState("");
   const [errors, setErrors] = useState<Error[]>([]);
-  useEffect(() => {
-    const channel = supabase
-      .channel("changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "posts",
-        },
-        (payload) => {
-          switch (payload.eventType) {
-            case "INSERT":
-              setPosts([...posts, payload.new as Post]);
-              break;
 
-            case "UPDATE":
-              const _posts = [...posts];
-              const updateIndex = _posts.findIndex(
-                (post) => post.id === payload.old.id
-              );
-              _posts[updateIndex] = payload.new as Post;
-              setPosts(_posts);
-              break;
-
-            case "DELETE":
-              setPosts(posts.filter((post: any) => post.id !== payload.old.id));
-              break;
-
-            default:
-              break;
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      channel.unsubscribe();
-    };
-  }, [posts]);
   useEffect(() => {
     fetchData();
   }, []);

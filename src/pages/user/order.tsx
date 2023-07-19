@@ -2,10 +2,9 @@ import Link from "next/link";
 import { useState } from "react";
 import LayoutUser from "../../../components/layout-user";
 import { groups } from "../../../mock-data/data";
-import Detailoreder from "./detailorder";
 
 const Home = () => {
-  const [typeorder, setTypeorder] = useState("coffee");
+  const [typeorder, setTypeorder] = useState("Coffee");
   const handleButtonClick = (buttonName: any) => {
     setTypeorder(buttonName);
   };
@@ -49,12 +48,9 @@ const Home = () => {
                 <div className="flex flex-wrap ">
                   {group.menus.map((menu) => (
                     <Link
-                      onClick={(e) => {
-                        Detailoreder(group.name, menu.name, menu.price);
-                      }}
+                      href={`/user/detailorder?type=${group.name}&menu=${menu.name}&price=${menu.price}`}
                       key={menu.name}
                       className="m-[10px] border border-black rounded-lg p-[30px_25px]"
-                      href={""}
                     >
                       {menu.name}
                     </Link>
