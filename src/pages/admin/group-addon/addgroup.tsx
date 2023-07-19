@@ -58,7 +58,6 @@ export default function AddgroupAddon() {
       console.log("POST: ", data);
     }
   };
-
   return (
     <main className="text-topic">
       {errors.map((error) => (
