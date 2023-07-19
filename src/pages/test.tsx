@@ -18,7 +18,7 @@ export default function Home({ postdata }: any) {
   const [data, setData] = useState([]) || null;
   const [order, setOrder] = useState("");
   const [errors, setErrors] = useState<Error[]>([]);
-
+  // เอามาแสดง
   useEffect(() => {
     fetchData();
   }, []);
@@ -33,7 +33,7 @@ export default function Home({ postdata }: any) {
       console.error("Error fetching data:", error);
     }
   };
-
+  /// เพิ่มเมนู
   const submitorder = async (e: any) => {
     e.preventDefault();
     // เพิ่ม order
