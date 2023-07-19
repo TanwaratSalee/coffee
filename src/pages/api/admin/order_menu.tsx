@@ -15,7 +15,19 @@ export default async function handler(
 ) {
   if (req.method == "POST") {
     const schema = z.object({
-      name: z
+      name: z.string({
+        required_error: "name is require",
+        invalid_type_error: "name only string",
+      }),
+      temp: z.string({
+        required_error: "name is require",
+        invalid_type_error: "name only string",
+      }),
+      shot: z.string({
+        required_error: "name is require",
+        invalid_type_error: "name only string",
+      }),
+      sweet: z
         .string({
           required_error: "name is require",
           invalid_type_error: "name only string",
@@ -23,7 +35,10 @@ export default async function handler(
         .nonempty({
           message: "name Can't be empty!",
         }),
-      is_public: z.boolean(),
+      price: z.string({
+        required_error: "name is require",
+        invalid_type_error: "name only string",
+      }),
     });
 
     const response = schema.safeParse(req.body);
@@ -38,13 +53,16 @@ export default async function handler(
       });
     }
 
-    const { name, is_public } = response.data;
+    const { name, temp, shot, sweet, price } = response.data;
 
     const { data: insertData, error: insertError } = await supabase
       .from("posts")
       .insert({
-        title: name,
-        // is_public: is_public,
+        menu: name,
+        temp: temp,
+        shot: shot,
+        sweet: sweet,
+        price: price,
       })
       .select();
 
