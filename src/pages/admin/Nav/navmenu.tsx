@@ -6,7 +6,7 @@ export default function navmenu() {
       <Link href="/admin/order" className=" p-[10px_10px]">
         Order
       </Link>
-      <Link href="/admin/menu" className=" p-[10px_10px]">
+      <Link href="/admin" className=" p-[10px_10px]">
         Create and Edit Menu
       </Link>
     </main>

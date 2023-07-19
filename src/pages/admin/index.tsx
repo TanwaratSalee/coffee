@@ -75,8 +75,16 @@ const Home = () => {
               key={addon.name}
               className="border border-black rounded-lg p-[30px_25px] m-[10px]"
             >
-              <div className="flex">
-                <div className="text-topic m-[15px_0px]">{addon.name}</div>
+              <div className="flex align-center justify-between m-[20px]">
+                <div className="flex">
+                  <input
+                    type="checkbox"
+                    id="vehicle1"
+                    name="vehicle1"
+                    value="Bike"
+                  ></input>
+                  <div className="text-topic m-[15px_0px]">{addon.name}</div>
+                </div>
                 <Link
                   href="../admin/group-addon/addmenu"
                   className="border border-black rounded-lg p-[10px_15px] m-5"
@@ -89,6 +97,12 @@ const Home = () => {
                   key={menu.name}
                   className=" border border-black rounded-lg p-[10px_15px] m-2"
                 >
+                  <input
+                    type="checkbox"
+                    id="vehicle1"
+                    name="vehicle1"
+                    value="Bike"
+                  ></input>
                   {menu.name}
                 </span>
               ))}

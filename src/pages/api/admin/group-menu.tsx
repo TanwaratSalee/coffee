@@ -15,8 +15,14 @@ export default async function handler(
 ) {
   if (req.method == "POST") {
     const schema = z.object({
-      name: z.string(),
-      price: z.string(),
+      name: z
+        .string({
+          required_error: "name is require",
+          invalid_type_error: "name only string",
+        })
+        .nonempty({
+          message: "Can't be empty!",
+        }),
       is_public: z.boolean(),
     });
 
@@ -32,14 +38,13 @@ export default async function handler(
       });
     }
 
-    const { name, price, is_public } = response.data;
+    const { name, is_public } = response.data;
 
     const { data: insertData, error: insertError } = await supabase
 
       .from("group_menu")
       .insert({
         name: name,
-        price: price,
         is_public: is_public,
       })
       .select();
@@ -55,12 +60,12 @@ export default async function handler(
     return res.status(500).json({
       success: false,
       message: "error" + insertError.message,
-      data: [],
+      errors: [],
     });
   }
   return res.status(405).json({
     success: false,
     message: "method not allowed",
-    data: [],
+    errors: [],
   });
 }

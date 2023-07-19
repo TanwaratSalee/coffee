@@ -59,10 +59,12 @@ export default async function handler(
     return res.status(500).json({
       success: false,
       message: "error: " + insertError.message,
+      errors: [],
     });
   }
   return res.status(405).json({
     success: false,
     message: "method not allowed",
+    errors: [],
   });
 }
