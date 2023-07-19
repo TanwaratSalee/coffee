@@ -18,7 +18,7 @@ export default function Home({ postdata }: any) {
   const [data, setData] = useState([]) || null;
   const [order, setOrder] = useState("");
   const [errors, setErrors] = useState<Error[]>([]);
-
+  // เอามาแสดง
   useEffect(() => {
     fetchData();
   }, []);
@@ -33,12 +33,12 @@ export default function Home({ postdata }: any) {
       console.error("Error fetching data:", error);
     }
   };
-
+  /// เพิ่มเมนู
   const submitorder = async (e: any) => {
     e.preventDefault();
     // เพิ่ม order
-    // const response2 = await fetch("../../api/admin/add_order", {
-    const response2 = await fetch("../../api/admin/order_menu", {
+    const response2 = await fetch("../../api/admin/add_order", {
+      // const response2 = await fetch("../../api/admin/order_menu", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
