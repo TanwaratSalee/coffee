@@ -80,7 +80,7 @@ export default function addgroup() {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div>
+        {/* <div>
           <label>Detail:</label>
           <input
             type="text"
@@ -88,7 +88,7 @@ export default function addgroup() {
             value={detail ?? ""}
             onChange={(e) => setDetail(e.target.value)}
           />
-        </div>
+        </div> */}
         <div>
           <label>Price:</label>
           <input

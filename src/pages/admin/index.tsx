@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import LayoutAdmin from "../../../components/layout-admin";
 import supabase from "../../../lib/supabase";
 // import { addons } from "../../../mock-data/data";
+
 interface MenuItem {
   id: number;
   name: string;
@@ -101,7 +102,7 @@ const Home = ({ group, addon }: any) => {
                       name="vehicle1"
                       value="Bike"
                     ></input>
-                    {group.name}{" "}
+                    {group.name}
                   </div>
 
                   <Link
@@ -158,10 +159,10 @@ const Home = ({ group, addon }: any) => {
                     <div className="text-topic m-[15px_0px]">{addon.name}</div>
                   </div>
                   <Link
-                    href="../admin/group-addon/addmenu"
+                    href={`../admin/group-addon/addmenu?addonId=` + addon.id}
                     className="border border-black rounded-lg p-[10px_15px] m-5"
                   >
-                    + Add Add On
+                    + Add On
                   </Link>
                 </div>
                 {addon &&
@@ -176,7 +177,13 @@ const Home = ({ group, addon }: any) => {
                         name="vehicle1"
                         value="Bike"
                       ></input>
-                      {menu.name}
+                      <Link
+                        href={
+                          `../admin/group-addon/editaddon?addonId=` + menu.id
+                        }
+                      >
+                        {menu.name}
+                      </Link>
                     </span>
                   ))}
               </li>
