@@ -37,7 +37,6 @@ export default function Detailoreder() {
   const submitorder = async (e: any) => {
     e.preventDefault();
     // เพิ่ม order
-    // const response2 = await fetch("../../api/admin/add_order", {
     const response2 = await fetch("../../api/admin/order_menu", {
       method: "POST",
       headers: {

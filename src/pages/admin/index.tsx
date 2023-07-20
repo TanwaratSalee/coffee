@@ -103,8 +103,9 @@ const Home = ({ group, addon }: any) => {
                     ></input>
                     {group.name}{" "}
                   </div>
+
                   <Link
-                    href="../admin/group-menu/addmenu"
+                    href={`../admin/group-menu/addmenu?groupId=` + group.id}
                     className="border border-black rounded-lg text-base p-[8px_15px]"
                   >
                     + Add Menu
@@ -160,7 +161,7 @@ const Home = ({ group, addon }: any) => {
                     href="../admin/group-addon/addmenu"
                     className="border border-black rounded-lg p-[10px_15px] m-5"
                   >
-                    + Add Menu
+                    + Add Add On
                   </Link>
                 </div>
                 {addon &&
