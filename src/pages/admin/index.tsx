@@ -1,6 +1,8 @@
+import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import LayoutAdmin from "../../../components/layout-admin";
+import supabase from "../../../lib/supabase";
 // import { addons } from "../../../mock-data/data";
 interface MenuItem {
   id: number;
@@ -18,36 +20,56 @@ interface Addon {
   name: string;
   add_on: MenuItem[];
 }
-
-const Home = () => {
+export const getServerSideProps: GetServerSideProps = async () => {
+  const { data: group } = await supabase.from("group_menu").select(`
+    id,
+    name,
+    menu (
+      id,
+      name
+    )
+  `);
+  const { data: addon } = await supabase.from("group_add_on").select(`
+  id,
+  name,
+    add_on (
+      id,
+      name
+    )   
+  )
+`);
+  return { props: { group, addon } };
+};
+const Home = ({ group, addon }: any) => {
   const [groups, setGroup] = useState<DataItem[] | undefined>([]);
   const [addons, setAddOn] = useState<Addon[] | undefined>([]);
 
   // await
   useEffect(() => {
-    fetchDataMenu();
-    fetchDataAddOn();
+    // fetchDataMenu();
+    setGroup(group);
+    setAddOn(addon);
+    // fetchDataAddOn();
   }, []);
 
-  const fetchDataMenu = async () => {
-    try {
-      const response = await fetch("../api/admin/list-group-menu");
-      const jsonData = await response.json();
-      setGroup(jsonData.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-  const fetchDataAddOn = async () => {
-    try {
-      const response2 = await fetch("../api/admin/list-group-addon");
-      const jsonData1 = await response2.json();
-      console.log(jsonData1);
-      setAddOn(jsonData1.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  // const fetchDataMenu = async () => {
+  //   try {
+  //     const response = await fetch("../api/admin/list-group-menu");
+  //     const jsonData = await response.json();
+  //     setGroup(jsonData.data);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
+  // const fetchDataAddOn = async () => {
+  //   try {
+  //     const response2 = await fetch("../api/admin/list-group-addon");
+  //     const jsonData1 = await response2.json();
+  //     setAddOn(jsonData1.data);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
 
   return (
     <LayoutAdmin>

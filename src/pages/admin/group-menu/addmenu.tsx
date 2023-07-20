@@ -1,7 +1,7 @@
 export default function addgroup() {
   return (
     <main className="text-topic">
-      <h1 className="text-heading text-center font-medium">Add Group</h1>
+      <h1 className="text-heading text-center font-medium">Add Menu</h1>
       <h1>Picture</h1>
       <div>
         <label>Name:</label>

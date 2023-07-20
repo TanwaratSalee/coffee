@@ -9,7 +9,6 @@ export interface Post {
 }
 export const getServerSideProps: GetServerSideProps = async () => {
   const { data: postdata } = await supabase.from("posts").select();
-
   return { props: { postdata } };
 };
 export default function Home({ postdata }: any) {

@@ -4,7 +4,10 @@ export default async function order(req: any, res: any) {
   if (req.method === "GET") {
     try {
       // Fetch data from Supabase
-      const { data, error } = await supabase.from("menu").select();
+      const { data, error } = await supabase
+        .from("menu")
+        .select()
+        .eq("is_public", 1);
       if (error) {
         throw error;
       }
