@@ -63,10 +63,13 @@ export default function Home({ postdata }: any) {
     <section>
       <div>
         <div>
-          {posts?.map(({ id, menu }: any) => (
-            <div className="flex" key={id}>
+          {posts?.map((item, id): any => (
+            <div className="flex gap-x-[10px]" key={id}>
               <div className="pr-[10px]">{id}</div>
-              <div>{menu}</div>
+              <div>{item.menu}</div>
+              <div>{item.temp}</div>
+              <div>{item.shot}</div>
+              <div>{item.price}</div>
             </div>
           ))}
         </div>

@@ -27,16 +27,6 @@ const Home = () => {
           ))}
         </div>
         <ul>
-          {/* <div className="flex flex-cols ">
-            {groups.map((group) => (
-              <div
-                key={group.name}
-                className="p-[10px] m-[10px] bg-[#212325] text-white"
-              >
-                {group.id}
-              </div>
-            ))}
-          </div> */}
           {groups.map((group) => (
             <div
               key={group.name}
