@@ -8,6 +8,7 @@ const Home = () => {
   const handleButtonClick = (buttonName: any) => {
     setTypeorder(buttonName);
   };
+
   return (
     <LayoutUser>
       <div className="">

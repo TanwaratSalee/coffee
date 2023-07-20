@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import LayoutAdmin from "../../../components/layout-admin";
 import { addons } from "../../../mock-data/data";
+
 interface MenuItem {
   id: number;
   name: string;
@@ -20,8 +21,7 @@ const Home = () => {
   }, []);
   const fetchData = async () => {
     try {
-      const response = await fetch("../api/admin/list-group-menu");
-
+      const response = await fetch("/api/admin/list-group-menu");
       const jsonData = await response.json();
       console.log(jsonData);
       setGroup(jsonData.data);
