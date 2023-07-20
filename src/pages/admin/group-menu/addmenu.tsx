@@ -1,4 +1,12 @@
+import { useRouter } from "next/router";
+
 export default function addgroup() {
+  const router = useRouter();
+
+  const { groupId } = router.query;
+
+  console.log(groupId);
+
   return (
     <main className="text-topic">
       <h1 className="text-heading text-center font-medium">Add Menu</h1>

@@ -50,7 +50,7 @@ export default function Detailoreder({ addon }: any) {
   const submitorder = async (e: any) => {
     e.preventDefault();
     // เพิ่ม order
-    const response2 = await fetch("../api/admin/order_menu", {
+    const response2 = await fetch("../../api/admin/order_menu", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
