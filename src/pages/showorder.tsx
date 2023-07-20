@@ -4,7 +4,11 @@ import supabase from "../../lib/supabase";
 
 export interface Post {
   id: string;
-  title: string;
+  menu: string;
+  temp: string | null;
+  shot: string | null;
+  note: string | null;
+  price: string | null;
   created_at: string;
 }
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -59,13 +63,16 @@ export default function Home({ postdata }: any) {
     <section>
       <div>
         <div>
-          {posts?.map(({ id, title }: any) => (
-            <div key={id}>
-              <div>{id}</div>
-              <div>{title}</div>
+          {posts?.map(({ id, menu }: any) => (
+            <div className="flex" key={id}>
+              <div className="pr-[10px]">{id}</div>
+              <div>{menu}</div>
             </div>
           ))}
         </div>
+        <button>เสร็จสิ้น</button>
+        <br />
+        <button>ยกเลิก</button>
       </div>
     </section>
   );
