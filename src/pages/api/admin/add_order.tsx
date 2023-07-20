@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { z, ZodIssue } from "zod";
+import { ZodIssue, z } from "zod";
 import supabase from "../../../../lib/supabase";
 
 type ResponseData = {

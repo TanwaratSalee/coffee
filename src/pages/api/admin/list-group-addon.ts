@@ -18,8 +18,7 @@ export default async function handler(
           add_on (
             id,
             name
-          )
-          
+          )   
         )
       `);
 

@@ -1,15 +1,16 @@
-// import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import supabase from "../../../../lib/supabase";
 
-// type Data = {
-//   success: boolean;
-//   message: string;
-//   data: any[];
-// };
+type Data = {
+  success: boolean;
+  message: string;
+  data: any[];
+};
 
-export default async function order(req: any, res: any) {
-  // req: NextApiRequest,
-  // res: NextApiResponse<Data>
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<Data>
+) {
   if (req.method === "GET") {
     const { data, error } = await supabase.from("group_menu").select(`
     id,
