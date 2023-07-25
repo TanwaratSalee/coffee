@@ -22,9 +22,16 @@ export default async function handler(
         .nonempty({
           message: "name Can't be empty!",
         }),
-      price_add_on: z.number({
+      price: z.number({
         required_error: "Require price",
       }),
+      group_id: z
+        .string({
+          required_error: "id is require",
+        })
+        .nonempty({
+          message: "name Can't be empty!",
+        }),
       is_public: z.boolean(),
     });
 
@@ -40,14 +47,15 @@ export default async function handler(
       });
     }
 
-    const { name, price_add_on, is_public } = response.data;
+    const { name, price, is_public, group_id } = response.data;
 
     const { data: insertData, error: insertError } = await supabase
-      .from("add_on")
+      .from("menu")
       .insert({
         name: name,
-        price_add_on: price_add_on,
+        price: price,
         is_public: is_public,
+        group_id: group_id,
       })
       .select();
 

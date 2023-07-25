@@ -25,6 +25,13 @@ export default async function handler(
       price_add_on: z.number({
         required_error: "Require price",
       }),
+      group_add_on_id: z
+        .string({
+          required_error: "name is require",
+        })
+        .nonempty({
+          message: "name Can't be empty!",
+        }),
       is_public: z.boolean(),
     });
 
@@ -40,7 +47,7 @@ export default async function handler(
       });
     }
 
-    const { name, price_add_on, is_public } = response.data;
+    const { name, price_add_on, is_public, group_add_on_id } = response.data;
 
     const { data: insertData, error: insertError } = await supabase
       .from("add_on")
@@ -48,6 +55,7 @@ export default async function handler(
         name: name,
         price_add_on: price_add_on,
         is_public: is_public,
+        group_add_on_id: group_add_on_id,
       })
       .select();
 

@@ -12,6 +12,11 @@ const roboto = Roboto({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <main className={`${roboto.variable} font-roboto font-light`}>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      />
+      <title>Coffee</title>
       <Component {...pageProps} />
     </main>
   );

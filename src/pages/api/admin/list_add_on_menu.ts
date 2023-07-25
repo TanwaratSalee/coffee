@@ -12,30 +12,20 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   if (req.method === "GET") {
-    const { data, error } = await supabase.from("group_add_on").select(`
+    const { data, error } = await supabase.from("menu_add_on").select(`
         id,
-        name,
-        is_public,
-          add_on (
+        menu_id,
+        menu(
+          id,
+          name
+        ),
+        group_add_on_id,
+          group_add_on(
             id,
-            name,
-            is_public
-          )   
-        .eq("id", id);
+            name
+          )
         )
       `);
-
-    // const { data, error } = await supabase.from("select_group_menu").select();
-
-    // console.log("data", data);
-
-    // const menu = data.map((it) => {
-    //   return {
-    //     id: it.id,
-    //     name: it.name,
-    //     detail: it['menu-add-on']['add-on']
-    //   };
-    // });
 
     if (error) {
       console.log(error);

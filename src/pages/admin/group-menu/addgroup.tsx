@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -60,24 +61,42 @@ export default function AddgroupMenu() {
   };
 
   return (
-    <main className="text-topic">
+    <main className="text-maintopic m-[10px]">
       {errors.map((error) => (
         <p key={error.message}>{error.message}</p>
       ))}
       <form onSubmit={onSubmit}>
-        <h1 className="text-heading text-center font-medium">Add Group</h1>
-        <div>
-          <label>Name:</label>
-          <input
-            type="text"
-            value={name ?? ""}
-            onChange={(e) => setName(e.target.value)}
-          />
+        <h1 className="text-heading text-center p-[50px_20px]">
+          Add Drink Menu Group{" "}
+        </h1>
+        <Link
+          className="absolute right-[70px] top-[70px] text-[50px] "
+          href="../../admin"
+        >
+          <i className="fa fa-times " aria-hidden="true"></i>
+        </Link>
+        <div className="bg-slate-200 rounded-3xl m-[0px_60px]">
+          <div className="flex justify-center pt-[50px]">
+            <label>Name:</label>
+            <input
+              className="rounded-md m-[0px_10px]"
+              type="text"
+              value={name ?? ""}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div className="flex justify-center p-[40px_20px]">
+            <button
+              className="bg-blue-200 w-[140px] h-[50px] text-center mr-[10px]"
+              type="submit"
+            >
+              Save
+            </button>
+            <button className="bg-slate-500 w-[140px] h-[50px] text-center ml-[10px]">
+              <Link href="../../admin">Cancel</Link>
+            </button>
+          </div>
         </div>
-        <button className="bg-blue-200 p-[10px_18px] m-2" type="submit">
-          Save
-        </button>
-        <button className="bg-slate-500 p-[10px_18px] m-2">Cancel</button>
       </form>
     </main>
   );
