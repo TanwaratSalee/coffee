@@ -7,13 +7,9 @@ import supabase from "../../../../lib/supabase";
 interface MeuName {
   id: number;
   name: string;
-  price: number;
+  price: string;
 }
-// interface Addon {
-//   id: number;
-//   name: string;
-//   add_on: MeuName[];
-// }
+
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { nameId } = ctx.query;
 
@@ -36,10 +32,11 @@ const Update = ({ group }: any) => {
   const idname = router.query.nameId;
   const idprice = router.query.nameId;
   const [name, setName] = useState("");
-  const [price, setPrice] = useState<number>(0);
+  const [price, setPrice] = useState("");
 
   useEffect(() => {
     setAddon(group);
+    console.log(group);
   }, [group]);
 
   const submitform = async (e: any) => {
@@ -57,7 +54,7 @@ const Update = ({ group }: any) => {
     setName(value);
   };
 
-  const handleprice = (value: number) => {
+  const handleprice = (value: string) => {
     setPrice(value);
   };
 
@@ -83,6 +80,13 @@ const Update = ({ group }: any) => {
                     defaultValue={group.name}
                     onChange={(e) => handlename(e.target.value)}
                   />
+                  <label>Name:</label>
+                  <input
+                    className="rounded-md m-[0px_10px] pl-[20px]"
+                    type="text"
+                    defaultValue={group.price}
+                    onChange={(e) => handleprice(e.target.value)}
+                  />
                   {/* <li key={group.name}>{group.name}</li> */}
                 </div>
               ))}
@@ -93,6 +97,7 @@ const Update = ({ group }: any) => {
               >
                 Save{" "}
               </button>
+
               <button className="bg-slate-500 w-[140px] h-[50px] text-center ml-[10px]">
                 <Link href="../../admin">Cancel</Link>
               </button>
