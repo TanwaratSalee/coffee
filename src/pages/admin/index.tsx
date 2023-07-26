@@ -27,9 +27,11 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const { data: group } = await supabase.from("group_menu").select(`
     id,
     name,
+    is_public,
     menu (
       id,
-      name
+      name,
+      is_public
     )
   `);
 
@@ -60,7 +62,6 @@ const Home = ({ group, addon }: any) => {
       .eq("id", id);
   };
   const handleCheckboxChangeaddon = async (value: boolean, id: number) => {
-    console.log(value);
     const { data: insertData, error: insertError } = await supabase
       .from("add_on")
       .update({
@@ -68,7 +69,15 @@ const Home = ({ group, addon }: any) => {
       })
       .eq("id", id);
   };
-
+  const handleDelete = async (id: any) => {
+    console.log(123);
+    const { data, error } = await supabase
+      .from("menu")
+      .delete()
+      .eq("id", id)
+      .select();
+    console.log(data, error, id);
+  };
   const setvaluesql = async (id: number) => {};
   // await
   useEffect(() => {
@@ -117,15 +126,20 @@ const Home = ({ group, addon }: any) => {
           {groups &&
             groups.map((group) => (
               <li className="text-base" key={group.name}>
-                <div className="text-maintopic flex justify-between	">
+                <div className="text-maintopic flex justify-between	items-center mt-[30px]">
                   <div>
                     <input
+                      className="h-[18px] w-[18px] mr-[10px]"
                       type="checkbox"
                       id="publicCheckbox"
                       name="vehicle1"
                       value="Bike"
                     ></input>
                     {group.name}
+                    <i
+                      className="fa fa-pencil px-[15px text-gray-800 pl-[10px]"
+                      aria-hidden="true"
+                    ></i>
                   </div>
                   <Link
                     href={`../admin/group-menu/addmenu?groupId=` + group.id}
@@ -134,27 +148,56 @@ const Home = ({ group, addon }: any) => {
                     + Add Menu
                   </Link>
                 </div>
-                <div className="flex flex-wrap">
+                <div className="flex flex-wrap mt-[15px]">
                   {group &&
                     group.menu.map((menu) => (
-                      <div className="border border-black rounded-lg text-base p-[5px_20px] m-[20px_10px]">
+                      <div
+                        key={menu.id}
+                        className="flex items-center border border-black rounded-lg text-base p-[15px_10px] m-[10px_8px]"
+                      >
                         <input
+                          className="w-[15px] h-[15px] mr-[8px]"
                           type="checkbox"
                           id="publicCheckbox"
                           name="vehicle1"
-                          value="Bike"
+                          defaultChecked={menu.is_public}
                           onChange={(e) => {
                             handleCheckboxChangemenu(e.target.checked, menu.id);
                           }}
                         ></input>
+                        {menu.name}
                         <Link
                           href={
                             `../admin/group-menu/update-menu?nameId=` + menu.id
                           }
                           key={menu.name}
                         >
-                          {menu.name}
+                          <i
+                            className="fa fa-pencil text-gray-600 px-[15px]"
+                            aria-hidden="true"
+                          ></i>
                         </Link>
+                        <button
+                          onClick={(e) => {
+                            handleDelete(menu.id);
+                          }}
+                        >
+                          <i
+                            className="fa fa-trash-o text-gray-600"
+                            aria-hidden="true"
+                          ></i>
+                        </button>
+                        {/* <i
+                          className="fa fa-trash-o"
+                          aria-hidden="true"
+                          onClick={handleDelete(menu.id)}
+                        ></i> */}
+                        {/* <button
+                          className="bg-red-600 w-[140px] h-[50px] text-center ml-[10px]"
+                          onClick={handleDelete}
+                        >
+                          Delete
+                        </button> */}
                       </div>
                     ))}
                 </div>
@@ -194,9 +237,9 @@ const Home = ({ group, addon }: any) => {
                 </div>
                 <div className="flex flex-wrap">
                   {addon &&
-                    addon.add_on.map((menu) => (
+                    addon.add_on.map((menu, index) => (
                       <div
-                        key={menu.name}
+                        key={index}
                         className="border border-black rounded-lg text-base p-[5px_20px] m-[20px_10px]"
                       >
                         <input

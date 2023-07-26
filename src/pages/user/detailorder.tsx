@@ -89,9 +89,9 @@ export default function Detailoreder({ addon }: any) {
                       <button
                         className={`${
                           temp == add.name ||
-                          shot === add.name ||
+                          shot == add.name ||
                           sweet == add.name
-                            ? "bg-white bg-opacity-50"
+                            ? " bg-green-400 bg-opacity-50"
                             : "bg-none"
                         }`}
                         key={i}

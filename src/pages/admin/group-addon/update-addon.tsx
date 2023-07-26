@@ -54,6 +54,13 @@ const Update = ({ addon }: any) => {
     setName(value);
   };
 
+  const handleDelete = async () => {
+    const { data: addon } = await supabase
+      .from("add_on")
+      .delete()
+      .eq("id", idaddon);
+  };
+
   return (
     <main className="text-maintopic m-[10px]">
       <form onSubmit={submitform}>
@@ -78,6 +85,13 @@ const Update = ({ addon }: any) => {
                     defaultValue={addon.name}
                     onChange={(e) => handleaddon(e.target.value)}
                   />
+                  <label>Price:</label>
+                  <input
+                    className="rounded-md m-[0px_10px] pl-[20px]"
+                    type="text"
+                    defaultValue={addon.name}
+                    onChange={(e) => handleaddon(e.target.value)}
+                  />
                 </div>
               ))}
             <div className="flex justify-center p-[20px_10px]">
@@ -89,6 +103,12 @@ const Update = ({ addon }: any) => {
               </button>
               <button className="bg-slate-500 w-[140px] h-[50px] text-center ml-[10px]">
                 <Link href="../../admin">Cancel</Link>
+              </button>
+              <button
+                className="bg-red-600 w-[140px] h-[50px] text-center ml-[10px]"
+                onClick={handleDelete}
+              >
+                Delete
               </button>
             </div>
           </ul>

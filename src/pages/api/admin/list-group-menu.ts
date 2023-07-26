@@ -17,7 +17,8 @@ export default async function handler(
     name,
     menu (
       id,
-      name
+      name,
+      price
     )
     .eq("id", id);
   `);

@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
 import LayoutAdmin from "../../../components/layout-admin";
-import supabase from "../../lib/supabase";
+import supabase from "../../../lib/supabase";
 
 export interface Post {
   id: string;

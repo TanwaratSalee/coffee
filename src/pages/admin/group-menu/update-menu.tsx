@@ -7,6 +7,7 @@ import supabase from "../../../../lib/supabase";
 interface MeuName {
   id: number;
   name: string;
+  price: number;
 }
 // interface Addon {
 //   id: number;
@@ -21,7 +22,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     .select(
       `
     id,
-    name
+    name,
+    price
   `
     )
     .eq("id", nameId);
@@ -32,7 +34,9 @@ const Update = ({ group }: any) => {
   const [groups, setAddon] = useState<MeuName[]>([]);
   const router = useRouter();
   const idname = router.query.nameId;
+  const idprice = router.query.nameId;
   const [name, setName] = useState("");
+  const [price, setPrice] = useState<number>(0);
 
   useEffect(() => {
     setAddon(group);
@@ -44,12 +48,17 @@ const Update = ({ group }: any) => {
       .from("menu")
       .update({
         name: name,
+        price: price,
       })
       .eq("id", idname);
   };
 
   const handlename = (value: string) => {
     setName(value);
+  };
+
+  const handleprice = (value: number) => {
+    setPrice(value);
   };
 
   return (

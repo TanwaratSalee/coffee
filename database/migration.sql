@@ -62,7 +62,7 @@ CREATE TABLE "public"."group_add_on" (
 
 CREATE TABLE "public"."menu_add_on" (
     "id" SERIAL PRIMARY KEY,
-    "menu_id" INT references "menu",
+    "menu_id" INT references "menu" ON DELETE CASCADE,
     "group_add_on_id" INT references "group_add_on",
     "sort" INT,
     "inserted_at" timestamptz NOT NULL DEFAULT timezone('utc'::text, now()),

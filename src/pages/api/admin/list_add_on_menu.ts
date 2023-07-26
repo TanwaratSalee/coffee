@@ -16,12 +16,10 @@ export default async function handler(
         id,
         menu_id,
         menu(
-          id,
           name
         ),
         group_add_on_id,
           group_add_on(
-            id,
             name
           )
         )
