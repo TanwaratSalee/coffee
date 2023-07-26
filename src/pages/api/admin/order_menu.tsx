@@ -20,23 +20,15 @@ export default async function handler(
         invalid_type_error: "name only string",
       }),
       temp: z.string({
-        required_error: "name is require",
         invalid_type_error: "name only string",
       }),
       shot: z.string({
-        required_error: "name is require",
         invalid_type_error: "name only string",
       }),
-      sweet: z
-        .string({
-          required_error: "name is require",
-          invalid_type_error: "name only string",
-        })
-        .nonempty({
-          message: "name Can't be empty!",
-        }),
+      sweet: z.string({
+        invalid_type_error: "name only string",
+      }),
       price: z.string({
-        required_error: "name is require",
         invalid_type_error: "name only string",
       }),
     });

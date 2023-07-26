@@ -15,8 +15,6 @@ interface MeuName {
 // }
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { addonId } = ctx.query;
-  console.log("addonId:", addonId);
-
   const { data: addon } = await supabase
     .from("add_on")
     .select(
