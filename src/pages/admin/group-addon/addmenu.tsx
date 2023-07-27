@@ -101,7 +101,7 @@ export default function addgroup() {
           <div className="flex justify-center p-[25px_20px]">
             <label>Price:</label>
             <input
-              className="rounded-md m-[0px_14px]"
+              className="rounded-md mr-[154px]"
               type="number"
               name="price"
               value={price_add_on ?? ""}

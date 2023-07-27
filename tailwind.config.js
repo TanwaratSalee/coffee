@@ -11,6 +11,7 @@ module.exports = {
       topic: ["45px", "45px"],
       maintopic: ["30px", "40px"],
       base: ["20px", "30px"],
+      mimi: ["10px", "20px"],
     },
     extend: {
       fontFamily: {

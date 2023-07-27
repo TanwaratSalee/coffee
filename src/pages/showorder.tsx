@@ -53,7 +53,7 @@ export default function Home({ postdata }: any) {
         }
       )
       .subscribe();
-
+    console.log("test", channel);
     return () => {
       channel.unsubscribe();
     };

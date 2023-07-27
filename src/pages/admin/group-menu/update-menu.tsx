@@ -33,15 +33,15 @@ const Update = ({ group }: any) => {
   const idprice = router.query.nameId;
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-
   useEffect(() => {
     setAddon(group);
-    console.log(group);
+    setName(group[0].name);
+    setPrice(group[0].price);
   }, [group]);
 
   const submitform = async (e: any) => {
     e.preventDefault();
-    const { data: insertData, error: insertError } = await supabase
+    const { data, error } = await supabase
       .from("menu")
       .update({
         name: name,
@@ -72,21 +72,28 @@ const Update = ({ group }: any) => {
           <ul>
             {groups &&
               groups.map((group) => (
-                <div className="flex justify-center p-[25px_20px]">
-                  <label>Name:</label>
-                  <input
-                    className="rounded-md m-[0px_10px] pl-[20px]"
-                    type="text"
-                    defaultValue={group.name}
-                    onChange={(e) => handlename(e.target.value)}
-                  />
-                  <label>Name:</label>
-                  <input
-                    className="rounded-md m-[0px_10px] pl-[20px]"
-                    type="text"
-                    defaultValue={group.price}
-                    onChange={(e) => handleprice(e.target.value)}
-                  />
+                <div
+                  className="flex flex-col items-center justify-center p-[25px_20px]"
+                  key={group.name}
+                >
+                  <div>
+                    <label>Name:</label>
+                    <input
+                      className="rounded-md m-[15px_10px] pl-[20px]"
+                      type="text"
+                      defaultValue={group.name}
+                      onChange={(e) => handlename(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label>Price:</label>
+                    <input
+                      className="rounded-md pl-[20px] ml-[13px]"
+                      type="text"
+                      defaultValue={group.price}
+                      onChange={(e) => handleprice(e.target.value)}
+                    />
+                  </div>
                   {/* <li key={group.name}>{group.name}</li> */}
                 </div>
               ))}

@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     id,
     name,
     is_public,
-    menu (
+    menu!inner (
       id,
       name,
       price,

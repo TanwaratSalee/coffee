@@ -15,6 +15,7 @@ export default function addgroup() {
   const [price, setPrice] = useState<number | null>(null);
   const [errors, setErrors] = useState<Error[]>([]);
   const groupid = router.query.groupId;
+  const menuname = router.query.menuname;
 
   // useEffect(() => {
   //   if (!id) {
@@ -81,7 +82,8 @@ export default function addgroup() {
           <i className="fa fa-times " aria-hidden="true"></i>
         </Link>
         <div className="bg-slate-200 rounded-3xl m-[0px_60px] ">
-          <div className="flex justify-center pt-[50px]">
+          <h2 className="text-center text-topic pt-[40px]">{menuname}</h2>
+          <div className="flex justify-center pt-[30px]">
             <label>Name:</label>
             <input
               className="rounded-md m-[0px_10px]"
@@ -91,19 +93,10 @@ export default function addgroup() {
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-          {/* <div>
-          <label>Detail:</label>
-          <input
-            type="text"
-            name="detail"
-            value={detail ?? ""}
-            onChange={(e) => setDetail(e.target.value)}
-          />
-        </div> */}
           <div className="flex justify-center p-[25px_20px]">
             <label>Price:</label>
             <input
-              className="rounded-md m-[0px_14px]"
+              className="rounded-md ml-[12px]"
               type="number"
               name="price"
               value={price ?? ""}

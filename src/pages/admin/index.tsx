@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import LayoutAdmin from "../../../components/layout-admin";
 import supabase from "../../../lib/supabase";
 // import { addons } from "../../../mock-data/data";
@@ -14,6 +14,7 @@ interface MenuItem {
 interface DataItem {
   id: number;
   name: string;
+  is_public: boolean;
   menu: MenuItem[];
 }
 
@@ -50,9 +51,17 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 const Home = ({ group, addon }: any) => {
-  const [groups, setGroup] = useState<DataItem[] | undefined>([]);
-  const [addons, setAddOn] = useState<Addon[] | undefined>([]);
+  const [groups, setGroup] = useState<DataItem[]>(group);
+  const [addons, setAddOn] = useState<Addon[]>(addon);
 
+  const handleCheckboxChangegroupmenu = async (value: boolean, id: number) => {
+    const { data: insertData, error: insertError } = await supabase
+      .from("group_menu")
+      .update({
+        is_public: value,
+      })
+      .eq("id", id);
+  };
   const handleCheckboxChangemenu = async (value: boolean, id: number) => {
     const { data: insertData, error: insertError } = await supabase
       .from("menu")
@@ -70,23 +79,29 @@ const Home = ({ group, addon }: any) => {
       .eq("id", id);
   };
   const handleDelete = async (id: any) => {
-    console.log(123);
-    const { data, error } = await supabase
-      .from("menu")
-      .delete()
-      .eq("id", id)
-      .select();
-    console.log(data, error, id);
+    const isConfirmed = window.confirm("Are you sure you want to Delete it");
+    if (isConfirmed) {
+      const { data, error } = await supabase
+        .from("menu")
+        .delete()
+        .eq("id", id)
+        .select();
+      console.log(data);
+
+      if (data) {
+        const newData = data[0];
+        const tem = groups.find((item) => item.id == newData.group_id);
+        console.log(tem);
+        const newMenu = tem.menu.filter((item) => item.id != newData.id);
+        const newG = groups.filter((item) => item.id != newData.group_id);
+
+        const newGroup = [...newG, { ...tem, menu: newMenu }];
+        // console.log();
+
+        setGroup(newGroup);
+      }
+    }
   };
-  const setvaluesql = async (id: number) => {};
-  // await
-  useEffect(() => {
-    // fetchDataMenu();
-    console.log(addon);
-    setGroup(group);
-    setAddOn(addon);
-    // fetchDataAddOn();
-  }, []);
 
   // const fetchDataMenu = async () => {
   //   try {
@@ -127,22 +142,30 @@ const Home = ({ group, addon }: any) => {
             groups.map((group) => (
               <li className="text-base" key={group.name}>
                 <div className="text-maintopic flex justify-between	items-center mt-[30px]">
-                  <div>
+                  <div className="flex items-center">
                     <input
                       className="h-[18px] w-[18px] mr-[10px]"
                       type="checkbox"
                       id="publicCheckbox"
-                      name="vehicle1"
-                      value="Bike"
+                      defaultChecked={group.is_public}
+                      onChange={(e) => {
+                        handleCheckboxChangegroupmenu(
+                          e.target.checked,
+                          group.id
+                        );
+                      }}
                     ></input>
                     {group.name}
-                    <i
-                      className="fa fa-pencil px-[15px text-gray-800 pl-[10px]"
-                      aria-hidden="true"
-                    ></i>
+                    <div className="text-base ">
+                      <i
+                        className="fa fa-pencil-square-o px-[15px text-gray-800 pl-[10px] text-base"
+                        aria-hidden="true"
+                      ></i>
+                      <span className="pl-[10px] ">Edit</span>
+                    </div>
                   </div>
                   <Link
-                    href={`../admin/group-menu/addmenu?groupId=` + group.id}
+                    href={`../admin/group-menu/addmenu?groupId=${group.id}&menuname=${group.name}`}
                     className="border border-black rounded-xl text-base	p-[8px_25px]"
                   >
                     + Add Menu
@@ -153,7 +176,7 @@ const Home = ({ group, addon }: any) => {
                     group.menu.map((menu) => (
                       <div
                         key={menu.id}
-                        className="flex items-center border border-black rounded-lg text-base p-[15px_10px] m-[10px_8px]"
+                        className="flex items-center border border-black rounded-lg text-[18px] p-[15px_10px] m-[10px_8px]"
                       >
                         <input
                           className="w-[15px] h-[15px] mr-[8px]"
@@ -165,17 +188,19 @@ const Home = ({ group, addon }: any) => {
                             handleCheckboxChangemenu(e.target.checked, menu.id);
                           }}
                         ></input>
-                        {menu.name}
                         <Link
                           href={
                             `../admin/group-menu/update-menu?nameId=` + menu.id
                           }
                           key={menu.name}
                         >
+                          <span className="text-[25px]">{menu.name}</span>
+
                           <i
-                            className="fa fa-pencil text-gray-600 px-[15px]"
+                            className="fa fa-pencil-square-o text-gray-500 pl-[15px]"
                             aria-hidden="true"
                           ></i>
+                          <span className="pl-[5px]">Edit</span>
                         </Link>
                         <button
                           onClick={(e) => {
@@ -183,21 +208,11 @@ const Home = ({ group, addon }: any) => {
                           }}
                         >
                           <i
-                            className="fa fa-trash-o text-gray-600"
+                            className="fa fa-trash-o text-gray-500 pl-[15px]"
                             aria-hidden="true"
                           ></i>
+                          <span className="pl-[5px]">Delete</span>
                         </button>
-                        {/* <i
-                          className="fa fa-trash-o"
-                          aria-hidden="true"
-                          onClick={handleDelete(menu.id)}
-                        ></i> */}
-                        {/* <button
-                          className="bg-red-600 w-[140px] h-[50px] text-center ml-[10px]"
-                          onClick={handleDelete}
-                        >
-                          Delete
-                        </button> */}
                       </div>
                     ))}
                 </div>
