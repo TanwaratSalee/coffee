@@ -20,7 +20,7 @@ export default async function handler(
           required_error: "name is require",
         })
         .nonempty({
-          message: "name Can't be empty!",
+          message: "Name can't be empty!",
         }),
       price: z.number({
         required_error: "Require price",
@@ -32,6 +32,7 @@ export default async function handler(
         .nonempty({
           message: "name Can't be empty!",
         }),
+      image_url: z.string(),
       is_public: z.boolean(),
     });
 
@@ -47,7 +48,7 @@ export default async function handler(
       });
     }
 
-    const { name, price, is_public, group_id } = response.data;
+    const { name, price, is_public, group_id, image_url } = response.data;
 
     const { data: insertData, error: insertError } = await supabase
       .from("menu")
@@ -56,6 +57,7 @@ export default async function handler(
         price: price,
         is_public: is_public,
         group_id: group_id,
+        image_url: image_url,
       })
       .select();
 

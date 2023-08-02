@@ -8,6 +8,7 @@ import supabase from "../../../lib/supabase";
 interface MenuItem {
   id: number;
   name: string;
+  image_url: any;
   is_public: boolean;
 }
 
@@ -15,6 +16,7 @@ interface DataItem {
   id: number;
   name: string;
   is_public: boolean;
+  image_url: any;
   menu: MenuItem[];
 }
 
@@ -32,7 +34,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
     menu (
       id,
       name,
-      is_public
+      is_public,
+      image_url
     )
   `);
 
@@ -78,31 +81,78 @@ const Home = ({ group, addon }: any) => {
       })
       .eq("id", id);
   };
-  const handleDelete = async (id: any) => {
-    const isConfirmed = window.confirm("Are you sure you want to Delete it");
+  const handleDelete = async (id: any, path: any) => {
+    const isConfirmed = window.confirm("Are you sure you want to Delete Menu");
     if (isConfirmed) {
-      const { data, error } = await supabase
+      const { data: menuData, error: menuError } = await supabase
         .from("menu")
         .delete()
-        .eq("id", id)
-        .select();
-      console.log(data);
+        .eq("id", id);
 
-      if (data) {
-        const newData = data[0];
-        const tem = groups.find((item) => item.id == newData.group_id);
-        console.log(tem);
-        const newMenu = tem.menu.filter((item) => item.id != newData.id);
-        const newG = groups.filter((item) => item.id != newData.group_id);
+      const { data: group } = await supabase.from("group_menu").select(`
+        id,
+        name,
+        is_public,
+        menu (
+          id,
+          name,
+          is_public,
+          image_url
+        )
+      `);
 
-        const newGroup = [...newG, { ...tem, menu: newMenu }];
-        // console.log();
+      setGroup((group as any) || null);
 
-        setGroup(newGroup);
-      }
+      const { data, error } = await supabase.storage
+        .from("images")
+        .remove(`${path}` as any);
+
+      // console.log(data);
+
+      // if (data) {
+      //   const newData = data[0];
+      //   const tem = groups.find((item) => item.id == newData.group_id);
+      //   console.log(tem);
+      //   const newMenu = tem.menu.filter((item) => item.id != newData.id);
+      //   const newG = groups.filter((item) => item.id != newData.group_id);
+
+      //   const newGroup = [...newG, { ...tem, menu: newMenu }];
+      //   // console.log();
+
+      //   setGroup(newGroup);
+      // }
     }
   };
 
+  const handleDeleteGroup = async (id: any) => {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to Delete group menu"
+    );
+    if (isConfirmed) {
+      const { data: menuData, error: menuError } = await supabase
+        .from("menu")
+        .delete()
+        .eq("group_id", id);
+      const { data: groupMenuData, error: groupMenuError } = await supabase
+        .from("group_menu")
+        .delete()
+        .eq("id", id);
+
+      const { data: group } = await supabase.from("group_menu").select(`
+        id,
+        name,
+        is_public,
+        menu (
+          id,
+          name,
+          is_public,
+          image_url
+        )
+      `);
+      setGroup((group as any) || null);
+      console.log("id", id);
+    }
+  };
   // const fetchDataMenu = async () => {
   //   try {
   //     const response = await fetch("../api/admin/list-group-menu");
@@ -155,14 +205,34 @@ const Home = ({ group, addon }: any) => {
                         );
                       }}
                     ></input>
-                    {group.name}
-                    <div className="text-base ">
+                    <Link
+                      href={
+                        `../admin/group-menu/update-group-menu?groupnameId=` +
+                        group.id
+                      }
+                      className="flex items-center"
+                    >
+                      {group.name}
+                      <div className="text-base ">
+                        <i
+                          className="fa fa-pencil-square-o px-[15px text-gray-500 pl-[10px] text-base "
+                          aria-hidden="true"
+                        ></i>
+                        <span className="pl-[10px]">Edit</span>
+                      </div>
+                    </Link>
+                    <button
+                      className="text-base"
+                      onClick={(e) => {
+                        handleDeleteGroup(group.id);
+                      }}
+                    >
                       <i
-                        className="fa fa-pencil-square-o px-[15px text-gray-800 pl-[10px] text-base"
+                        className="fa fa-trash-o text-gray-500 pl-[15px]"
                         aria-hidden="true"
                       ></i>
-                      <span className="pl-[10px] ">Edit</span>
-                    </div>
+                      <span className="pl-[5px]">Delete</span>
+                    </button>
                   </div>
                   <Link
                     href={`../admin/group-menu/addmenu?groupId=${group.id}&menuname=${group.name}`}
@@ -176,43 +246,63 @@ const Home = ({ group, addon }: any) => {
                     group.menu.map((menu) => (
                       <div
                         key={menu.id}
-                        className="flex items-center border border-black rounded-lg text-[18px] p-[15px_10px] m-[10px_8px]"
+                        className="flex justify-between border-b border-black text-[18px] p-[15px_10px] m-[10px_8px] w-[100%]"
                       >
-                        <input
-                          className="w-[15px] h-[15px] mr-[8px]"
-                          type="checkbox"
-                          id="publicCheckbox"
-                          name="vehicle1"
-                          defaultChecked={menu.is_public}
-                          onChange={(e) => {
-                            handleCheckboxChangemenu(e.target.checked, menu.id);
-                          }}
-                        ></input>
-                        <Link
-                          href={
-                            `../admin/group-menu/update-menu?nameId=` + menu.id
-                          }
-                          key={menu.name}
-                        >
-                          <span className="text-[25px]">{menu.name}</span>
-
-                          <i
-                            className="fa fa-pencil-square-o text-gray-500 pl-[15px]"
-                            aria-hidden="true"
-                          ></i>
-                          <span className="pl-[5px]">Edit</span>
-                        </Link>
-                        <button
-                          onClick={(e) => {
-                            handleDelete(menu.id);
-                          }}
-                        >
-                          <i
-                            className="fa fa-trash-o text-gray-500 pl-[15px]"
-                            aria-hidden="true"
-                          ></i>
-                          <span className="pl-[5px]">Delete</span>
-                        </button>
+                        <div className="flex items-center	text-center">
+                          <input
+                            className="w-[25px] h-[25px] mr-[8px]"
+                            type="checkbox"
+                            id="publicCheckbox"
+                            name="vehicle1"
+                            defaultChecked={menu.is_public}
+                            onChange={(e) => {
+                              handleCheckboxChangemenu(
+                                e.target.checked,
+                                menu.id
+                              );
+                            }}
+                          ></input>
+                          <img
+                            className="w-[150px] h-[150px] mx-[20px] "
+                            src={`https://dqpvcbseawfdldinabbp.supabase.co/storage/v1/object/public/images/${menu.image_url}`}
+                          />
+                          <Link
+                            href={
+                              `../admin/group-menu/update-menu?nameId=` +
+                              menu.id
+                            }
+                            key={menu.name}
+                          >
+                            <div className="text-[25px] text-center">
+                              {menu.name}
+                            </div>
+                          </Link>
+                        </div>
+                        <div className="flex items-center	">
+                          <Link
+                            href={
+                              `../admin/group-menu/update-menu?nameId=` +
+                              menu.id
+                            }
+                          >
+                            <i
+                              className="fa fa-pencil-square-o text-gray-500 pl-[15px]"
+                              aria-hidden="true"
+                            ></i>
+                            <span className="pl-[5px]">Edit</span>
+                          </Link>
+                          <button
+                            onClick={(e) => {
+                              handleDelete(menu.id, menu.image_url);
+                            }}
+                          >
+                            <i
+                              className="fa fa-trash-o text-gray-500 pl-[15px]"
+                              aria-hidden="true"
+                            ></i>
+                            <span className="pl-[5px]">Delete</span>
+                          </button>
+                        </div>
                       </div>
                     ))}
                 </div>

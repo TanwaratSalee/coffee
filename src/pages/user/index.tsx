@@ -11,6 +11,7 @@ interface MenuItem {
   name: string;
   is_public: boolean;
   price: number;
+  image_url: string;
 }
 
 interface DataItem {
@@ -32,7 +33,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id,
       name,
       price,
-      is_public
+      is_public,
+      image_url
     )
   `
     )
@@ -52,13 +54,28 @@ const Home = ({ group }: any) => {
 
   return (
     <LayoutUser>
-      <div className="">
-        <h1 className="text-center bg-[#212325] text-white text-heading p-[20px]">
-          Drink Menu
-        </h1>
-        <div className="flex items-center ml-[20px] p-[10px] overflow-auto">
+      <div>
+        <div className="flex">
+          <h1 className="text-cente text-heading p-[20px_0px]">Drink Menu</h1>
+          <div className="text-topic flex justify-evenly items-center">
+            <span>
+              <i
+                className="fa fa-shopping-cart bg-neutral-200 w-[60px] h-[60px] text-center rounded-md mr-[10px]"
+                aria-hidden="true"
+              ></i>
+            </span>
+            <span>
+              <i
+                className="fa fa-times bg-neutral-200 w-[60px] h-[60px] text-center rounded-md"
+                aria-hidden="true"
+              ></i>
+            </span>
+          </div>
+        </div>
+
+        <div className="flex items-center m-[20px] text-base  border-black border-[1px] rounded-xl overflow-auto">
           <button
-            className="p-[5px_20px] m-[15px] border-[1px] h-[36px] border-black text-center text-base"
+            className="text-center p-[1px_40px] my-[8px]"
             onClick={(e) => {
               handleButtonClick("All");
             }}
@@ -69,7 +86,7 @@ const Home = ({ group }: any) => {
             groups.map((group, index) => (
               <button
                 // className="pl-[10px] pr-[30px] border-r-[1px] border-[black] last:border-none"
-                className="p-[5px_20px] m-[15px] border-[1px] h-[36px] border-black text-center "
+                className="border-l-[1px] border-black text-center p-[1px_40px] my-[8px]"
                 key={index}
                 onClick={(e) => {
                   handleButtonClick(group.name);
@@ -87,19 +104,23 @@ const Home = ({ group }: any) => {
                 key={group.name}
                 className={`${
                   typeorder == group.name || typeorder == "All" ? "" : "hidden"
-                } border border-black rounded-lg p-[20px_25px] m-[35px] `}
+                } border border-black rounded-lg p-[20px_25px] m-[35px]`}
               >
                 <li className="">
                   <div className="text-topic m-[10px]">{group.name}</div>
-                  <div className="flex flex-wrap ">
+                  <div className="flex items-center m-[20px] text-base  border-black border-[1px] rounded-xl overflow-auto ">
                     {group.menu.map((menu) => (
                       <Link
                         href={`/user/detailorder?type=${group.name}&menu=${menu.name}&price=${menu.price}`}
                         key={menu.name}
-                        className="m-[10px] border border-black rounded-lg p-[20px_25px]"
+                        className="m-[10px] border border-black rounded-lg p-[7px]"
                       >
-                        <div>{menu.name}</div>
-                        <div className="text-center">{menu.price}</div>
+                        <img
+                          className="w-[150px]"
+                          src={`https://dqpvcbseawfdldinabbp.supabase.co/storage/v1/object/public/images/${menu.image_url}`}
+                        />
+                        <div className="w-[150px]">{menu.name}</div>
+                        <div className="text-center">{menu.price}-</div>
                       </Link>
                     ))}
                   </div>

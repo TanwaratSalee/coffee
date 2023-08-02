@@ -64,6 +64,7 @@ export default function addgroup() {
       setErrors([]);
       console.log("POST: ", data);
     }
+    router.push("../../admin");
   };
 
   return (
@@ -101,7 +102,7 @@ export default function addgroup() {
           <div className="flex justify-center p-[25px_20px]">
             <label>Price:</label>
             <input
-              className="rounded-md mr-[154px]"
+              className="rounded-md m-[0px_14px]"
               type="number"
               name="price"
               value={price_add_on ?? ""}

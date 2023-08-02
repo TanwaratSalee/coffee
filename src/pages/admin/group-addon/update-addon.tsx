@@ -15,6 +15,8 @@ interface MeuName {
 // }
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { addonId } = ctx.query;
+  console.log("addonId:", addonId);
+
   const { data: addon } = await supabase
     .from("add_on")
     .select(
@@ -46,6 +48,7 @@ const Update = ({ addon }: any) => {
         name: name,
       })
       .eq("id", idaddon);
+    router.push("../../admin");
   };
 
   const handleaddon = (value: string) => {
@@ -77,13 +80,6 @@ const Update = ({ addon }: any) => {
               addons.map((addon) => (
                 <div className="flex justify-center p-[25px_20px]">
                   <label>Name:</label>
-                  <input
-                    className="rounded-md m-[0px_10px] pl-[20px]"
-                    type="text"
-                    defaultValue={addon.name}
-                    onChange={(e) => handleaddon(e.target.value)}
-                  />
-                  <label>Price:</label>
                   <input
                     className="rounded-md m-[0px_10px] pl-[20px]"
                     type="text"

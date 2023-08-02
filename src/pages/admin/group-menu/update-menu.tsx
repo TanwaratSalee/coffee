@@ -30,11 +30,13 @@ const Update = ({ group }: any) => {
   const [groups, setAddon] = useState<MeuName[]>([]);
   const router = useRouter();
   const idname = router.query.nameId;
-  const idprice = router.query.nameId;
+  const [image_url, setPic] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
+
   useEffect(() => {
     setAddon(group);
+    setPic(group[0].image_url);
     setName(group[0].name);
     setPrice(group[0].price);
   }, [group]);
@@ -46,8 +48,10 @@ const Update = ({ group }: any) => {
       .update({
         name: name,
         price: price,
+        image_url: image_url,
       })
       .eq("id", idname);
+    router.push("../../admin");
   };
 
   const handlename = (value: string) => {
@@ -55,6 +59,10 @@ const Update = ({ group }: any) => {
   };
 
   const handleprice = (value: string) => {
+    setPrice(value);
+  };
+
+  const handleimage = (value: string) => {
     setPrice(value);
   };
 
@@ -76,6 +84,22 @@ const Update = ({ group }: any) => {
                   className="flex flex-col items-center justify-center p-[25px_20px]"
                   key={group.name}
                 >
+                  <div>
+                    <label
+                      htmlFor="file-upload"
+                      className="px-4 py-2 font-bold text-white bg-blue-500 rounded cursor-pointer"
+                    >
+                      Change Image
+                    </label>
+                    <input
+                      id="file-upload"
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleimage(e.target.value)}
+                      className="hidden"
+                    />
+                  </div>
+
                   <div>
                     <label>Name:</label>
                     <input
@@ -102,7 +126,7 @@ const Update = ({ group }: any) => {
                 className="bg-blue-200 w-[140px] h-[50px] text-center mr-[10px]"
                 type="submit"
               >
-                Save{" "}
+                Save
               </button>
 
               <button className="bg-slate-500 w-[140px] h-[50px] text-center ml-[10px]">

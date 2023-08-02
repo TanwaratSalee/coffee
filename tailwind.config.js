@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     fontSize: {
       heading: ["60px", "65px"],
-      topic: ["45px", "45px"],
+      topic: ["50px", "55px"],
       maintopic: ["30px", "40px"],
       base: ["20px", "30px"],
       mimi: ["10px", "20px"],
