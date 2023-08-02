@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import LayoutAdmin from "../../../components/layout-admin";
@@ -38,7 +39,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
       image_url
     )
   `);
-
   const { data: addon } = await supabase.from("group_add_on").select(`
   id,
   name,
@@ -262,15 +262,15 @@ const Home = ({ group, addon }: any) => {
                               );
                             }}
                           ></input>
-                          <img
-                            className="w-[150px] h-[150px] mx-[20px] "
+                          <Image
+                            width={150}
+                            height={150}
+                            alt={"images"}
                             src={`https://dqpvcbseawfdldinabbp.supabase.co/storage/v1/object/public/images/${menu.image_url}`}
+                            className="w-[150px] h-[150px] mx-[20px] "
                           />
                           <Link
-                            href={
-                              `../admin/group-menu/update-menu?nameId=` +
-                              menu.id
-                            }
+                            href={`../admin/group-menu/update-menu?nameId=${menu.id}&imgname=${menu.image_url}`}
                             key={menu.name}
                           >
                             <div className="text-[25px] text-center">
@@ -280,10 +280,7 @@ const Home = ({ group, addon }: any) => {
                         </div>
                         <div className="flex items-center	">
                           <Link
-                            href={
-                              `../admin/group-menu/update-menu?nameId=` +
-                              menu.id
-                            }
+                            href={`../admin/group-menu/update-menu?nameId=${menu.id}&imgname=${menu.image_url}`}
                           >
                             <i
                               className="fa fa-pencil-square-o text-gray-500 pl-[15px]"
