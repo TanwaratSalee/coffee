@@ -1,15 +1,15 @@
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ChangeEvent, useState } from "react";
 import supabase from "../../../../lib/supabase";
-
 type Error = {
   code: string;
   path: [];
   message: string;
 };
 
-export default function addgroup() {
+export default function Addgroup() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [price, setPrice] = useState<number | null>(null);
@@ -25,7 +25,7 @@ export default function addgroup() {
     e.preventDefault();
     const { data, error } = await supabase.storage
       .from("images")
-      .upload(`images/${name}${image.name}`, image, { upsert: true });
+      .upload(`images/${name}${image.name}`, image);
     router.push("../../admin");
     if (error) {
       console.error("Error uploading image:", error);
@@ -48,7 +48,6 @@ export default function addgroup() {
               : "images/Nopic.jpeg",
         }),
       });
-      console.log(imageURL);
       if (!response.ok) {
         const data = await response.json();
         setErrors(data.errors);
@@ -105,7 +104,9 @@ export default function addgroup() {
                 className="hidden"
               />
               {selectedFileSrc && (
-                <img
+                <Image
+                  width={100}
+                  height={100}
                   src={selectedFileSrc as string}
                   alt="Preview"
                   className="mt-4 max-w-md h-auto border-4 border-blue-500 rounded"
