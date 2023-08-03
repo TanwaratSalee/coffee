@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ChangeEvent, useState } from "react";
 import supabase from "../../../../lib/supabase";
+
 type Error = {
   code: string;
   path: [];
@@ -48,6 +49,7 @@ export default function Addgroup() {
               : "images/Nopic.jpeg",
         }),
       });
+      console.log(imageURL, `images/${name}undefined`);
       if (!response.ok) {
         const data = await response.json();
         setErrors(data.errors);
