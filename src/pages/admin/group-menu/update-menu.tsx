@@ -55,6 +55,10 @@ const Update = ({ group }: any) => {
   >(imgname);
   const submitform = async (e: any) => {
     e.preventDefault();
+    // const { data:img, error:errorimg } = await supabase.storage
+    // .from("images")
+    // .upload(`images/${name}${image.name}`, image);
+    router.push("../../admin");
     const { data, error } = await supabase
       .from("menu")
       .update({
@@ -86,6 +90,7 @@ const Update = ({ group }: any) => {
       };
       reader.readAsDataURL(file);
     }
+    console.log(selectedFileSrc);
   };
   const buttonText = selectedFileSrc ? "Change Picture" : "Upload Picture";
   return (
