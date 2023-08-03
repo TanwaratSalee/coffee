@@ -34,7 +34,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
 `);
   return { props: { addon } };
 };
-
 export default function addgroup({ addon }: any) {
   const router = useRouter();
   const [name, setName] = useState("");
@@ -50,12 +49,10 @@ export default function addgroup({ addon }: any) {
   const [objectgroup, setObjectgroup] = useState<
     { id: number; name: string; check: boolean }[]
   >([]);
-
   // ค้าใน object ที่ input type check
   // useEffect(() => {
   //   console.log(objectgroup);
   // }, [objectgroup]);
-
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (image) {
