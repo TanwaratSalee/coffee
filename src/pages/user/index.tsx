@@ -119,7 +119,9 @@ const Home = ({ group }: any) => {
                           className="w-[150px]"
                           src={`https://dqpvcbseawfdldinabbp.supabase.co/storage/v1/object/public/images/${menu.image_url}`}
                         />
-                        <div className="w-[150px]">{menu.name}</div>
+                        <div className="w-[150px] text-center ">
+                          {menu.name}
+                        </div>
                         <div className="text-center">{menu.price}-</div>
                       </Link>
                     ))}
