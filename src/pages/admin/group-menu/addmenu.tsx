@@ -36,8 +36,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 `);
   return { props: { addon } };
 };
-
-export default function addgroup({ addon }: any) {
+export default function Addgroup({ addon }: any) {
   const router = useRouter();
   const [name, setName] = useState("");
   const [price, setPrice] = useState<number | null>(null);
@@ -164,14 +163,15 @@ export default function addgroup({ addon }: any) {
   };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.item(0);
-    if (file) {
+    const fileImg = event.target.files?.item(0);
+    if (fileImg) {
       const reader = new FileReader();
       reader.onloadend = () => {
+        console.log(reader, "render");
         setSelectedFileSrc(reader.result);
-        setImage(file);
+        setImage(fileImg);
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(fileImg);
     }
   };
 
