@@ -8,6 +8,7 @@ interface MeuName {
   id: number;
   name: string;
   price: string;
+  image_url: string;
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -19,7 +20,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       `
     id,
     name,
-    price
+    price,
+    image_url
   `
     )
     .eq("id", nameId);
