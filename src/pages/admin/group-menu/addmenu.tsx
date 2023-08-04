@@ -9,10 +9,12 @@ type Error = {
   path: [];
   message: string;
 };
+
 interface Addon {
   id: number;
   name: string;
 }
+
 interface GroupAddon {
   id: number;
   name: string;
@@ -34,6 +36,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 `);
   return { props: { addon } };
 };
+
 export default function addgroup({ addon }: any) {
   const router = useRouter();
   const [name, setName] = useState("");
@@ -112,7 +115,7 @@ export default function addgroup({ addon }: any) {
         }
       }
     } else {
-      // router.push("../../admin");
+      router.push("../../admin");
       const response = await fetch("../../api/admin/add-menu", {
         method: "POST",
         headers: {

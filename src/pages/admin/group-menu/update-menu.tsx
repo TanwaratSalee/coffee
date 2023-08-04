@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import supabase from "../../../../lib/supabase";
 
 interface MeuName {
@@ -29,6 +29,11 @@ interface GroupAddon {
   name: string;
   is_public: boolean;
   add_on: Addon[];
+}
+
+interface MenuGroupAddon {
+  menu_id: number;
+  group_add_on_id: number;
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -59,10 +64,20 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   `
   );
 
-  return { props: { group, addon } };
+  const { data: menuaddon } = await supabase
+    .from("menu_add_on")
+    .select(
+      `
+    menu_id,
+    group_add_on_id
+  `
+    )
+    .eq("menu_id", nameId);
+  return { props: { group, addon, menuaddon } };
 };
 
-const Update = ({ group, addon }: any) => {
+const Update = ({ group, addon, menuaddon }: any) => {
+  const [menuaddons, setMenuaddon] = useState<MenuGroupAddon[]>(menuaddon);
   const [groups, setAddon] = useState<DataItem[]>(group);
   const router = useRouter();
   const idname = router.query.nameId;
@@ -74,12 +89,34 @@ const Update = ({ group, addon }: any) => {
     string | string[] | undefined | ArrayBuffer | null
   >(imgname);
   const [addons, setAddOn] = useState<GroupAddon[]>(addon);
-  console.log(addons);
+  const [showaddon, setShowaddon] = useState<
+    { id: number; name: string; check: boolean }[]
+  >([]);
+  //defalut check
+  useEffect(() => {
+    const updatedAddons: any = [];
+    addons.forEach((value: any) => {
+      const matchaddon = menuaddons.filter(
+        (it) => it.group_add_on_id == value.id
+      );
+      console.log(matchaddon, value);
+      if (matchaddon.length) {
+        updatedAddons.push({
+          ...value,
+          check: true,
+        });
+      } else {
+        updatedAddons.push({
+          ...value,
+          check: false,
+        });
+      }
+    });
+    setShowaddon(updatedAddons);
+  }, []);
+
   const submitform = async (e: any) => {
     e.preventDefault();
-    // const { data:img, error:errorimg } = await supabase.storage
-    // .from("images")
-    // .upload(`images/${name}${image.name}`, image);
     router.push("../../admin");
     const { data, error } = await supabase
       .from("menu")
@@ -94,14 +131,12 @@ const Update = ({ group, addon }: any) => {
   const handlename = (value: string) => {
     setName(value);
   };
-
   const handleprice = (value: string) => {
     setPrice(value);
   };
-
-  const handleimage = (value: string) => {
-    setPrice(value);
-  };
+  // const handleimage = (value: string) => {
+  //   setPrice(value);
+  // };
   const handleFileUpdate = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.item(0);
     if (file) {
@@ -192,13 +227,14 @@ const Update = ({ group, addon }: any) => {
                 </div>
               ))}
             <div>
-              {addons &&
-                addons.map((addon) => (
+              {showaddon &&
+                showaddon.map((addon) => (
                   <li key={addon.name} className="text-base">
                     <div className="text-maintopic flex justify-between">
                       <div>
                         <input
                           type="checkbox"
+                          defaultChecked={addon.check}
                           id="publicCheckbox"
                           name="vehicle1"
                           value="Bike"
