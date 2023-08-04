@@ -18,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   return { props: { postdata } };
 };
 
-export default function order({ postdata }: any) {
+export default function Order({ postdata }: any) {
   const [posts, setPosts] = useState<Post[]>(postdata);
   useEffect(() => {
     const channel = supabase

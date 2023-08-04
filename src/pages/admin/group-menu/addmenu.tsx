@@ -60,13 +60,15 @@ export default function Addgroup() {
   };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.item(0);
-    if (file) {
+    const fileImg = event.target.files?.item(0);
+    if (fileImg) {
       const reader = new FileReader();
       reader.onloadend = () => {
+        console.log(reader, "render");
         setSelectedFileSrc(reader.result);
+        setImage(fileImg);
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(fileImg);
     }
   };
   const buttonText = selectedFileSrc ? "Change Picture" : "Upload Picture";

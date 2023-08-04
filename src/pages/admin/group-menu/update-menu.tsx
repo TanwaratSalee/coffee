@@ -67,7 +67,6 @@ const Update = ({ group }: any) => {
         image_url: image_url,
       })
       .eq("id", idname);
-    router.push("../../admin");
   };
 
   const handlename = (value: string) => {
