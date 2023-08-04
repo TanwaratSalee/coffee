@@ -9,10 +9,12 @@ type Error = {
   path: [];
   message: string;
 };
+
 interface Addon {
   id: number;
   name: string;
 }
+
 interface GroupAddon {
   id: number;
   name: string;
@@ -112,7 +114,7 @@ export default function Addgroup({ addon }: any) {
         }
       }
     } else {
-      // router.push("../../admin");
+      router.push("../../admin");
       const response = await fetch("../../api/admin/add-menu", {
         method: "POST",
         headers: {

@@ -1,50 +1,123 @@
 import { GetServerSideProps } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import supabase from "../../../../lib/supabase";
 
 interface MeuName {
   id: number;
   name: string;
-  price: string;
-  image_url: string;
+  price: number;
+  image_url: any;
+  is_public: boolean;
+}
+interface DataItem {
+  id: number;
+  name: string;
+  is_public: boolean;
+  image_url: any;
+  menu: MeuName[];
+}
+
+interface Addon {
+  id: number;
+  name: string;
+}
+interface GroupAddon {
+  id: number;
+  name: string;
+  is_public: boolean;
+  add_on: Addon[];
+}
+
+interface MenuGroupAddon {
+  menu_id: number;
+  group_add_on_id: number;
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { nameId } = ctx.query;
-
   const { data: group } = await supabase
-    .from("menu")
+    .from("group_menu")
     .select(
       `
     id,
     name,
-    price,
-    image_url
+    is_public,
+    menu !inner (
+      id,
+      name,
+      is_public,
+      image_url,
+      price
+    )
   `
     )
-    .eq("id", nameId);
-  return { props: { group } };
+    .eq("menu.id", nameId);
+
+  const { data: addon } = await supabase.from("group_add_on").select(
+    `
+    id,
+    name,
+    is_public
+  `
+  );
+
+  const { data: menuaddon } = await supabase
+    .from("menu_add_on")
+    .select(
+      `
+    menu_id,
+    group_add_on_id
+  `
+    )
+    .eq("menu_id", nameId);
+  return { props: { group, addon, menuaddon } };
 };
 
-const Update = ({ group }: any) => {
-  const [groups, setAddon] = useState<MeuName[]>([]);
+const Update = ({ group, addon, menuaddon }: any) => {
+  const [menuaddons, setMenuaddon] = useState<MenuGroupAddon[]>(menuaddon);
+  const [groups, setAddon] = useState<DataItem[]>(group);
   const router = useRouter();
   const idname = router.query.nameId;
-  const [image_url, setPic] = useState("");
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-
+  const imgname = router.query.imgname;
+  const [image_url, setPic] = useState(group[0].image_url);
+  const [name, setName] = useState(group[0].name);
+  const [price, setPrice] = useState(group[0].price);
+  const [selectedFileSrc, setSelectedFileSrc] = useState<
+    string | string[] | undefined | ArrayBuffer | null
+  >(imgname);
+  const [addons, setAddOn] = useState<GroupAddon[]>(addon);
+  const [showaddon, setShowaddon] = useState<
+    { id: number; name: string; check: boolean }[]
+  >([]);
+  //defalut check
   useEffect(() => {
-    setAddon(group);
-    setPic(group[0].image_url);
-    setName(group[0].name);
-    setPrice(group[0].price);
-  }, [group]);
+    const updatedAddons: any = [];
+    addons.forEach((value: any) => {
+      const matchaddon = menuaddons.filter(
+        (it) => it.group_add_on_id == value.id
+      );
+      console.log(matchaddon, value);
+      if (matchaddon.length) {
+        updatedAddons.push({
+          ...value,
+          check: true,
+        });
+      } else {
+        updatedAddons.push({
+          ...value,
+          check: false,
+        });
+      }
+    });
+    setShowaddon(updatedAddons);
+  }, []);
 
   const submitform = async (e: any) => {
     e.preventDefault();
+    router.push("../../admin");
     const { data, error } = await supabase
       .from("menu")
       .update({
@@ -58,15 +131,24 @@ const Update = ({ group }: any) => {
   const handlename = (value: string) => {
     setName(value);
   };
-
   const handleprice = (value: string) => {
     setPrice(value);
   };
-
-  const handleimage = (value: string) => {
-    setPrice(value);
+  // const handleimage = (value: string) => {
+  //   setPrice(value);
+  // };
+  const handleFileUpdate = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.item(0);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedFileSrc(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+    console.log(selectedFileSrc);
   };
-
+  const buttonText = selectedFileSrc ? "Change Picture" : "Upload Picture";
   return (
     <main className="text-maintopic m-[10px]">
       <form onSubmit={submitform}>
@@ -80,48 +162,89 @@ const Update = ({ group }: any) => {
         <div className="bg-slate-200 rounded-3xl m-[0px_60px]">
           <ul>
             {groups &&
-              groups.map((group) => (
-                <div
-                  className="flex flex-col items-center justify-center p-[25px_20px]"
-                  key={group.name}
-                >
-                  <div>
-                    <label
-                      htmlFor="file-upload"
-                      className="px-4 py-2 font-bold text-white bg-blue-500 rounded cursor-pointer"
-                    >
-                      Change Image
-                    </label>
-                    <input
-                      id="file-upload"
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleimage(e.target.value)}
-                      className="hidden"
-                    />
-                  </div>
+              groups.map((item) => (
+                <div key={item.name}>
+                  {item &&
+                    item.menu.map((group) => (
+                      <div
+                        className="flex flex-col items-center justify-center p-[25px_20px]"
+                        key={group.name}
+                      >
+                        <div>
+                          <label
+                            htmlFor="file-upload"
+                            className="px-[20px] py-2 font-bold bg-gray-200 rounded-xl border border-black text-gray-800"
+                          >
+                            {buttonText}
+                          </label>
+                          <input
+                            id="file-upload"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFileUpdate}
+                            className="hidden object-contain"
+                          />
+                          {selectedFileSrc == imgname ? (
+                            <Image
+                              width={100}
+                              height={100}
+                              src={`https://dqpvcbseawfdldinabbp.supabase.co/storage/v1/object/public/images/${group.image_url}`}
+                              alt="Preview"
+                              className="mt-4 w-full h-[234px] bg-gray-100 object-contain border-4 border-blue-500 rounded "
+                            />
+                          ) : (
+                            <Image
+                              width={100}
+                              height={100}
+                              src={selectedFileSrc as string}
+                              alt="Preview"
+                              className="mt-4 w-full h-[234px] bg-gray-100 object-contain border-4 border-blue-500 rounded "
+                            />
+                          )}
+                        </div>
 
-                  <div>
-                    <label>Name:</label>
-                    <input
-                      className="rounded-md m-[15px_10px] pl-[20px]"
-                      type="text"
-                      defaultValue={group.name}
-                      onChange={(e) => handlename(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label>Price:</label>
-                    <input
-                      className="rounded-md pl-[20px] ml-[13px]"
-                      type="text"
-                      defaultValue={group.price}
-                      onChange={(e) => handleprice(e.target.value)}
-                    />
-                  </div>
-                  {/* <li key={group.name}>{group.name}</li> */}
+                        <div>
+                          <label>Name:</label>
+                          <input
+                            className="rounded-md m-[15px_10px] pl-[20px]"
+                            type="text"
+                            defaultValue={group.name}
+                            onChange={(e) => handlename(e.target.value)}
+                          />
+                        </div>
+                        <div>
+                          <label>Price:</label>
+                          <input
+                            className="rounded-md pl-[20px] ml-[13px]"
+                            type="text"
+                            defaultValue={group.price}
+                            onChange={(e) => handleprice(e.target.value)}
+                          />
+                        </div>
+                        {/* <li key={group.name}>{group.name}</li> */}
+                      </div>
+                    ))}
                 </div>
               ))}
+            <div>
+              {showaddon &&
+                showaddon.map((addon) => (
+                  <li key={addon.name} className="text-base">
+                    <div className="text-maintopic flex justify-between">
+                      <div>
+                        <input
+                          type="checkbox"
+                          defaultChecked={addon.check}
+                          id="publicCheckbox"
+                          name="vehicle1"
+                          value="Bike"
+                        ></input>
+                        {addon.name}
+                      </div>
+                    </div>
+                  </li>
+                ))}
+            </div>
             <div className="flex justify-center p-[20px_10px]">
               <button
                 className="bg-blue-200 w-[140px] h-[50px] text-center mr-[10px]"
