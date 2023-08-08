@@ -107,21 +107,6 @@ const Home = ({ group, addon }: any) => {
       const { data, error } = await supabase.storage
         .from("images")
         .remove(`${path}` as any);
-
-      // console.log(data);
-
-      // if (data) {
-      //   const newData = data[0];
-      //   const tem = groups.find((item) => item.id == newData.group_id);
-      //   console.log(tem);
-      //   const newMenu = tem.menu.filter((item) => item.id != newData.id);
-      //   const newG = groups.filter((item) => item.id != newData.group_id);
-
-      //   const newGroup = [...newG, { ...tem, menu: newMenu }];
-      //   // console.log();
-
-      //   setGroup(newGroup);
-      // }
     }
   };
 
@@ -351,7 +336,6 @@ const Home = ({ group, addon }: any) => {
                           name="addon"
                           defaultChecked={menu.is_public}
                           onChange={(e) => {
-                            console.log(menu.is_public);
                             handleCheckboxChangeaddon(
                               e.target.checked,
                               menu.id
