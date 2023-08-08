@@ -1,9 +1,7 @@
-import Link from "next/link";
-import { useState } from "react";
-import LayoutUser from "../../../components/layout-user";
-// import { groups } from "../../../mock-data/data";
 import { GetServerSideProps } from "next";
-import { useEffect } from "react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import LayoutUser from "../../../components/layout-user";
 import supabase from "../../../lib/supabase";
 
 interface MenuItem {
@@ -116,7 +114,7 @@ const Home = ({ group }: any) => {
                         className="m-[10px] border border-black rounded-lg p-[7px]"
                       >
                         <img
-                          className="w-[150px]"
+                          className="w-[150px] h-[150px]"
                           src={`https://dqpvcbseawfdldinabbp.supabase.co/storage/v1/object/public/images/${menu.image_url}`}
                         />
                         <div className="w-[150px] text-center ">

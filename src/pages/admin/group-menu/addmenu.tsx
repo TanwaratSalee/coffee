@@ -51,17 +51,19 @@ export default function Addgroup({ addon }: any) {
   const [objectgroup, setObjectgroup] = useState<
     { id: number; name: string; check: boolean }[]
   >([]);
+
   // ค้าใน object ที่ input type check
   // useEffect(() => {
   //   console.log(objectgroup);
   // }, [objectgroup]);
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (image) {
       const { data, error } = await supabase.storage
         .from("images")
         .upload(`images/${name}${image.name}`, image, { upsert: true });
-      // router.push("../../admin");
+      router.push("../../admin");
       if (error) {
         console.error("Error uploading image:", error);
       } else {

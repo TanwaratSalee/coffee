@@ -81,6 +81,7 @@ const Home = ({ group, addon }: any) => {
       })
       .eq("id", id);
   };
+
   const handleDelete = async (id: any, path: any) => {
     const isConfirmed = window.confirm("Are you sure you want to Delete Menu");
     if (isConfirmed) {
