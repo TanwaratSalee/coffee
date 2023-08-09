@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
           name
         )   
       )
-  
+
 `);
   return { props: { addon } };
 };

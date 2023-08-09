@@ -2,13 +2,10 @@ import Link from "next/link";
 
 export default function navmenu() {
   return (
-    <main className="text-base bg-[#212325] text-white flex">
-      <Link href="/admin/order" className=" p-[10px_10px]">
-        Order
-      </Link>
-      <Link href="/admin" className=" p-[10px_10px]">
-        Create and Edit Menu
-      </Link>
+    <main className="bg-[#212325] py-[30px]  text-white flex justify-center gap-[40px] text-maintopic">
+      <Link href="/admin/order">Order</Link>
+      <Link href="/admin">Create and Edit Menu</Link>
+      <Link href="/admin/history">History</Link>
     </main>
   );
 }

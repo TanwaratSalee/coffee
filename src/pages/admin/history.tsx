@@ -18,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const { data: postdata } = await supabase
     .from("posts")
     .select()
-    .is("confirm", null);
+    .not("confirm", "is", null);
 
   return { props: { postdata } };
 };
@@ -66,8 +66,6 @@ export default function Order({ postdata }: any) {
     };
   }, [posts]);
 
-  const handlevonfirm = () => {};
-
   return (
     <LayoutAdmin>
       <main className="text-topic">
@@ -81,22 +79,27 @@ export default function Order({ postdata }: any) {
             <React.Fragment key={item.id}>
               <div
                 className={`${
-                  item.confirm ? " border-red-500" : "border-green-500"
+                  item.confirm ? " border-green-500 " : "border-red-500"
                 } border col-start-2	col-end-4	h-[150px] place-`}
               >
                 {item.menu}
               </div>
-              <div className="col-start-5	">
+              <div className="col-start-5">
                 <div>{item.temp}</div>
                 <div>{item.shot}</div>
                 <div>{item.sweet}</div>
               </div>
-              <div className="col-start-6	">{item.price}</div>
+              <div className="col-start-6">{item.price}</div>
+              <div className="col-start-8">
+                {item.confirm ? "Confirm" : "Cancel"}
+              </div>
 
-              <button className="col-start-8 text-green-500">Confirm</button>
-              <button className="col-start-9 text-red-500">Cancel</button>
+              {/* <button className=" text-green-500">Confirm</button>
+              <button className=" text-red-500">Cancel</button> */}
             </React.Fragment>
           ))}
+
+          <div></div>
         </div>
 
         <h1 className="text-heading text-center font-medium"></h1>
