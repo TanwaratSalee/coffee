@@ -8,6 +8,7 @@ const roboto = Roboto({
   variable: "--font-roboto",
   weight: ["300", "500"],
 });
+
 const liffId = process.env.NEXT_PUBLIC_LIFF_ID as string;
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {

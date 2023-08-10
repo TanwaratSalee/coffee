@@ -68,7 +68,7 @@ export default function Order({ postdata }: any) {
 
   return (
     <LayoutAdmin>
-      <main className="text-topic">
+      <main className="text-topic ">
         <h1 className="text-heading text-center font-medium">Order</h1>
         <div className="grid grid-cols-10 text-base justify-center align-center">
           <h1 className="col-start-2	col-end-4 ">Name</h1>

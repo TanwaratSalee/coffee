@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -6,37 +7,60 @@ export interface Detailprofile {
   full_name: string;
   email: string;
   phone: number;
+  uid: number;
 }
 
-export default function Profile() {
+export const getServerSideProps: GetServerSideProps = async () => {
+  const { data: user } = await supabase.from("users").select();
+
+  return { props: { user } };
+};
+export default function Profile({ user }: any) {
   const [profile, setProfile] = useState<any>([]);
+
   const [full_name, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
+  const [userid, setUserid] = useState<any[]>(user);
   const onSubmit = async () => {
     // รีเฟรซ
     // e.preventDefault();
 
     const { data: insertData, error: insertError } = await supabase
-
       .from("users")
       .insert({
         full_name,
         email,
         phone,
+        uid: profile.userId,
       })
       .select();
   };
+
+  // useEffect(() => {
+
+  //   userid.forEach((name: any) => {});
+  //   // userid.foreach((useri: any) => {
+  //   //   const findUid = useri.find((it: any) => it.uid == profile.userId);
+  //   //   console.log(findUid);
+  //   //
+  // }, [userid]);
 
   useEffect(() => {
     const initlfit = async () => {
       const liff = (await import("@line/liff")).default;
       await liff.ready;
-      const profileliff = await liff.getProfile();
-      setProfile(profileliff);
+      if (liff.isLoggedIn()) {
+        const profileliff = await liff.getProfile();
+        setProfile(profileliff);
+      }
     };
     initlfit();
   }, []);
+  // if (profile != null) {
+  //   const findUid = userid.filter((it: any) => it.uid == profile.userId);
+  //   console.log(findUid);
+  // }
 
   return (
     <section className="max-w-[1110px] m-auto">
@@ -51,7 +75,7 @@ export default function Profile() {
             width={500}
             height={500}
             priority={true}
-            className="rounded-full flex justify-center m-auto"
+            className="rounded-full flex justify-center m-auะน"
           />
         )}
 
