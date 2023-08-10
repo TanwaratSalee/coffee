@@ -160,7 +160,7 @@ const Home = ({ group, addon }: any) => {
 
   return (
     <LayoutAdmin>
-      <div>
+      <div className="max-w-[1110px] m-auto">
         <div className="text-heading text-center p-[30px-10px]">
           Order And Menu
         </div>
