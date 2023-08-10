@@ -201,18 +201,12 @@ export default function Addgroup({ addon }: any) {
         ];
       });
     }
-    // const test = {[
-    //   name : name  ,
-    //   id : id,
-    //   check  : event,
-    // ]}
-    // return(...objectgroup, test )
   };
 
   const buttonText = selectedFileSrc ? "Change Picture" : "Upload Picture";
 
   return (
-    <main className="text-maintopic m-[20px]">
+    <main className="text-maintopic max-w-[1110px] m-auto">
       {errors.map((error) => (
         <p key={error.message}>{error.message}</p>
       ))}
