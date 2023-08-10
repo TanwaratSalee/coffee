@@ -70,37 +70,39 @@ export default function Order({ postdata }: any) {
 
   return (
     <LayoutAdmin>
-      <main className="text-topic">
-        <h1 className="text-heading text-center font-medium">Order</h1>
-        <div className="grid grid-cols-10 text-base justify-center align-center">
-          <h1 className="col-start-2	col-end-4 ">Name</h1>
-          <h1 className="col-start-5">Add on</h1>
-          <h1 className="col-start-6">Price</h1>
+      <div className="max-w-[1110px] m-auto ">
+        <main className="text-topic">
+          <h1 className="text-heading text-center font-medium">Order</h1>
+          <div className="grid grid-cols-10 text-base justify-center align-center">
+            <h1 className="col-start-2	col-end-4 ">Name</h1>
+            <h1 className="col-start-5">Add on</h1>
+            <h1 className="col-start-6">Price</h1>
 
-          {posts?.map((item, id): any => (
-            <React.Fragment key={item.id}>
-              <div
-                className={`${
-                  item.confirm ? " border-red-500" : "border-green-500"
-                } border col-start-2	col-end-4	h-[150px] place-`}
-              >
-                {item.menu}
-              </div>
-              <div className="col-start-5	">
-                <div>{item.temp}</div>
-                <div>{item.shot}</div>
-                <div>{item.sweet}</div>
-              </div>
-              <div className="col-start-6	">{item.price}</div>
+            {posts?.map((item, id): any => (
+              <React.Fragment key={item.id}>
+                <div
+                  className={`${
+                    item.confirm ? " border-red-500" : "border-green-500"
+                  } border col-start-2	col-end-4	h-[150px] place-`}
+                >
+                  {item.menu}
+                </div>
+                <div className="col-start-5	">
+                  <div>{item.temp}</div>
+                  <div>{item.shot}</div>
+                  <div>{item.sweet}</div>
+                </div>
+                <div className="col-start-6	">{item.price}</div>
 
-              <button className="col-start-8 text-green-500">Confirm</button>
-              <button className="col-start-9 text-red-500">Cancel</button>
-            </React.Fragment>
-          ))}
-        </div>
+                <button className="col-start-8 text-green-500">Confirm</button>
+                <button className="col-start-9 text-red-500">Cancel</button>
+              </React.Fragment>
+            ))}
+          </div>
 
-        <h1 className="text-heading text-center font-medium"></h1>
-      </main>
+          <h1 className="text-heading text-center font-medium"></h1>
+        </main>
+      </div>
     </LayoutAdmin>
   );
 }

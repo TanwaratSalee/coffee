@@ -43,6 +43,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 const Home = ({ group }: any) => {
   const [typeorder, setTypeorder] = useState("All");
   const [groups, setGroup] = useState<DataItem[] | undefined>([]);
+  const [showorder, setShoworder] = useState(false);
   const handleButtonClick = (buttonName: any) => {
     setTypeorder(buttonName);
   };
@@ -50,26 +51,14 @@ const Home = ({ group }: any) => {
     setGroup(group);
   }, [group]);
 
+  const handleYourOrder = () => {
+    setShoworder((value) => !value);
+  };
+
   return (
     <LayoutUser>
-      <div>
-        <div className="flex">
-          <h1 className="text-cente text-heading p-[20px_0px]">Drink Menu</h1>
-          <div className="text-topic flex justify-evenly items-center">
-            <span>
-              <i
-                className="fa fa-shopping-cart bg-neutral-200 w-[60px] h-[60px] text-center rounded-md mr-[10px]"
-                aria-hidden="true"
-              ></i>
-            </span>
-            <span>
-              <i
-                className="fa fa-times bg-neutral-200 w-[60px] h-[60px] text-center rounded-md"
-                aria-hidden="true"
-              ></i>
-            </span>
-          </div>
-        </div>
+      <div className="max-w-[1110px] m-auto ">
+        <h1 className="text-cente text-heading p-[20px_0px]">Drink Menu</h1>
 
         <div className="flex items-center m-[20px] text-base  border-black border-[1px] rounded-xl overflow-auto">
           <button
@@ -128,6 +117,18 @@ const Home = ({ group }: any) => {
               </div>
             ))}
         </ul>
+        <div
+          className={`${
+            showorder
+              ? "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  "
+              : " top-[calc(100%-0px)] left-1/2 -translate-x-1/2 -translate-y-0 "
+          }fixed h-[calc(100vh-200px)] duration-1000  w-[90vw] max-w-[1110px] rounded-t-lg text-center bg-amber-200	`}
+          onClick={handleYourOrder}
+        >
+          <div className="rounded-t-lg text-center bg-amber-200 absolute w-[150px] p-[17px_35px] top-[-45px] right-[0px]">
+            Your Order
+          </div>
+        </div>
       </div>
     </LayoutUser>
   );
