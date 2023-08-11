@@ -15,6 +15,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   return { props: { user } };
 };
+
 export default function Profile({ user }: any) {
   const [profile, setProfile] = useState<any>([]);
 
@@ -57,67 +58,69 @@ export default function Profile({ user }: any) {
     };
     initlfit();
   }, []);
-  // if (profile != null) {
-  //   const findUid = userid.filter((it: any) => it.uid == profile.userId);
-  //   console.log(findUid);
-  // }
+  if (profile != null) {
+    const findUid = userid.filter((it: any) => it.uid == profile.userId);
+    console.log(findUid);
+  }
 
   return (
     <section className="max-w-[1110px] m-auto">
-      <div className="flex justify-center p-[0px_20px_25px_20px] mt-[40px] text-maintopic">
+      <div className="py-[50px] text-topic text-center font-medium">
         Welcome {profile?.displayName}
       </div>
-      <div>
+      <div className="bg-yellow-900 rounded-2xl mx-[40px] py-[30px]  text-white">
         {profile.pictureUrl && (
           <Image
             src={profile.pictureUrl}
             alt={profile.displayName}
-            width={500}
-            height={500}
+            width={400}
+            height={400}
             priority={true}
-            className="rounded-full flex justify-center m-auะน"
+            className="rounded-full m-auto"
           />
         )}
-
-        <div className="flex justify-center p-[0px_20px_25px_20px] mt-[40px]">
-          <label>Full Name:</label>
-          <input
-            className="rounded-md m-[0px_10px]"
-            type="text"
-            name="name"
-            value={full_name ?? ""}
-            onChange={(e) => setFullName(e.target.value)}
-          />
+        <div className="flex flex-col items-center justify-center pt-[40px]">
+          <h1 className="text-maintopic pb-[30px]">Information</h1>
+          <div className="p-[0px_20px_25px_20px]">
+            <label>Full Name:</label>
+            <input
+              className="rounded-md m-[0px_10px] text-black  p-[5px_10px] mx-[10px]"
+              type="text"
+              name="name"
+              value={full_name ?? ""}
+              onChange={(e) => setFullName(e.target.value)}
+            />
+          </div>
+          <div className="p-[0px_20px_25px_20px] ">
+            <label>Email:</label>
+            <input
+              className="rounded-md m-[0px_10px]  text-black  p-[5px_10px] mx-[10px]"
+              type="email"
+              name="email"
+              value={email ?? ""}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="p-[0px_20px_25px_20px]">
+            <label>Phone number:</label>
+            <input
+              className="rounded-md m-[0px_10px]  text-black p-[5px_10px] mx-[10px]"
+              type="text"
+              name="name"
+              value={phone ?? ""}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+          </div>
         </div>
-        <div className="flex justify-center p-[0px_20px_25px_20px] mt-[40px]">
-          <label>Email:</label>
-          <input
-            className="rounded-md m-[0px_10px]"
-            type="email"
-            name="name"
-            value={email ?? ""}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div className="flex justify-center p-[0px_20px_25px_20px] mt-[40px]">
-          <label>Phone number:</label>
-          <input
-            className="rounded-md m-[0px_10px]"
-            type="text"
-            name="name"
-            value={phone ?? ""}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-        </div>
-        <div className="flex justify-center p-[20px_10px]">
+        <div className="flex justify-center p-[20px_10px] text-black">
           <button
-            className="bg-blue-200 w-[140px] h-[50px] text-center mr-[10px]"
+            className="bg-blue-300 w-[140px] h-[50px] text-center mr-[10px]"
             type="submit"
             onClick={onSubmit}
           >
             Save
           </button>
-          <button className="bg-slate-500 w-[140px] h-[50px] text-center ml-[10px]">
+          <button className="bg-slate-300 w-[140px] h-[50px] text-center ml-[10px]">
             <Link href="../../admin">Cancel</Link>
           </button>
         </div>
