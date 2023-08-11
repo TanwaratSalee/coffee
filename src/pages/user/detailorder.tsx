@@ -2,6 +2,8 @@ import SelectMenu from "@/components/SelectMenu";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { recoilorder } from "../../../atom/recoil";
 import supabase from "../../../lib/supabase";
 interface MenuItem {
   id: number;
@@ -20,8 +22,20 @@ interface Addon {
   name: string;
   add_on: MenuItem[];
 }
+
+interface Postorder {
+  name: string;
+  menu: string;
+  tem: string;
+  shot: string;
+  note: string;
+  price: string;
+  sweet: string;
+}
+
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { menu } = ctx.query;
+  const { menu, price } = ctx.query;
+
   const { data: addon } = await supabase.from("group_add_on").select(
     `
   id ,
@@ -52,9 +66,16 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     `
     )
     .eq("menu.name", menu);
-  return { props: { addon, listgroup } };
+  return { props: { addon, listgroup, menu, price } };
 };
-export default function Detailoreder({ addon, listgroup }: any) {
+interface Prop {
+  addon: string;
+  listgroup: string;
+  menu: string;
+  price: string;
+}
+export default function Detailoreder({ addon, listgroup, menu, price }: Prop) {
+  const [allmenude, setAllmenude] = useRecoilState(recoilorder);
   const router = useRouter();
   const [temp, setTemp] = useState("");
   const [shot, setShot] = useState("");
@@ -80,34 +101,51 @@ export default function Detailoreder({ addon, listgroup }: any) {
     }
   };
 
-  const submitorder = async (e: any) => {
-    e.preventDefault();
-    // เพิ่ม order
-    const response2 = await fetch("../../api/admin/order_menu", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: router.query.menu,
+  // const submitorder = async (e: any) => {
+  //   e.preventDefault();
+  //   // เพิ่ม order
+  //   const response2 = await fetch("../../api/admin/order_menu", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       name: router.query.menu,
+  //       temp: temp ? temp : "",
+  //       shot: shot ? shot : "",
+  //       sweet: sweet ? sweet : "",
+  //       price: router.query.price ? router.query.price : "",
+  //     }),
+  //   });
+  //   console.log(response2);
+
+  //   if (!response2.ok) {
+  //     const data = await response2.json();
+  //   } else {
+  //     const data = await response2.json();
+  //   }
+  // };
+
+  const submitorder = () => {
+    const newVal = [
+      ...allmenude.order_menu,
+      {
+        name: menu ? menu : "",
         temp: temp ? temp : "",
         shot: shot ? shot : "",
         sweet: sweet ? sweet : "",
-        price: router.query.price ? router.query.price : "",
-      }),
-    });
-    console.log(response2);
-
-    if (!response2.ok) {
-      const data = await response2.json();
-    } else {
-      const data = await response2.json();
-    }
+        price: price ? price : "",
+      },
+    ];
+    setAllmenude({ order_menu: newVal });
+    router.push("/user");
   };
-
+  useEffect(() => {
+    console.log(allmenude);
+  }, [allmenude]);
   return (
     <div className="mx-auto max-w-[1110px] p-[40px_12px]">
-      <h1 className="text-[60px]">Detail Order</h1>
+      <h1 className="text-[60px]">Detail Order </h1>
       <div className="w-fit m-auto">
         <div className="text-center text-[60px]">{router.query.menu}</div>
         <div>

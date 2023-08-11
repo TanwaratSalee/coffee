@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import supabase from "../../lib/supabase";
 export interface Detailprofile {
@@ -18,7 +19,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 export default function Profile({ user }: any) {
   const [profile, setProfile] = useState<any>([]);
-
+  const router = useRouter();
   const [full_name, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
@@ -26,6 +27,7 @@ export default function Profile({ user }: any) {
   const onSubmit = async () => {
     // รีเฟรซ
     // e.preventDefault();
+    router.push("/user");
 
     const { data: insertData, error: insertError } = await supabase
       .from("users")
@@ -38,14 +40,12 @@ export default function Profile({ user }: any) {
       .select();
   };
 
-  // useEffect(() => {
-
-  //   userid.forEach((name: any) => {});
-  //   // userid.foreach((useri: any) => {
-  //   //   const findUid = useri.find((it: any) => it.uid == profile.userId);
-  //   //   console.log(findUid);
-  //   //
-  // }, [userid]);
+  useEffect(() => {
+    const findUid = userid?.filter((it: any) => it.uid == profile.userId);
+    if (profile != null && findUid.length) {
+      router.push("/user");
+    }
+  }, [profile]);
 
   useEffect(() => {
     const initlfit = async () => {
@@ -58,10 +58,6 @@ export default function Profile({ user }: any) {
     };
     initlfit();
   }, []);
-  if (profile != null) {
-    const findUid = userid.filter((it: any) => it.uid == profile.userId);
-    console.log(findUid);
-  }
 
   return (
     <section className="max-w-[1110px] m-auto">

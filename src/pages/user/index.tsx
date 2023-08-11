@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { recoilorder } from "../../../atom/recoil";
 import LayoutUser from "../../../components/layout-user";
 import supabase from "../../../lib/supabase";
 
@@ -41,6 +42,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   return { props: { group } };
 };
 const Home = ({ group }: any) => {
+  const [orderuser, setOrderuser] = useState(recoilorder);
   const [typeorder, setTypeorder] = useState("All");
   const [groups, setGroup] = useState<DataItem[] | undefined>([]);
   const [showorder, setShoworder] = useState(false);
@@ -125,7 +127,7 @@ const Home = ({ group }: any) => {
           }fixed h-[calc(100vh-200px)] duration-1000  w-[90vw] max-w-[1110px] rounded-t-lg text-center bg-amber-200	`}
           onClick={handleYourOrder}
         >
-          <div className="rounded-t-lg text-center bg-amber-200 absolute w-[150px] p-[17px_35px] top-[-45px] right-[0px]">
+          <div className="rounded-t-lg text-center text-base bg-amber-200 absolute w-[150px] p-[17px_35px] top-[-45px] right-[0px]">
             Your Order
           </div>
         </div>
