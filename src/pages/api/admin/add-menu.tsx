@@ -32,7 +32,7 @@ export default async function handler(
         .nonempty({
           message: "name Can't be empty!",
         }),
-      image_url: z.string(),
+      image_url: z.string({ required_error: "Require picture" }),
       is_public: z.boolean(),
     });
 
@@ -47,7 +47,7 @@ export default async function handler(
         errors: errors,
       });
     }
-
+    console.log(schema);
     const { name, price, is_public, group_id, image_url } = response.data;
 
     const { data: insertData, error: insertError } = await supabase

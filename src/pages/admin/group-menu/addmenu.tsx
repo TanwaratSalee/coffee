@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ChangeEvent, useState } from "react";
@@ -18,6 +19,7 @@ interface Addon {
 interface GroupAddon {
   id: number;
   name: string;
+  url_image: string;
   is_public: boolean;
   add_on: Addon[];
 }
@@ -59,11 +61,11 @@ export default function Addgroup({ addon }: any) {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // if (!name || !price || !objectgroup) return;
     if (image) {
       const { data, error } = await supabase.storage
         .from("images")
         .upload(`images/${name}${image.name}`, image, { upsert: true });
-      router.push("../../admin");
       if (error) {
         console.error("Error uploading image:", error);
       } else {
@@ -86,6 +88,7 @@ export default function Addgroup({ addon }: any) {
           const data = await response.json();
           setErrors(data.errors);
         } else {
+          router.push("../../admin");
           const data = await response.json();
           console.log("data:", data);
           setErrors([]);
@@ -116,7 +119,6 @@ export default function Addgroup({ addon }: any) {
         }
       }
     } else {
-      router.push("../../admin");
       const response = await fetch("../../api/admin/add-menu", {
         method: "POST",
         headers: {
@@ -127,19 +129,19 @@ export default function Addgroup({ addon }: any) {
           price: price,
           is_public: true,
           group_id: groupid,
-          image_url: "images/Nopic.jpeg",
+          // image_url: "images/Nopic.jpeg",
         }),
       });
       if (!response.ok) {
         const data = await response.json();
         setErrors(data.errors);
       } else {
+        router.push("../../admin");
         const data = await response.json();
         setErrors([]);
         const objecttest = objectgroup.filter((it) => it.check != false);
         if (objecttest) {
-          objecttest.forEach(async (value: any, index: any) => {
-            console.log(objecttest);
+          objecttest.forEach(async (value: any) => {
             const response = await fetch("../../api/admin/menu_add_on", {
               method: "POST",
               headers: {
@@ -242,7 +244,7 @@ export default function Addgroup({ addon }: any) {
                 className="hidden object-contain"
               />
               {selectedFileSrc && (
-                <img
+                <Image
                   src={selectedFileSrc as string}
                   alt="Preview"
                   className="mt-4 w-full h-[234px] bg-gray-100 object-contain border-4 border-blue-500 rounded "

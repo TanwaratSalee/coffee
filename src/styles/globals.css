@@ -2,13 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background-color: #fffaf4;
-}
-/* input {
-  width: 500px;
-  height: 100px;
-} */
 li {
   list-style-type: none;
 }

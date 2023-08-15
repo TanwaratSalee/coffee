@@ -9,14 +9,18 @@ module.exports = {
     fontSize: {
       heading: ["60px", "65px"],
       topic: ["50px", "55px"],
+      namedrink: ["25px", "40px"],
       maintopic: ["30px", "40px"],
       base: ["20px", "30px"],
-      mimi: ["10px", "20px"],
+      mini: ["17px", "20px"],
     },
     extend: {
       fontFamily: {
         Roboto: ["var(--font-roboto)"],
         // mono: ['var(--font-roboto-mono)'],
+      },
+      colors: {
+        bblack: ["#212325"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

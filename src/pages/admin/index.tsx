@@ -160,12 +160,12 @@ const Home = ({ group, addon }: any) => {
 
   return (
     <LayoutAdmin>
-      <div className="max-w-[1110px] m-auto">
-        <div className="text-heading text-center p-[30px-10px]">
+      <div className="max-w-[960px] m-auto">
+        <div className="text-heading text-center py-[30px] font-medium">
           Order And Menu
         </div>
-        <div className="flex justify-between m-[40px_50px_20px_50px]">
-          <div className="text-topic ">Menu</div>
+        <div className="flex justify-between p-[40px_50px_20px_50px]">
+          <div className="text-topic">Menu</div>
           <Link
             href="../admin/group-menu/addgroup"
             className="border border-black rounded-xl text-base p-[10px_30px]"
@@ -253,7 +253,7 @@ const Home = ({ group, addon }: any) => {
                             height={150}
                             alt={"images"}
                             src={`https://dqpvcbseawfdldinabbp.supabase.co/storage/v1/object/public/images/${menu.image_url}`}
-                            className="w-[150px] h-[150px] mx-[20px] "
+                            className="w-[150px] h-[150px] mx-[20px] object-cover"
                           />
                           <Link
                             href={`../admin/group-menu/update-menu?nameId=${menu.id}&imgname=${menu.image_url}`}
