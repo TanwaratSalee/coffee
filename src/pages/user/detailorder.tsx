@@ -148,20 +148,20 @@ export default function Detailoreder({ addon, listgroup, menu, id }: Prop) {
   };
 
   return (
-    <div className="mx-auto max-w-[1130px]">
+    <div className="mx-auto max-w-[860px]">
       {users &&
         users.map((user: any) => (
-          <div key={user.id} className="relative ">
+          <div key={user.id} className="relative">
             <div>
               <Image
-                width={300}
-                height={200}
+                width={150}
+                height={100}
                 alt={user.id}
-                className=" "
+                className="w-4/6 aspect=[3/2] m-auto"
                 src={`https://dqpvcbseawfdldinabbp.supabase.co/storage/v1/object/public/images/${user.image_url}`}
               />
             </div>
-            <div className="bg-white w-[330px] h-[80px] rounded-t-[50px] text-center text-[40px] absolute bottom-[-40px] pt-[20px] left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="font-normal	bg-white w-[350px] h-[80px] rounded-t-[50px] text-center text-[35px] absolute bottom-[-40px] pt-[20px] left-1/2 transform -translate-x-1/2 -translate-y-1/2">
               {user.name}
             </div>
           </div>
@@ -169,24 +169,30 @@ export default function Detailoreder({ addon, listgroup, menu, id }: Prop) {
       <div>
         {groups &&
           groups.map((group) => (
-            <div key={group.id}>
+            <div
+              key={group.id}
+              className="pt-[40px] font-light	max-w-[650px] m-auto text-namedrink"
+            >
               {group.group_add_on.name}
               {datas &&
                 datas.map((data) => {
                   if (data.name == group.group_add_on.name)
                     return (
                       <div key={data.name}>
-                        <div className="flex flex-wrap">
+                        <div className="flex flex-wrap text-base ">
                           {data.add_on &&
                             data.add_on.map((add, i) => (
-                              <div key={add.name} className="flex mb-[10px]">
+                              <div
+                                key={add.name}
+                                className="flex m-[10px] last:mr-0 "
+                              >
                                 <button
                                   className={`${
                                     temp == add.name ||
                                     shot === add.name ||
                                     sweet == add.name
-                                      ? "bg-[#C49451] bg-opacity-50"
-                                      : "bg-none"
+                                      ? "bg-[#C8E31C] bg-opacity-50 rounded-2xl"
+                                      : "bg-[#f0eeee] rounded-2xl"
                                   }`}
                                   key={i}
                                   onClick={(e) => {
@@ -204,27 +210,40 @@ export default function Detailoreder({ addon, listgroup, menu, id }: Prop) {
             </div>
           ))}
       </div>
-      <div className="pb-[20px]">note</div>
-      <input className="w-full max-w-[500px] p-[10px_15px]" type="text" />
+      <div className="max-w-[650px] m-auto">
+        <div className="pb-[20px] font-light text-namedrink">Note</div>
+        <input
+          className="w-full max-w-[650px] p-[10px_8px] bg-[#f6f4f4] border border-[#e4e2e2] text-base rounded-xl"
+          type="text"
+        />
+      </div>
 
-      <button
-        onClick={submittoadmin}
-        className="bg-slate-500 p-[10px_18px] m-2 "
-      >
-        Check Out Now
-      </button>
-      <button
-        className="bg-blue-200 p-[10px_18px] m-2"
-        type="submit"
-        onClick={(e) => {
-          submitorder(users[0].image_url);
-        }}
-      >
-        Add this Order
-      </button>
-      <button onClick={goback} className="bg-slate-500 p-[10px_18px] m-2 ">
-        Cancel
-      </button>
+      <div className="max-w-[650px] m-auto pt-[50px] flex flex-col gap-[15px] text-namedrink">
+        <button
+          className="bg-[#C8E31C] w-full h-[70px] rounded-2xl"
+          type="submit"
+          onClick={(e) => {
+            submitorder(users[0].image_url);
+          }}
+        >
+          Add this Order
+        </button>
+        <div className="flex flex-row gap-[20px]	">
+          <button
+            onClick={submittoadmin}
+            className="w-2/4 bg-[#f0eeee] h-[70px] rounded-2xl"
+          >
+            Check Out Now
+          </button>
+
+          <button
+            onClick={goback}
+            className="w-2/4 bg-[#f0eeee] h-[70px] rounded-2xl"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

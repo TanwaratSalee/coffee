@@ -98,7 +98,9 @@ const Home = ({ group }: any) => {
         </div>
         <div className="flex items-center pl-[30px] text-base overflow-auto">
           <button
-            className="text-center text-black p-[3px_25px] font-light bg-[#e9dbd0] hover:bg-[#9a7e56] hover:font-normal  hover:text-white rounded-3xl mr-[20px] lg:text-[25px] lg:p-[7px_30px] hover:lg:text-[30px] hover:lg:p-[10px_35px]"
+            className={`${
+              typeorder == "All" ? "bg-[#C8E31C]" : "bg-[#F0EEEE]"
+            } text-center text-black } text-center text-black p-[3px_25px] font-light hover:text-white rounded-3xl mr-[20px] lg:text-[25px] lg:p-[7px_30px] `}
             onClick={(e) => {
               handleButtonClick("All");
             }}
@@ -109,7 +111,9 @@ const Home = ({ group }: any) => {
             groups.map((group, index) => (
               <button
                 // className="pl-[10px] pr-[30px] border-r-[1px] border-[black] last:border-none"
-                className="text-center text-black p-[4px_25px] font-light bg-[#e9dbd0] hover:bg-[#9a7e56] hover:text-white	hover:font-normal	rounded-3xl mr-[20px] last:mb-0 lg:text-[25px] lg:p-[7px_30px] hover:lg:text-[30px] hover:lg:p-[10px_35px]"
+                className={`${
+                  typeorder == group.name ? "bg-[#C8E31C]" : "bg-[#F0EEEE]"
+                } text-center text-black p-[4px_25px] font-light	rounded-3xl mr-[20px] last:mb-0 lg:text-[25px] lg:p-[7px_30px] `}
                 key={group.id}
                 onClick={(e) => {
                   handleButtonClick(group.name);
@@ -138,7 +142,11 @@ const Home = ({ group }: any) => {
                         href={`/user/detailorder?id=${menu.id}`}
                         // href={`/user/detailorder?type=${group.name}&menu=${menu.name}&price=${menu.price}`}
                         key={index}
-                        className="p-[10px] text-white border border-black bg-[#212325] h-[230px] w-[150px] rounded-lg mr-[15px] last:mb-0 lg:h-[290px] lg:w-[222px]"
+                        className={`${
+                          typeorder == group.name
+                            ? "bg-[#C8E31C]"
+                            : "bg-[#F0EEEE]"
+                        } p-[10px] h-[230px] w-[150px] rounded-lg mr-[15px] last:mb-0 lg:h-[290px] lg:w-[222px] `}
                       >
                         <div className="flex flex-col justify-center items-center">
                           <Image
@@ -169,37 +177,48 @@ const Home = ({ group }: any) => {
             showorder
               ? "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  "
               : " top-[calc(100%-0px)] left-1/2 -translate-x-1/2 -translate-y-0 "
-          }fixed h-[calc(100vh-200px)] duration-1000  w-[90vw] max-w-[1110px] rounded-[20px_0px_20px_20px] text-center bg-[#e8e6e6]`}
+          }fixed h-[calc(100vh-200px)] duration-1000  w-[90vw] max-w-[1110px] rounded-[20px_0px_20px_20px] text-center bg-[#f3f2f2]`}
           onClick={handleYourOrder}
         >
-          <div className="rounded-t-lg text-center text-base bg-[#e8e6e6] absolute p-[10px_20px] top-[-55px] right-[0px] w-[200px] lg:text-namedrink">
+          <div className="rounded-t-lg text-center text-base bg-[#f3f2f2] absolute p-[10px_20px] top-[-55px] right-[0px] w-[200px] lg:text-namedrink">
             Your Order
           </div>
-          <div>
+          <div className="m-[50px_100px] overflow-y-auto h-[800px]">
             {allmenude.order_menu &&
               allmenude.order_menu.map((user: any, index: number) => (
-                <div key={index}>
-                  <div>{user.name}</div>
+                <div
+                  key={index}
+                  className="flex justify-center pt-[30px] gap-[60px] border-b-[2px] border-[#dedbdb]"
+                >
                   <div>
                     <Image
                       width={130}
                       height={130}
                       alt={user.name}
-                      className="w-[130px] h-[130px] "
+                      className="w-auto h-[200px] pb-[30px]"
                       src={`https://dqpvcbseawfdldinabbp.supabase.co/storage/v1/object/public/images/${user.image_url}`}
                     />
                   </div>
-                  {user.temp && <div>{user.temp}</div>}
-                  {user.shot && <div>{user.shot}</div>}
-                  {user.sweet && <div>{user.sweet}</div>}
+                  <div className="flex flex-col gap-[20px] text-start">
+                    <div>{user.name}</div>
+                    {user.temp && <div>Tempature : {user.temp}</div>}
+                    {user.shot && <div>Shot :{user.shot}</div>}
+                    {user.sweet && <div>Sweet :{user.sweet}</div>}
+                  </div>
                 </div>
               ))}
-            <button
-              onClick={submitorder}
-              className="bg-green-300 p-[10px_25px]"
-            >
-              Sent
-            </button>
+
+            <div className="absolute w-[90vw] max-w-[910px] bottom-[80px] bg-[#f3f2f2]">
+              <button
+                onClick={submitorder}
+                className="bg-[#def25e] p-[10px_25px] mr-[30px] h-[70px] w-2/6"
+              >
+                Sent
+              </button>
+              <button className="bg-white p-[10px_25px] h-[70px] w-2/6">
+                Close
+              </button>
+            </div>
           </div>
         </div>
       </div>

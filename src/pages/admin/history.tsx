@@ -93,9 +93,6 @@ export default function Order({ postdata }: any) {
               <div className="col-start-8">
                 {item.confirm ? "Confirm" : "Cancel"}
               </div>
-
-              {/* <button className=" text-green-500">Confirm</button>
-              <button className=" text-red-500">Cancel</button> */}
             </React.Fragment>
           ))}
 
