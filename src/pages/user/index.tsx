@@ -60,6 +60,10 @@ const Home = ({ group }: any) => {
   const [groups, setGroup] = useState<DataItem[] | undefined>([]);
   const [showorder, setShoworder] = useState(false);
 
+  const calculateTotalPrice = (orders: YourOrder[]) => {
+    return orders.reduce((sum, order) => sum + order.price * order.qty, 0);
+  };
+
   const handleButtonClick = (buttonName: any) => {
     setTypeorder(buttonName);
   };
@@ -78,6 +82,7 @@ const Home = ({ group }: any) => {
 
     if (findmenu) {
       // findmenu.qty = 1
+
       const newItem = {
         ...findmenu,
         qty: findmenu.qty + amount,
@@ -105,15 +110,15 @@ const Home = ({ group }: any) => {
     }
   };
 
-  const handleDeleteMenu = (index: number) => {
+  const handleDeleteMenu = (deleteIndex: number) => {
     const yourOrders = allmenude.order_menu as YourOrder[];
     const fillter: YourOrder[] = yourOrders.filter(
-      (it: YourOrder, index) => index != index
+      (it: YourOrder, index) => index !== deleteIndex
     );
     setAllmenude({ order_menu: fillter });
   };
 
-  const submitorder = async (e: any) => {
+  const handleSubmitOrder = async (e: any) => {
     e.preventDefault();
     // เพิ่ม order
     const body = JSON.stringify(allmenude.order_menu);
@@ -156,8 +161,9 @@ const Home = ({ group }: any) => {
     setAllmenude({ order_menu: [] });
   };
   useEffect(() => {
-    console.log(allmenude);
+    console.log("allmenude.order_menu", allmenude.order_menu);
   }, [allmenude]);
+
   return (
     <LayoutUser>
       <div className="max-w-[1080px] m-auto ">
@@ -215,9 +221,9 @@ const Home = ({ group }: any) => {
                         key={index}
                         className={`${
                           typeorder == group.name
-                            ? "bg-[#F0EEEE]"
-                            : "bg-[#F0EEEE]"
-                        } p-[10px] h-[230px] w-[150px] rounded-lg mr-[15px] last:mb-0 lg:h-[290px] lg:w-[222px] active:bg-[#C8E31C] bg-[#F0EEEE]`}
+                            ? "bg-[#f3f2f2]"
+                            : "bg-[#f3f2f2]"
+                        } p-[10px] h-[230px] w-[150px] rounded-lg mr-[15px] last:mb-0 lg:h-[290px] lg:w-[222px] active:bg-[#C8E31C] bg-[#f3f2f2]`}
                       >
                         <div className="flex flex-col justify-center items-center">
                           <Image
@@ -247,63 +253,61 @@ const Home = ({ group }: any) => {
         <div
           className={`${
             showorder
-              ? "top-[400px] left-1/2 -translate-x-1/2  "
+              ? "top-[300px] left-1/2 -translate-x-1/2  "
               : " top-[calc(100%-0px)] left-1/2 -translate-x-1/2 -translate-y-0 "
-          }fixed h-[calc(100vh-400px)] duration-1000  w-[90vw] max-w-[1110px] rounded-[20px_0px_20px_20px] text-center bg-[#f2efef] `}
+          }fixed h-[calc(100vh-300px)] duration-1000  w-[90vw] max-w-[1110px] rounded-[20px_0px_20px_20px] text-center bg-[#f3f2f2] `}
         >
-          <div className="relative">
+          <div className="relative  mt-[80px]">
             <div
               onClick={handleYourOrder}
-              className="cursor-pointer rounded-t-lg text-center bg-[#f3f2f2] absolute p-[10px_20px] top-[-60px] right-[0px] w-[200px] text-namedrink"
+              className="cursor-pointer rounded-t-lg text-center bg-[#f3f2f2] absolute p-[10px_20px] top-[-135px] right-[0px] w-[200px] text-namedrink"
             >
               Your Order
             </div>
-            <div className="overflow-y-auto  h-[calc(100vh-650px)]">
+            <div className="overflow-y-auto h-[calc(100vh-650px)]">
               {allmenude.order_menu &&
                 allmenude.order_menu.map((user: any, index: number) => (
-                  <div
-                    key={index}
-                    className="grid grid-cols-7 mt-[80px] border-b-[2px] border-[#dedbdb] "
-                  >
-                    <div className="col-start-2	col-end-5 m-auto">
-                      <Image
-                        width={130}
-                        height={130}
-                        alt={user.name}
-                        className="w-auto h-[300px] pb-[30px]"
-                        src={`https://dqpvcbseawfdldinabbp.supabase.co/storage/v1/object/public/images/${user.image_url}`}
-                      />
-                    </div>
-                    <div className="col-start-5	col-end-7 text-start text-namedrink">
-                      <div className="flex justify-between">
-                        <div className="text-[40px] pb-[20px]">{user.name}</div>
-                        <button
-                          onClick={(e) => {
-                            handleDeleteMenu(index);
-                          }}
-                          className="text-red-500"
-                        >
-                          Delete
-                        </button>
+                  <div key={index}>{user.name ? <></> : <></>}</div>
+                ))}
+              {allmenude.order_menu &&
+                allmenude.order_menu.map((user: any, index: number) => (
+                  <div key={index}>
+                    {/* {user.name ? ( */}
+                    <div className="grid grid-cols-7 border-b-[2px] border-[#dedbdb] ">
+                      <div className="col-start-2	col-end-5 m-auto">
+                        <Image
+                          width={130}
+                          height={130}
+                          alt={user.name}
+                          className="w-auto h-[300px] pb-[30px]"
+                          src={`https://dqpvcbseawfdldinabbp.supabase.co/storage/v1/object/public/images/${user.image_url}`}
+                        />
                       </div>
-                      {user.temp && (
-                        <div className="pb-[10px]">Tempature : {user.temp}</div>
-                      )}
-                      {user.shot && (
-                        <div className="pb-[10px]">Shot :{user.shot}</div>
-                      )}
-                      {user.sweet && (
-                        <div className="pb-[10px]">Sweet :{user.sweet}</div>
-                      )}
-                      {user.note && (
-                        <div className="pb-[10px]">Note :{user.note}</div>
-                      )}
-                      {user.qty && (
-                        <div className="bottom-0 ">
-                          Quantity :
-                          <div className="flex items-center justify-center p-[30px]">
+                      <div className="col-start-5	col-end-7 text-start text-namedrink">
+                        <div className="flex justify-between">
+                          <div className="text-[40px] pb-[20px]">
+                            {user.name}
+                          </div>
+                        </div>
+                        {user.temp && (
+                          <div className="pb-[10px]">
+                            Tempature : {user.temp}
+                          </div>
+                        )}
+                        {user.shot && (
+                          <div className="pb-[10px]">Shot :{user.shot}</div>
+                        )}
+                        {user.sweet && (
+                          <div className="pb-[10px]">Sweet :{user.sweet}</div>
+                        )}
+                        {user.note && (
+                          <div className="pb-[10px]">Note :{user.note}</div>
+                        )}
+                        {user.qty && (
+                          <div className="pb-[10px]">
+                            Quantity :
                             <button
-                              className="bg-[#C8E31C] w-[40px] h-[40px] text-namedrink rounded-full"
+                              className="ml-[30px] bg-[#C8E31C] w-[40px] h-[40px] text-namedrink rounded-full"
                               onClick={() => handleAddMore(-1, index)}
                             >
                               -
@@ -318,15 +322,35 @@ const Home = ({ group }: any) => {
                               +
                             </button>
                           </div>
-                        </div>
-                      )}
+                        )}
+                        {user.price && (
+                          <div className="pb-[10px]">
+                            Price : {user.price * user.qty}
+                          </div>
+                        )}
+                      </div>
+                      <button
+                        onClick={(e) => {
+                          handleDeleteMenu(index);
+                        }}
+                        className="col-start-7 col-end-8 text-red-500 self-start	"
+                      >
+                        Delete
+                      </button>
                     </div>
+                    {/* ) : (
+                      <></>
+                    )} */}
                   </div>
                 ))}
 
-              <div className="absolute w-full  bottom-[-260px] pt-[30px] pb-[100px] bg-[#f3f2f2] text-namedrink">
+              <div className="absolute w-full h-[300px] bottom-[-260px] pt-[30px] pb-[100px] bg-[#f3f2f2] text-namedrink">
+                <div className="py-[30px] text-topic">
+                  Total:
+                  {calculateTotalPrice(allmenude.order_menu as YourOrder[])}
+                </div>
                 <button
-                  onClick={submitorder}
+                  onClick={handleSubmitOrder}
                   className="bg-[#def25e] p-[10px_25px] mr-[30px] h-[70px] w-2/6 "
                 >
                   Sent

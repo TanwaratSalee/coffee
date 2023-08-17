@@ -107,7 +107,7 @@ export default function Detailoreder({ addon, listgroup, menu, id }: Prop) {
     }
   };
 
-  const submittoadmin = async (e: any) => {
+  const hanfleSubmitToAdmin = async (e: any) => {
     if (!temp) return alert("Chosee Temperature");
     e.preventDefault();
     // เพิ่ม order
@@ -134,9 +134,10 @@ export default function Detailoreder({ addon, listgroup, menu, id }: Prop) {
     } else {
       const data = await response2.json();
     }
+    router.push("/user");
   };
 
-  const submitorder = (image: any) => {
+  const handleSubmitOrder = (image: any) => {
     if (!temp) {
       alert("Chosee Temperature");
     } else {
@@ -259,14 +260,14 @@ export default function Detailoreder({ addon, listgroup, menu, id }: Prop) {
           className="bg-[#C8E31C] w-full h-[70px] rounded-2xl"
           type="submit"
           onClick={(e) => {
-            submitorder(users[0].image_url);
+            handleSubmitOrder(users[0].image_url);
           }}
         >
           Add this Order
         </button>
         <div className="flex flex-row gap-[20px]	">
           <button
-            onClick={submittoadmin}
+            onClick={hanfleSubmitToAdmin}
             className="w-2/4 bg-[#f0eeee] h-[70px] rounded-2xl"
           >
             Check Out Now
