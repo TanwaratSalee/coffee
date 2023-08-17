@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
 import React, { useEffect, useState } from "react";
 import LayoutAdmin from "../../../components/layout-admin";
+import { sendMessageToUUID } from "../../../lib/line";
 import supabase from "../../../lib/supabase";
 
 export interface Post {
@@ -36,6 +37,7 @@ export default function Order({ postdata }: any) {
           table: "posts",
         },
         (payload) => {
+          console.log(payload.new, payload.eventType, "payload");
           switch (payload.eventType) {
             case "INSERT":
               setPosts([...posts, payload.new as Post]);
@@ -66,36 +68,82 @@ export default function Order({ postdata }: any) {
     };
   }, [posts]);
 
-  const handlevonfirm = () => {};
+  const handleConfirm = async (
+    id: string,
+    confirm: boolean,
+    menuname: string
+  ) => {
+    const { data, error } = await supabase
+      .from("posts")
+      .update({
+        confirm: confirm,
+      })
+      .eq("id", id);
+    const { data: posts, error: errorpost } = await supabase
+      .from("posts")
+      .select()
+      .is("confirm", null);
+    setPosts(posts as Post[]);
+    const userId = localStorage.getItem("userId") || "";
+    await sendMessageToUUID(
+      userId,
+      `${
+        confirm
+          ? menuname + " ทำเสร็จแล้วจ้า "
+          : menuname + " ของหมดขอยกเลิกจ้า"
+      }`
+    );
+  };
 
   return (
     <LayoutAdmin>
       <div className="max-w-[1110px] m-auto ">
         <main className="text-topic">
-          <h1 className="text-heading text-center font-medium">Order</h1>
-          <div className="grid grid-cols-10 text-base justify-center align-center">
-            <h1 className="col-start-2	col-end-4 ">Name</h1>
-            <h1 className="col-start-5">Add on</h1>
-            <h1 className="col-start-6">Price</h1>
+          <h1 className="text-heading text-center font-medium py-[40px]">
+            Order
+          </h1>
+          <div className="grid grid-cols-11 text-base justify-center align-center ">
+            <h1 className="col-start-2	col-end-4 text-namedrink ">Name</h1>
+            <h1 className="col-start-5 text-namedrink ">Add on</h1>
+            <h1 className="col-start-7 text-namedrink ">Price</h1>
 
             {posts?.map((item, id): any => (
               <React.Fragment key={item.id}>
+                <div className="col-start-2 col-end-11 border-b border-black pt-[20px]"></div>
+
                 <div
                   className={`${
-                    item.confirm ? " border-red-500" : "border-green-500"
-                  } border col-start-2	col-end-4	h-[150px] place-`}
+                    item.confirm ? "" : ""
+                  } pt-[30px] col-start-2	col-end-4	h-[150px] place-`}
                 >
                   {item.menu}
                 </div>
-                <div className="col-start-5	">
-                  <div>{item.temp}</div>
-                  <div>{item.shot}</div>
-                  <div>{item.sweet}</div>
-                </div>
-                <div className="col-start-6	">{item.price}</div>
 
-                <button className="col-start-8 text-green-500">Confirm</button>
-                <button className="col-start-9 text-red-500">Cancel</button>
+                <div className="col-start-5	">
+                  <div className="pt-[30px]">{item.temp}</div>
+                  <div className="pt-[10px]">{item.shot}</div>
+                  <div className="pt-[10px]">{item.sweet}</div>
+                </div>
+                <div className="col-start-7	pt-[30px]">{item.price}</div>
+
+                <div className="flex flex-col  col-start-9 col-end-11">
+                  <button
+                    onClick={async (e) => {
+                      handleConfirm(item.id, true, item.menu);
+                    }}
+                    className=" bg-green-300 h-2/4 w-full rounded-xl mt-[30px]"
+                  >
+                    Order Ready.
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      handleConfirm(item.id, false, item.menu);
+                    }}
+                    className=" bg-red-300 h-2/4 w-full rounded-xl mt-[10px]"
+                  >
+                    Cancel Order
+                  </button>
+                </div>
               </React.Fragment>
             ))}
           </div>

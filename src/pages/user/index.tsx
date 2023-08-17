@@ -22,6 +22,17 @@ interface DataItem {
   price: number;
 }
 
+interface YourOrder {
+  image_url: string;
+  qty: number;
+  name: string;
+  note: string;
+  price: number;
+  short: string;
+  sweeth: string;
+  temp: string;
+}
+
 export const getServerSideProps: GetServerSideProps = async () => {
   const { data: group } = await supabase
     .from("group_menu")
@@ -48,6 +59,7 @@ const Home = ({ group }: any) => {
   const [typeorder, setTypeorder] = useState("All");
   const [groups, setGroup] = useState<DataItem[] | undefined>([]);
   const [showorder, setShoworder] = useState(false);
+
   const handleButtonClick = (buttonName: any) => {
     setTypeorder(buttonName);
   };
@@ -60,33 +72,92 @@ const Home = ({ group }: any) => {
     setShoworder((value) => !value);
   };
 
+  const handleAddMore = (amount: number, i: number) => {
+    const yourOrders = allmenude.order_menu as YourOrder[];
+    const findmenu = yourOrders.find((it: YourOrder, index) => index === i);
+
+    if (findmenu) {
+      // findmenu.qty = 1
+      const newItem = {
+        ...findmenu,
+        qty: findmenu.qty + amount,
+      };
+
+      // const newItem = {
+      //   image_url: findmenu.image_url,
+      //   qty:  findmenu.qty + amount,
+      //   name: findmenu.name,
+      //   note: findmenu.note,
+      //   price: findmenu.price,
+      //   short: findmenu.short,
+      //   sweeth: findmenu.sweeth,
+      //   temp: findmenu.temp,
+      // };
+
+      const newAllMenu = yourOrders.map((oldItem, index) => {
+        if (index == i) {
+          return newItem;
+        } else {
+          return oldItem;
+        }
+      });
+      setAllmenude({ order_menu: newAllMenu });
+    }
+  };
+
+  const handleDeleteMenu = (index: number) => {
+    const yourOrders = allmenude.order_menu as YourOrder[];
+    const fillter: YourOrder[] = yourOrders.filter(
+      (it: YourOrder, index) => index != index
+    );
+    setAllmenude({ order_menu: fillter });
+  };
+
   const submitorder = async (e: any) => {
     e.preventDefault();
     // เพิ่ม order
-
-    allmenude.order_menu.forEach(async (value: any) => {
-      const response2 = await fetch("../../api/admin/order_menu", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: value.name ? value.name : "",
-          temp: value.temp ? value.temp : "",
-          shot: value.shot ? value.shot : "",
-          sweet: value.sweet ? value.sweet : "",
-          price: value.price ? value.price : "",
-        }),
-      });
-
-      if (!response2.ok) {
-        const data = await response2.json();
-      } else {
-        const data = await response2.json();
-      }
+    const body = JSON.stringify(allmenude.order_menu);
+    const response2 = await fetch("../../api/admin/order_menu", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: body,
     });
-  };
 
+    if (!response2.ok) {
+      const data = await response2.json();
+    } else {
+      const data = await response2.json();
+    }
+
+    // allmenude.order_menu.forEach(async (value: any) => {
+    //   const response2 = await fetch("../../api/admin/order_menu", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       name: value.name ? value.name : "",
+    //       temp: value.temp ? value.temp : "",
+    //       shot: value.shot ? value.shot : "",
+    //       sweet: value.sweet ? value.sweet : "",
+    //       price: value.price ? value.price : "",
+    //     }),
+    //   });
+
+    //   if (!response2.ok) {
+    //     const data = await response2.json();
+    //   } else {
+    //     const data = await response2.json();
+    //   }
+    // });
+
+    setAllmenude({ order_menu: [] });
+  };
+  useEffect(() => {
+    console.log(allmenude);
+  }, [allmenude]);
   return (
     <LayoutUser>
       <div className="max-w-[1080px] m-auto ">
@@ -100,7 +171,7 @@ const Home = ({ group }: any) => {
           <button
             className={`${
               typeorder == "All" ? "bg-[#C8E31C]" : "bg-[#F0EEEE]"
-            } text-center text-black } text-center text-black p-[3px_25px] font-light hover:text-white rounded-3xl mr-[20px] lg:text-[25px] lg:p-[7px_30px] `}
+            } cursor-pointer	text-center text-black } text-center text-black p-[3px_25px] font-light hover:text-white rounded-3xl mr-[20px] lg:text-[25px] lg:p-[7px_30px] `}
             onClick={(e) => {
               handleButtonClick("All");
             }}
@@ -144,16 +215,16 @@ const Home = ({ group }: any) => {
                         key={index}
                         className={`${
                           typeorder == group.name
-                            ? "bg-[#C8E31C]"
+                            ? "bg-[#F0EEEE]"
                             : "bg-[#F0EEEE]"
-                        } p-[10px] h-[230px] w-[150px] rounded-lg mr-[15px] last:mb-0 lg:h-[290px] lg:w-[222px] `}
+                        } p-[10px] h-[230px] w-[150px] rounded-lg mr-[15px] last:mb-0 lg:h-[290px] lg:w-[222px] active:bg-[#C8E31C] bg-[#F0EEEE]`}
                       >
                         <div className="flex flex-col justify-center items-center">
                           <Image
                             width={130}
                             height={130}
                             alt={menu.image_url}
-                            className="w-[130px] h-[130px] lg:h-[190px] lg:w-[190px] object-cover"
+                            className="w-ay h-[130px] lg:h-[190px] lg:w-[190px] object-cover"
                             src={`https://dqpvcbseawfdldinabbp.supabase.co/storage/v1/object/public/images/${menu.image_url}`}
                           />
                           <div className="py-[10px]">
@@ -172,52 +243,101 @@ const Home = ({ group }: any) => {
               </div>
             ))}
         </ul>
+
         <div
           className={`${
             showorder
-              ? "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  "
+              ? "top-[400px] left-1/2 -translate-x-1/2  "
               : " top-[calc(100%-0px)] left-1/2 -translate-x-1/2 -translate-y-0 "
-          }fixed h-[calc(100vh-200px)] duration-1000  w-[90vw] max-w-[1110px] rounded-[20px_0px_20px_20px] text-center bg-[#f3f2f2]`}
-          onClick={handleYourOrder}
+          }fixed h-[calc(100vh-400px)] duration-1000  w-[90vw] max-w-[1110px] rounded-[20px_0px_20px_20px] text-center bg-[#f2efef] `}
         >
-          <div className="rounded-t-lg text-center text-base bg-[#f3f2f2] absolute p-[10px_20px] top-[-55px] right-[0px] w-[200px] lg:text-namedrink">
-            Your Order
-          </div>
-          <div className="m-[50px_100px] overflow-y-auto h-[800px]">
-            {allmenude.order_menu &&
-              allmenude.order_menu.map((user: any, index: number) => (
-                <div
-                  key={index}
-                  className="flex justify-center pt-[30px] gap-[60px] border-b-[2px] border-[#dedbdb]"
-                >
-                  <div>
-                    <Image
-                      width={130}
-                      height={130}
-                      alt={user.name}
-                      className="w-auto h-[200px] pb-[30px]"
-                      src={`https://dqpvcbseawfdldinabbp.supabase.co/storage/v1/object/public/images/${user.image_url}`}
-                    />
+          <div className="relative">
+            <div
+              onClick={handleYourOrder}
+              className="cursor-pointer rounded-t-lg text-center bg-[#f3f2f2] absolute p-[10px_20px] top-[-60px] right-[0px] w-[200px] text-namedrink"
+            >
+              Your Order
+            </div>
+            <div className="overflow-y-auto  h-[calc(100vh-650px)]">
+              {allmenude.order_menu &&
+                allmenude.order_menu.map((user: any, index: number) => (
+                  <div
+                    key={index}
+                    className="grid grid-cols-7 mt-[80px] border-b-[2px] border-[#dedbdb] "
+                  >
+                    <div className="col-start-2	col-end-5 m-auto">
+                      <Image
+                        width={130}
+                        height={130}
+                        alt={user.name}
+                        className="w-auto h-[300px] pb-[30px]"
+                        src={`https://dqpvcbseawfdldinabbp.supabase.co/storage/v1/object/public/images/${user.image_url}`}
+                      />
+                    </div>
+                    <div className="col-start-5	col-end-7 text-start text-namedrink">
+                      <div className="flex justify-between">
+                        <div className="text-[40px] pb-[20px]">{user.name}</div>
+                        <button
+                          onClick={(e) => {
+                            handleDeleteMenu(index);
+                          }}
+                          className="text-red-500"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                      {user.temp && (
+                        <div className="pb-[10px]">Tempature : {user.temp}</div>
+                      )}
+                      {user.shot && (
+                        <div className="pb-[10px]">Shot :{user.shot}</div>
+                      )}
+                      {user.sweet && (
+                        <div className="pb-[10px]">Sweet :{user.sweet}</div>
+                      )}
+                      {user.note && (
+                        <div className="pb-[10px]">Note :{user.note}</div>
+                      )}
+                      {user.qty && (
+                        <div className="bottom-0 ">
+                          Quantity :
+                          <div className="flex items-center justify-center p-[30px]">
+                            <button
+                              className="bg-[#C8E31C] w-[40px] h-[40px] text-namedrink rounded-full"
+                              onClick={() => handleAddMore(-1, index)}
+                            >
+                              -
+                            </button>
+                            <span className="text-namedrink px-[15px] bg-[#fff] mx-[15px] w-[70px] text-center">
+                              {user.qty}
+                            </span>
+                            <button
+                              className="bg-[#C8E31C] w-[40px] h-[40px] text-namedrink rounded-full"
+                              onClick={() => handleAddMore(1, index)}
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-[20px] text-start">
-                    <div>{user.name}</div>
-                    {user.temp && <div>Tempature : {user.temp}</div>}
-                    {user.shot && <div>Shot :{user.shot}</div>}
-                    {user.sweet && <div>Sweet :{user.sweet}</div>}
-                  </div>
-                </div>
-              ))}
+                ))}
 
-            <div className="absolute w-[90vw] max-w-[910px] bottom-[80px] bg-[#f3f2f2]">
-              <button
-                onClick={submitorder}
-                className="bg-[#def25e] p-[10px_25px] mr-[30px] h-[70px] w-2/6"
-              >
-                Sent
-              </button>
-              <button className="bg-white p-[10px_25px] h-[70px] w-2/6">
-                Close
-              </button>
+              <div className="absolute w-full  bottom-[-260px] pt-[30px] pb-[100px] bg-[#f3f2f2] text-namedrink">
+                <button
+                  onClick={submitorder}
+                  className="bg-[#def25e] p-[10px_25px] mr-[30px] h-[70px] w-2/6 "
+                >
+                  Sent
+                </button>
+                <button
+                  onClick={handleYourOrder}
+                  className="bg-white p-[10px_25px] h-[70px] w-2/6"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         </div>

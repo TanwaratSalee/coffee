@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import supabase from "../../lib/supabase";
+
 export interface Detailprofile {
   full_name: string;
   email: string;
@@ -54,6 +55,7 @@ export default function Profile({ user }: any) {
       if (liff.isLoggedIn()) {
         const profileliff = await liff.getProfile();
         setProfile(profileliff);
+        localStorage.setItem("userId", profileliff.userId);
       }
     };
     initlfit();

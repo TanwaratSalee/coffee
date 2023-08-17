@@ -31,6 +31,7 @@ interface Postorder {
   tem: string;
   shot: string;
   note: string;
+  amount: string;
   price: string;
   sweet: string;
 }
@@ -83,8 +84,10 @@ export default function Detailoreder({ addon, listgroup, menu, id }: Prop) {
   const [temp, setTemp] = useState("");
   const [shot, setShot] = useState("");
   const [sweet, setSweet] = useState("");
+  const [note, setNote] = useState("");
   const [datas, setData] = useState<Addon[]>(addon);
   const [groups, setGroups] = useState<Listgroup[]>(listgroup);
+  const [count, setCount] = useState<number>(1);
 
   const handleButtonSetData = (buttonName: any, type: any) => {
     if (type == "Temperature") {
@@ -98,6 +101,12 @@ export default function Detailoreder({ addon, listgroup, menu, id }: Prop) {
     }
   };
 
+  const handleAddMore = (amount: number) => {
+    if (count > 1 || (count == 1 && amount == 1)) {
+      setCount(count + amount);
+    }
+  };
+
   const submittoadmin = async (e: any) => {
     if (!temp) return alert("Chosee Temperature");
     e.preventDefault();
@@ -107,13 +116,17 @@ export default function Detailoreder({ addon, listgroup, menu, id }: Prop) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        name: users[0].name ? users[0].name : "",
-        temp: temp,
-        shot: shot ? shot : "",
-        sweet: sweet ? sweet : "",
-        price: users[0].price ? users[0].price : "",
-      }),
+      body: JSON.stringify([
+        {
+          name: users[0].name ? users[0].name : "",
+          temp: temp,
+          shot: shot ? shot : "",
+          sweet: sweet ? sweet : "",
+          note: note ? note : "",
+          qty: count ? count : "",
+          price: users[0].price ? users[0].price : "",
+        },
+      ]),
     });
 
     if (!response2.ok) {
@@ -135,6 +148,8 @@ export default function Detailoreder({ addon, listgroup, menu, id }: Prop) {
           shot: shot ? shot : "",
           sweet: sweet ? sweet : "",
           image_url: image ? image : "",
+          note: note ? note : "",
+          qty: count ? count : "",
           price: users[0].price ? users[0].price : "",
         },
       ];
@@ -157,7 +172,7 @@ export default function Detailoreder({ addon, listgroup, menu, id }: Prop) {
                 width={150}
                 height={100}
                 alt={user.id}
-                className="w-4/6 aspect=[3/2] m-auto"
+                className="w-auto h-[400px]  m-auto"
                 src={`https://dqpvcbseawfdldinabbp.supabase.co/storage/v1/object/public/images/${user.image_url}`}
               />
             </div>
@@ -213,12 +228,33 @@ export default function Detailoreder({ addon, listgroup, menu, id }: Prop) {
       <div className="max-w-[650px] m-auto">
         <div className="pb-[20px] font-light text-namedrink">Note</div>
         <input
+          onChange={(e) => {
+            setNote(e.target.value);
+          }}
           className="w-full max-w-[650px] p-[10px_8px] bg-[#f6f4f4] border border-[#e4e2e2] text-base rounded-xl"
           type="text"
         />
       </div>
 
-      <div className="max-w-[650px] m-auto pt-[50px] flex flex-col gap-[15px] text-namedrink">
+      <div className="flex items-center justify-center p-[30px]">
+        <button
+          className="bg-[#C8E31C] w-[50px] h-[50px] text-namedrink rounded-full"
+          onClick={() => handleAddMore(-1)}
+        >
+          -
+        </button>
+        <span className="text-[30px] px-[15px] bg-[#f6f4f4] mx-[15px] w-[70px] text-center">
+          {count}
+        </span>
+        <button
+          className="bg-[#C8E31C] w-[50px] h-[50px] text-namedrink rounded-full"
+          onClick={() => handleAddMore(1)}
+        >
+          +
+        </button>
+      </div>
+
+      <div className="max-w-[650px] m-auto pt-[30px] flex flex-col gap-[15px] text-namedrink">
         <button
           className="bg-[#C8E31C] w-full h-[70px] rounded-2xl"
           type="submit"

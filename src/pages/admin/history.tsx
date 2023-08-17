@@ -69,30 +69,39 @@ export default function Order({ postdata }: any) {
   return (
     <LayoutAdmin>
       <main className="text-topic ">
-        <h1 className="text-heading text-center font-medium">Order</h1>
-        <div className="grid grid-cols-10 text-base justify-center align-center">
-          <h1 className="col-start-2	col-end-4 ">Name</h1>
+        <h1 className="text-heading text-center font-medium py-[40px]">
+          History
+        </h1>
+        <div className="grid grid-cols-11 text-base justify-center align-center">
+          <h1 className="col-start-3	col-end-4 ">Name</h1>
           <h1 className="col-start-5">Add on</h1>
-          <h1 className="col-start-6">Price</h1>
+          <h1 className="col-start-7">Price</h1>
+          <h1 className="col-start-8 pl-[30px]">Status</h1>
 
           {posts?.map((item, id): any => (
             <React.Fragment key={item.id}>
+              <div className="col-start-2 col-end-10 border-b border-black pt-[20px]"></div>
+
               <div
                 className={`${
-                  item.confirm ? " border-green-500 " : "border-red-500"
-                } border col-start-2	col-end-4	h-[150px] place-`}
+                  item.confirm ? " " : ""
+                } pt-[30px] col-start-3 col-end-4	h-[150px] place-`}
               >
                 {item.menu}
               </div>
               <div className="col-start-5">
-                <div>{item.temp}</div>
-                <div>{item.shot}</div>
-                <div>{item.sweet}</div>
+                <div className="pt-[30px]">{item.temp}</div>
+                <div className="pt-[10px]">{item.shot}</div>
+                <div className="pt-[10px">{item.sweet}</div>
               </div>
-              <div className="col-start-6">{item.price}</div>
-              <div className="col-start-8">
+              <div className="col-start-7 pt-[30px]">{item.price}</div>
+              <button
+                className={`col-start-8 h-1/3 w-5/6 rounded-xl pt-[30px] ${
+                  item.confirm ? "text-green-500" : "text-red-500"
+                }`}
+              >
                 {item.confirm ? "Confirm" : "Cancel"}
-              </div>
+              </button>
             </React.Fragment>
           ))}
 

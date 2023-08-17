@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@line/bot-sdk':
+    specifier: ^7.5.2
+    version: 7.5.2
   '@line/liff':
     specifier: ^2.22.2
     version: 2.22.2

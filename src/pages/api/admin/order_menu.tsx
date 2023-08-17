@@ -14,24 +14,30 @@ export default async function handler(
   res: NextApiResponse<ResponseData>
 ) {
   if (req.method == "POST") {
-    const schema = z.object({
-      name: z.string({
-        required_error: "name is require",
-        invalid_type_error: "name only string",
-      }),
-      temp: z.string({
-        invalid_type_error: "name only string",
-      }),
-      shot: z.string({
-        invalid_type_error: "name only string",
-      }),
-      sweet: z.string({
-        invalid_type_error: "name only string",
-      }),
-      price: z.number({
-        invalid_type_error: "name only number",
-      }),
-    });
+    const schema = z.array(
+      z.object({
+        name: z.string({
+          required_error: "name is require",
+          invalid_type_error: "name only string",
+        }),
+        qty: z.number(),
+        note: z.string({
+          invalid_type_error: "name only string",
+        }),
+        temp: z.string({
+          invalid_type_error: "name only string",
+        }),
+        shot: z.string({
+          invalid_type_error: "name only string",
+        }),
+        sweet: z.string({
+          invalid_type_error: "name only string",
+        }),
+        price: z.number({
+          invalid_type_error: "name only number",
+        }),
+      })
+    );
 
     const response = schema.safeParse(req.body);
 
@@ -45,17 +51,19 @@ export default async function handler(
       });
     }
 
-    const { name, temp, shot, sweet, price } = response.data;
+    const insertVal = response.data.map((it) => ({
+      menu: it.name,
+      note: it.note,
+      qty: it.qty,
+      temp: it.temp,
+      shot: it.shot,
+      sweet: it.sweet,
+      price: it.price,
+    }));
 
     const { data: insertData, error: insertError } = await supabase
       .from("posts")
-      .insert({
-        menu: name,
-        temp: temp,
-        shot: shot,
-        sweet: sweet,
-        price: price,
-      })
+      .insert(insertVal)
       .select();
 
     if (!insertError) {

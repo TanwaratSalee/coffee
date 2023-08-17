@@ -168,7 +168,7 @@ const Home = ({ group, addon }: any) => {
           <div className="text-topic">Menu</div>
           <Link
             href="../admin/group-menu/addgroup"
-            className="border border-black rounded-xl text-base p-[10px_30px]"
+            className="border border-black rounded-xl text-base p-[10px_30px] cursor-pointer"
           >
             + Add Group
           </Link>
@@ -180,7 +180,7 @@ const Home = ({ group, addon }: any) => {
                 <div className="text-maintopic flex justify-between	items-center mt-[30px]">
                   <div className="flex items-center">
                     <input
-                      className="h-[18px] w-[18px] mr-[10px]"
+                      className="cursor-pointer	h-[18px] w-[18px] mr-[10px]"
                       type="checkbox"
                       id="publicCheckbox"
                       defaultChecked={group.is_public}
@@ -236,7 +236,7 @@ const Home = ({ group, addon }: any) => {
                       >
                         <div className="flex items-center	text-center">
                           <input
-                            className="w-[25px] h-[25px] mr-[8px]"
+                            className="w-[25px] h-[25px] mr-[8px] cursor-pointer	"
                             type="checkbox"
                             id="publicCheckbox"
                             name="vehicle1"
@@ -308,12 +308,13 @@ const Home = ({ group, addon }: any) => {
               <li className="text-base" key={addon.name}>
                 <div className="text-maintopic flex justify-between">
                   <div>
-                    <input
+                    {/* <input
+                      className="cursor-pointer	"
                       type="checkbox"
                       id="publicCheckbox"
                       name="vehicle1"
                       value="Bike"
-                    ></input>
+                    ></input> */}
                     {addon.name}
                   </div>
                   <Link
@@ -331,6 +332,7 @@ const Home = ({ group, addon }: any) => {
                         className="border border-black rounded-lg text-base p-[5px_20px] m-[20px_10px]"
                       >
                         <input
+                          className="cursor-pointer	"
                           type="checkbox"
                           id="publicCheckbox"
                           name="addon"

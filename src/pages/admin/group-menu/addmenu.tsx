@@ -164,18 +164,20 @@ export default function Addgroup({ addon }: any) {
         }
       }
     }
+    router.push("/admin");
   };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const fileImg = event.target.files?.item(0);
+    console.log(fileImg);
     if (fileImg) {
       const reader = new FileReader();
+      reader.readAsDataURL(fileImg);
       reader.onloadend = () => {
-        console.log(reader, "render");
+        console.log(reader.result, "render");
         setSelectedFileSrc(reader.result);
         setImage(fileImg);
       };
-      reader.readAsDataURL(fileImg);
     }
   };
 
@@ -220,19 +222,19 @@ export default function Addgroup({ addon }: any) {
         >
           <i className="fa fa-times " aria-hidden="true"></i>
         </Link>
-        <div className="bg-slate-200 rounded-3xl">
+        <div className="bg-[#f6f4f4] rounded-3xl">
           <h2 className="text-center text-topic pt-[40px] mb-[40px] font-bold">
             {menuname}
           </h2>
           <div className="flex flex-row justify-center">
             <div
               className={`${
-                selectedFileSrc ? "" : "bg-gray-100"
+                selectedFileSrc ? "" : "bg-[#ddf0f4]"
               } flex flex-col items-center justify-center w-[300px] h-[300px]  m-auto `}
             >
               <label
                 htmlFor="file-upload"
-                className="px-[20px] py-2 font-bold bg-gray-200 rounded-xl border border-black text-gray-800 h-[58px]"
+                className="px-[20px] py-2 font-bold bg-blue-200 rounded-xl border border-black text-gray-800 h-[58px]"
               >
                 {buttonText}
               </label>
@@ -245,9 +247,11 @@ export default function Addgroup({ addon }: any) {
               />
               {selectedFileSrc && (
                 <Image
+                  width={100}
+                  height={100}
                   src={selectedFileSrc as string}
                   alt="Preview"
-                  className="mt-4 w-full h-[234px] bg-gray-100 object-contain border-4 border-blue-500 rounded "
+                  className="mt-4 w-full h-[234px] bg-gray-100 object-contain border-4 border-blue-500 rounded"
                 />
               )}
             </div>
@@ -273,37 +277,44 @@ export default function Addgroup({ addon }: any) {
                   onChange={(e) => setPrice(+e.target.value)}
                 />
               </div>
+
+              <div>
+                {addons &&
+                  addons.map((addon) => (
+                    <li key={addon.name} className="text-base">
+                      <div className="text-maintopic flex justify-between">
+                        <div>
+                          <input
+                            type="checkbox"
+                            id="publicCheckbox"
+                            name="vehicle1"
+                            value="Bike"
+                            className="w-[25px] h-[25px] m-[10px_30px_30px_50px] cursor-pointer"
+                            onChange={(e) => {
+                              handleAddon(
+                                e.target.checked,
+                                addon.name,
+                                addon.id
+                              );
+                            }}
+                          ></input>
+
+                          {addon.name}
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+              </div>
             </div>
-          </div>
-          <div>
-            {addons &&
-              addons.map((addon) => (
-                <li key={addon.name} className="text-base">
-                  <div className="text-maintopic flex justify-between">
-                    <div>
-                      <input
-                        type="checkbox"
-                        id="publicCheckbox"
-                        name="vehicle1"
-                        value="Bike"
-                        onChange={(e) => {
-                          handleAddon(e.target.checked, addon.name, addon.id);
-                        }}
-                      ></input>
-                      {addon.name}
-                    </div>
-                  </div>
-                </li>
-              ))}
           </div>
           <div className="flex justify-center p-[20px_10px]">
             <button
-              className="bg-blue-200 w-[140px] h-[50px] text-center mr-[10px]"
+              className="bg-[#C8E31C] w-[140px] h-[50px] text-center mr-[10px]"
               type="submit"
             >
               Save
             </button>
-            <button className="bg-slate-500 w-[140px] h-[50px] text-center ml-[10px]">
+            <button className="bg-[#ddd9d9] w-[140px] h-[50px] text-center ml-[10px]">
               <Link href="../../admin">Cancel</Link>
             </button>
           </div>
