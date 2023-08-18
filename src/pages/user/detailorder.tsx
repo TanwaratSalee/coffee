@@ -141,8 +141,9 @@ export default function Detailoreder({ addon, listgroup, menu, id }: Prop) {
     if (!temp) {
       alert("Chosee Temperature");
     } else {
+      const filterFirstArray = allmenude.order_menu.filter((it) => it.name);
       const newVal = [
-        ...allmenude.order_menu,
+        ...filterFirstArray,
         {
           name: users[0].name ? users[0].name : "",
           temp: temp,

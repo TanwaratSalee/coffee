@@ -22,17 +22,6 @@ interface DataItem {
   price: number;
 }
 
-interface YourOrder {
-  image_url: string;
-  qty: number;
-  name: string;
-  note: string;
-  price: number;
-  short: string;
-  sweeth: string;
-  temp: string;
-}
-
 export const getServerSideProps: GetServerSideProps = async () => {
   const { data: group } = await supabase
     .from("group_menu")
@@ -60,7 +49,7 @@ const Home = ({ group }: any) => {
   const [groups, setGroup] = useState<DataItem[] | undefined>([]);
   const [showorder, setShoworder] = useState(false);
 
-  const calculateTotalPrice = (orders: YourOrder[]) => {
+  const calculateTotalPrice = (orders: any[]) => {
     return orders.reduce((sum, order) => sum + order.price * order.qty, 0);
   };
 
@@ -77,9 +66,9 @@ const Home = ({ group }: any) => {
   };
 
   const handleAddMore = (amount: number, i: number) => {
-    const yourOrders = allmenude.order_menu as YourOrder[];
-    const findmenu = yourOrders.find((it: YourOrder, index) => index === i);
-
+    const yourOrders = allmenude.order_menu;
+    const findmenu = yourOrders.find((it, index) => index === i);
+    console.log("handleAddMore");
     if (findmenu) {
       // findmenu.qty = 1
 
@@ -111,9 +100,10 @@ const Home = ({ group }: any) => {
   };
 
   const handleDeleteMenu = (deleteIndex: number) => {
-    const yourOrders = allmenude.order_menu as YourOrder[];
-    const fillter: YourOrder[] = yourOrders.filter(
-      (it: YourOrder, index) => index !== deleteIndex
+    console.log("handleDeleteMenu");
+    const yourOrders = allmenude.order_menu;
+    const fillter = yourOrders.filter(
+      (it: any, index) => index !== deleteIndex
     );
     setAllmenude({ order_menu: fillter });
   };
@@ -161,7 +151,7 @@ const Home = ({ group }: any) => {
     setAllmenude({ order_menu: [] });
   };
   useEffect(() => {
-    console.log("allmenude.order_menu", allmenude.order_menu);
+    console.log("allmenude.order_menu", allmenude.order_menu[0]);
   }, [allmenude]);
 
   return (
@@ -270,6 +260,7 @@ const Home = ({ group }: any) => {
                   <div key={index}>{user.name ? <></> : <></>}</div>
                 ))}
               {allmenude.order_menu &&
+                allmenude.order_menu[0].name &&
                 allmenude.order_menu.map((user: any, index: number) => (
                   <div key={index}>
                     {/* {user.name ? ( */}
@@ -347,7 +338,7 @@ const Home = ({ group }: any) => {
               <div className="absolute w-full h-[300px] bottom-[-260px] pt-[30px] pb-[100px] bg-[#f3f2f2] text-namedrink">
                 <div className="py-[30px] text-topic">
                   Total:
-                  {calculateTotalPrice(allmenude.order_menu as YourOrder[])}
+                  {calculateTotalPrice(allmenude.order_menu)}
                 </div>
                 <button
                   onClick={handleSubmitOrder}
