@@ -49,7 +49,7 @@ const Home = ({ group }: any) => {
   const [groups, setGroup] = useState<DataItem[] | undefined>([]);
   const [showorder, setShoworder] = useState(false);
 
-  const calculateTotalPrice = (orders: any[]) => {
+  const TotalPrice = (orders: any[]) => {
     return orders.reduce((sum, order) => sum + order.price * order.qty, 0);
   };
 
@@ -58,7 +58,6 @@ const Home = ({ group }: any) => {
   };
   useEffect(() => {
     setGroup(group);
-    console.log(allmenude);
   }, [group]);
 
   const handleYourOrder = () => {
@@ -67,14 +66,17 @@ const Home = ({ group }: any) => {
 
   const handleAddMore = (amount: number, i: number) => {
     const yourOrders = allmenude.order_menu;
+
     const findmenu = yourOrders.find((it, index) => index === i);
-    console.log("handleAddMore");
     if (findmenu) {
       // findmenu.qty = 1
 
       const newItem = {
         ...findmenu,
-        qty: findmenu.qty + amount,
+        qty:
+          findmenu.qty > 1 || (findmenu.qty == 1 && amount == 1)
+            ? findmenu.qty + amount
+            : findmenu.qty,
       };
 
       // const newItem = {
@@ -100,7 +102,6 @@ const Home = ({ group }: any) => {
   };
 
   const handleDeleteMenu = (deleteIndex: number) => {
-    console.log("handleDeleteMenu");
     const yourOrders = allmenude.order_menu;
     const fillter = yourOrders.filter(
       (it: any, index) => index !== deleteIndex
@@ -119,7 +120,6 @@ const Home = ({ group }: any) => {
       },
       body: body,
     });
-
     if (!response2.ok) {
       const data = await response2.json();
     } else {
@@ -150,9 +150,9 @@ const Home = ({ group }: any) => {
 
     setAllmenude({ order_menu: [] });
   };
-  useEffect(() => {
-    console.log("allmenude.order_menu", allmenude.order_menu[0]);
-  }, [allmenude]);
+  // useEffect(() => {
+  //   console.log("allmenude.order_menu", allmenude.order_menu[0]);
+  // }, [allmenude]);
 
   return (
     <LayoutUser>
@@ -243,40 +243,43 @@ const Home = ({ group }: any) => {
         <div
           className={`${
             showorder
-              ? "top-[300px] left-1/2 -translate-x-1/2  "
+              ? "top-[100px] left-1/2 -translate-x-1/2  "
               : " top-[calc(100%-0px)] left-1/2 -translate-x-1/2 -translate-y-0 "
-          }fixed h-[calc(100vh-300px)] duration-1000  w-[90vw] max-w-[1110px] rounded-[20px_0px_20px_20px] text-center bg-[#f3f2f2] `}
+          }fixed h-[calc(100vh-100px)] duration-1000  w-[90vw] max-w-[1110px] rounded-[20px_0px_20px_20px] text-center bg-[#f3f2f2] drop-shadow-lg
+
+          `}
         >
-          <div className="relative  mt-[80px]">
+          <div className="relative  mt-[40px]">
             <div
               onClick={handleYourOrder}
-              className="cursor-pointer rounded-t-lg text-center bg-[#f3f2f2] absolute p-[10px_20px] top-[-135px] right-[0px] w-[200px] text-namedrink"
+              className="cursor-pointer rounded-t-lg text-center bg-[#f3f2f2] absolute p-[10px_20px] top-[-95px] right-[0px] w-[200px] text-namedrink "
             >
               Your Order
             </div>
-            <div className="overflow-y-auto h-[calc(100vh-650px)]">
+            <div className="overflow-y-auto h-[calc(100vh-250px)] ">
               {allmenude.order_menu &&
                 allmenude.order_menu.map((user: any, index: number) => (
                   <div key={index}>{user.name ? <></> : <></>}</div>
                 ))}
               {allmenude.order_menu &&
+                allmenude.order_menu.length > 0 &&
                 allmenude.order_menu[0].name &&
                 allmenude.order_menu.map((user: any, index: number) => (
                   <div key={index}>
                     {/* {user.name ? ( */}
-                    <div className="grid grid-cols-7 border-b-[2px] border-[#dedbdb] ">
+                    <div className="grid grid-cols-7 border-b-[2px] border-[#dedbdb] mx-[50px]">
                       <div className="col-start-2	col-end-5 m-auto">
                         <Image
                           width={130}
                           height={130}
                           alt={user.name}
-                          className="w-auto h-[300px] pb-[30px]"
+                          className="w-auto h-[180px] py-[15px]"
                           src={`https://dqpvcbseawfdldinabbp.supabase.co/storage/v1/object/public/images/${user.image_url}`}
                         />
                       </div>
-                      <div className="col-start-5	col-end-7 text-start text-namedrink">
+                      <div className="col-start-5	col-end-7 text-start text-mini py-[20px]">
                         <div className="flex justify-between">
-                          <div className="text-[40px] pb-[20px]">
+                          <div className="text-[30px] pt-[25px] pb-[15px]">
                             {user.name}
                           </div>
                         </div>
@@ -298,12 +301,12 @@ const Home = ({ group }: any) => {
                           <div className="pb-[10px]">
                             Quantity :
                             <button
-                              className="ml-[30px] bg-[#C8E31C] w-[40px] h-[40px] text-namedrink rounded-full"
+                              className="ml-[20px]  bg-[#C8E31C] w-[40px] h-[40px] text-namedrink rounded-full"
                               onClick={() => handleAddMore(-1, index)}
                             >
                               -
                             </button>
-                            <span className="text-namedrink px-[15px] bg-[#fff] mx-[15px] w-[70px] text-center">
+                            <span className="text-mini px-[15px] bg-[#fff] mx-[10px] w-[70px] text-center">
                               {user.qty}
                             </span>
                             <button
@@ -324,7 +327,7 @@ const Home = ({ group }: any) => {
                         onClick={(e) => {
                           handleDeleteMenu(index);
                         }}
-                        className="col-start-7 col-end-8 text-red-500 self-start	"
+                        className="col-start-7 col-end-8 text-red-500 self-start pt-[20px]"
                       >
                         Delete
                       </button>
@@ -335,20 +338,21 @@ const Home = ({ group }: any) => {
                   </div>
                 ))}
 
-              <div className="absolute w-full h-[300px] bottom-[-260px] pt-[30px] pb-[100px] bg-[#f3f2f2] text-namedrink">
-                <div className="py-[30px] text-topic">
+              <div className="absolute w-full bottom-[-90px] pb-[0px] bg-[#f3f2f2] text-[20px] ">
+                <div className="py-[10px] pr-[60px] text-end text-namedrink border-t-[2px] border-[#dedbdb] mx-[50px]">
                   Total:
-                  {calculateTotalPrice(allmenude.order_menu)}
+                  {TotalPrice(allmenude.order_menu)}
                 </div>
+
                 <button
                   onClick={handleSubmitOrder}
-                  className="bg-[#def25e] p-[10px_25px] mr-[30px] h-[70px] w-2/6 "
+                  className="bg-[#def25e] p-[10px_25px] mr-[30px] w-2/6 "
                 >
                   Sent
                 </button>
                 <button
                   onClick={handleYourOrder}
-                  className="bg-white p-[10px_25px] h-[70px] w-2/6"
+                  className="bg-white p-[10px_25px] w-2/6"
                 >
                   Close
                 </button>

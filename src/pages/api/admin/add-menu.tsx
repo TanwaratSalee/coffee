@@ -47,7 +47,6 @@ export default async function handler(
         errors: errors,
       });
     }
-    console.log(schema);
     const { name, price, is_public, group_id, image_url } = response.data;
 
     const { data: insertData, error: insertError } = await supabase

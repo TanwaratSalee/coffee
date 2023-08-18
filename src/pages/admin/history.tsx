@@ -4,6 +4,8 @@ import LayoutAdmin from "../../../components/layout-admin";
 import supabase from "../../../lib/supabase";
 
 export interface Post {
+  full_name: string;
+  qty: 0;
   id: string;
   menu: string;
   temp: string | null;
@@ -72,31 +74,38 @@ export default function Order({ postdata }: any) {
         <h1 className="text-heading text-center font-medium py-[40px]">
           History
         </h1>
-        <div className="grid grid-cols-11 text-base justify-center align-center">
-          <h1 className="col-start-3	col-end-4 ">Name</h1>
-          <h1 className="col-start-5">Add on</h1>
-          <h1 className="col-start-7">Price</h1>
-          <h1 className="col-start-8 pl-[30px]">Status</h1>
+        <div className="grid grid-cols-12 text-base justify-center align-center">
+          <div className="col-start-2 text-namedrink pb-[20px]">Name</div>
+          <div className="col-start-4	col-end-4 text-namedrink ">Order</div>
+          <div className="col-start-6 col-end-7 text-namedrink ">Add on</div>
+          <div className="col-start-8 text-namedrink ">Qty</div>
+          <div className="col-start-9 text-namedrink ">Price</div>
+          <div className="col-start-2 col-end-12 border-t border-black pt-[20px]"></div>
 
           {posts?.map((item, id): any => (
             <React.Fragment key={item.id}>
-              <div className="col-start-2 col-end-10 border-b border-black pt-[20px]"></div>
-
+              {(id == 0 ? true : posts[id - 1].full_name != item.full_name) && (
+                <div className="col-start-2 pt-[30px]">{item.full_name}</div>
+              )}
               <div
                 className={`${
-                  item.confirm ? " " : ""
-                } pt-[30px] col-start-3 col-end-4	h-[150px] place-`}
+                  item.confirm ? "" : ""
+                } pt-[30px] col-start-4	col-end-6	h-[150px] `}
               >
                 {item.menu}
               </div>
-              <div className="col-start-5">
-                <div className="pt-[30px]">{item.temp}</div>
-                <div className="pt-[10px]">{item.shot}</div>
-                <div className="pt-[10px">{item.sweet}</div>
+
+              <div className="col-start-6	col-end-8">
+                <div className="pt-[30px]">Temperature : {item.temp}</div>
+                <div className="pt-[10px]">Shot : {item.shot}</div>
+                <div className="pt-[10px]">Sweet : {item.sweet}</div>
+                <div className="pt-[10px]">Note : {item.note}</div>
               </div>
-              <div className="col-start-7 pt-[30px]">{item.price}</div>
+              <div className="pt-[30px] col-start-9">{item.qty}</div>
+
+              <div className="col-start-10	pt-[30px]">{item.price}</div>
               <button
-                className={`col-start-8 h-1/3 w-5/6 rounded-xl pt-[30px] ${
+                className={`col-start-11 h-1/3 w-5/6 rounded-xl pt-[30px] ${
                   item.confirm ? "text-green-500" : "text-red-500"
                 }`}
               >

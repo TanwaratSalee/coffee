@@ -136,7 +136,6 @@ const Home = ({ group, addon }: any) => {
         )
       `);
       setGroup((group as any) || null);
-      console.log("id", id);
     }
   };
   // const fetchDataMenu = async () => {

@@ -69,7 +69,6 @@ export default function Addgroup({ addon }: any) {
       if (error) {
         console.error("Error uploading image:", error);
       } else {
-        console.log("Image uploaded successfully:", data);
         const imageURL = data.path;
         const response = await fetch("../../api/admin/add-menu", {
           method: "POST",
@@ -90,12 +89,10 @@ export default function Addgroup({ addon }: any) {
         } else {
           router.push("../../admin");
           const data = await response.json();
-          console.log("data:", data);
           setErrors([]);
           const objecttest = objectgroup.filter((it) => it.check != false);
           if (objecttest) {
             objecttest.forEach(async (value: any, index: any) => {
-              console.log(objecttest);
               const response = await fetch("../../api/admin/menu_add_on", {
                 method: "POST",
                 headers: {
@@ -112,7 +109,6 @@ export default function Addgroup({ addon }: any) {
               } else {
                 const data = await response.json();
                 setErrors([]);
-                console.log("POST: ", data);
               }
             });
           }
@@ -158,7 +154,6 @@ export default function Addgroup({ addon }: any) {
             } else {
               const data = await response.json();
               setErrors([]);
-              console.log("POST: ", data);
             }
           });
         }
@@ -169,12 +164,10 @@ export default function Addgroup({ addon }: any) {
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const fileImg = event.target.files?.item(0);
-    console.log(fileImg);
     if (fileImg) {
       const reader = new FileReader();
       reader.readAsDataURL(fileImg);
       reader.onloadend = () => {
-        console.log(reader.result, "render");
         setSelectedFileSrc(reader.result);
         setImage(fileImg);
       };

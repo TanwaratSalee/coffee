@@ -9,7 +9,6 @@ async function sendMessageToUUID(uuid: string, message: string): Promise<void> {
       message: message,
     }),
   });
-  console.log(uuid, message);
   return;
 }
 

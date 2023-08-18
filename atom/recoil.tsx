@@ -5,6 +5,7 @@ export const recoilorder = atom({
   default: {
     order_menu: [
       {
+        full_name: "",
         image_url: "",
         qty: 0,
         name: "",

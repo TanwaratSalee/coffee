@@ -5,11 +5,13 @@ import { sendMessageToUUID } from "../../../lib/line";
 import supabase from "../../../lib/supabase";
 
 export interface Post {
+  full_name: string;
   id: string;
   menu: string;
   temp: string | null;
   shot: string | null;
   sweet: string | null;
+  qty: 0;
   note: string | null;
   price: string | null;
   confirm: boolean | null;
@@ -37,7 +39,6 @@ export default function Order({ postdata }: any) {
           table: "posts",
         },
         (payload) => {
-          console.log(payload.new, payload.eventType, "payload");
           switch (payload.eventType) {
             case "INSERT":
               setPosts([...posts, payload.new as Post]);
@@ -71,14 +72,25 @@ export default function Order({ postdata }: any) {
   const handleConfirm = async (
     id: string,
     confirm: boolean,
-    menuname: string
+    menuname: string,
+    full_name: string
   ) => {
-    const { data, error } = await supabase
-      .from("posts")
-      .update({
-        confirm: confirm,
-      })
-      .eq("id", id);
+    if (!confirm) {
+      const { data, error } = await supabase
+        .from("posts")
+        .update({
+          confirm: false,
+        })
+        .eq("id", id);
+    } else {
+      const { data, error } = await supabase
+        .from("posts")
+        .update({
+          confirm: true,
+        })
+        .eq("full_name", full_name);
+    }
+
     const { data: posts, error: errorpost } = await supabase
       .from("posts")
       .select()
@@ -98,52 +110,75 @@ export default function Order({ postdata }: any) {
   return (
     <LayoutAdmin>
       <div className="max-w-[1110px] m-auto ">
-        <main className="text-topic">
+        <main className="text-topic text-center">
           <h1 className="text-heading text-center font-medium py-[40px]">
             Order
           </h1>
-          <div className="grid grid-cols-11 text-base justify-center align-center ">
-            <h1 className="col-start-2	col-end-4 text-namedrink ">Name</h1>
-            <h1 className="col-start-5 text-namedrink ">Add on</h1>
-            <h1 className="col-start-7 text-namedrink ">Price</h1>
+          <div className="grid grid-cols-12 text-base justify-center align-center ">
+            <div className="col-start-2 text-namedrink pb-[20px]">Name</div>
+            <div className="col-start-4	col-end-4 text-namedrink ">Order</div>
+            <div className="col-start-6 col-end-7 text-namedrink ">Add on</div>
+            <div className="col-start-8 text-namedrink ">Qty</div>
+            <div className="col-start-9 text-namedrink ">Price</div>
+            <div className="col-start-2 col-end-12 border-t border-black pt-[20px]"></div>
 
-            {posts?.map((item, id): any => (
+            {posts?.map((item, i): any => (
               <React.Fragment key={item.id}>
-                <div className="col-start-2 col-end-11 border-b border-black pt-[20px]"></div>
-
+                {(i == 0 ? true : posts[i - 1].full_name != item.full_name) && (
+                  <div className="col-start-2 pt-[30px]">{item.full_name}</div>
+                )}
                 <div
                   className={`${
                     item.confirm ? "" : ""
-                  } pt-[30px] col-start-2	col-end-4	h-[150px] place-`}
+                  } pt-[30px] col-start-4	col-end-6	h-[150px] place-`}
                 >
                   {item.menu}
                 </div>
 
-                <div className="col-start-5	">
-                  <div className="pt-[30px]">{item.temp}</div>
-                  <div className="pt-[10px]">{item.shot}</div>
-                  <div className="pt-[10px]">{item.sweet}</div>
+                <div className="col-start-6	col-end-7">
+                  <div className="pt-[30px]">Temperature : {item.temp}</div>
+                  <div className="pt-[10px]">Shot : {item.shot}</div>
+                  <div className="pt-[10px]">Sweet : {item.sweet}</div>
+                  <div className="pt-[10px]">Note : {item.note}</div>
                 </div>
-                <div className="col-start-7	pt-[30px]">{item.price}</div>
+                <div className="pt-[30px] col-start-8">{item.qty}</div>
 
-                <div className="flex flex-col  col-start-9 col-end-11">
-                  <button
+                <div className="col-start-9	pt-[30px]">{item.price}</div>
+
+                <div className="flex flex-col  col-start-10 mr-[10px]">
+                  {/* <button
                     onClick={async (e) => {
                       handleConfirm(item.id, true, item.menu);
                     }}
                     className=" bg-green-300 h-2/4 w-full rounded-xl mt-[30px]"
                   >
-                    Order Ready.
-                  </button>
+                    Order Ready
+                  </button> */}
                   <button
                     onClick={(e) => {
-                      handleConfirm(item.id, false, item.menu);
+                      handleConfirm(item.id, false, item.menu, item.full_name);
                     }}
-                    className=" bg-red-300 h-2/4 w-full rounded-xl mt-[10px]"
+                    className=" bg-red-300 h-3/4 w-full rounded-xl "
                   >
                     Cancel Order
                   </button>
                 </div>
+                {(i == 0 ? true : posts[i - 1].full_name != item.full_name) && (
+                  <button
+                    onClick={async (e) => {
+                      handleConfirm(item.id, true, item.menu, item.full_name);
+                    }}
+                    className="col-start-11 h-3/4 bg-green-300 w-full rounded-xl "
+                  >
+                    All order ready
+                  </button>
+                )}
+
+                {(i == posts.length - 1
+                  ? false
+                  : posts[i + 1].full_name != item.full_name) && (
+                  <div className="col-start-2 col-end-12 border-t border-black pt-[20px]"></div>
+                )}
               </React.Fragment>
             ))}
           </div>

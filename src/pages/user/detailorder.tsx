@@ -2,7 +2,7 @@ import SelectMenu from "@/components/SelectMenu";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { recoilorder } from "../../../atom/recoil";
 import supabase from "../../../lib/supabase";
@@ -39,6 +39,8 @@ interface Postorder {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.query;
 
+  const { data: user } = await supabase.from("users").select(`full_name,uid`);
+
   const { data: addon } = await supabase.from("group_add_on").select(
     `
   id ,
@@ -69,15 +71,27 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     )
     .eq("menu_id", id);
 
-  return { props: { addon, listgroup, menu, id } };
+  return { props: { addon, listgroup, menu, id, user } };
 };
+interface User {
+  uid: string;
+  full_name: string;
+}
 interface Prop {
   addon: any;
   listgroup: any;
   menu: any;
   id: string;
+  user: User[];
 }
-export default function Detailoreder({ addon, listgroup, menu, id }: Prop) {
+
+export default function Detailoreder({
+  addon,
+  listgroup,
+  menu,
+  id,
+  user,
+}: Prop) {
   const [allmenude, setAllmenude] = useRecoilState(recoilorder);
   const router = useRouter();
   const [users, setUser] = useState(menu);
@@ -88,6 +102,13 @@ export default function Detailoreder({ addon, listgroup, menu, id }: Prop) {
   const [datas, setData] = useState<Addon[]>(addon);
   const [groups, setGroups] = useState<Listgroup[]>(listgroup);
   const [count, setCount] = useState<number>(1);
+  const userId = localStorage.getItem("userId") || "";
+  const [fullname, setFullname] = useState(user);
+
+  useEffect(() => {
+    const userfilter = user.filter((name: any) => name.uid == userId);
+    setFullname(userfilter);
+  }, []);
 
   const handleButtonSetData = (buttonName: any, type: any) => {
     if (type == "Temperature") {
@@ -118,6 +139,7 @@ export default function Detailoreder({ addon, listgroup, menu, id }: Prop) {
       },
       body: JSON.stringify([
         {
+          full_name: fullname[0].full_name ? fullname[0].full_name : "",
           name: users[0].name ? users[0].name : "",
           temp: temp,
           shot: shot ? shot : "",
@@ -145,6 +167,7 @@ export default function Detailoreder({ addon, listgroup, menu, id }: Prop) {
       const newVal = [
         ...filterFirstArray,
         {
+          full_name: fullname[0].full_name ? fullname[0].full_name : "",
           name: users[0].name ? users[0].name : "",
           temp: temp,
           shot: shot ? shot : "",
