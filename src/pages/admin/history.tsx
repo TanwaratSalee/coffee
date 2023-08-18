@@ -80,13 +80,14 @@ export default function Order({ postdata }: any) {
           <div className="col-start-6 col-end-7 text-namedrink ">Add on</div>
           <div className="col-start-8 text-namedrink ">Qty</div>
           <div className="col-start-9 text-namedrink ">Price</div>
-          <div className="col-start-2 col-end-12 border-t border-black pt-[20px]"></div>
+          <div className="col-start-2 col-end-12 border-t border-black"></div>
 
           {posts?.map((item, id): any => (
             <React.Fragment key={item.id}>
               {(id == 0 ? true : posts[id - 1].full_name != item.full_name) && (
                 <div className="col-start-2 pt-[30px]">{item.full_name}</div>
               )}
+
               <div
                 className={`${
                   item.confirm ? "" : ""
@@ -99,7 +100,7 @@ export default function Order({ postdata }: any) {
                 <div className="pt-[30px]">Temperature : {item.temp}</div>
                 <div className="pt-[10px]">Shot : {item.shot}</div>
                 <div className="pt-[10px]">Sweet : {item.sweet}</div>
-                <div className="pt-[10px]">Note : {item.note}</div>
+                <div className="pt-[10px] pb-[20px]">Note : {item.note}</div>
               </div>
               <div className="pt-[30px] col-start-9">{item.qty}</div>
 
@@ -111,6 +112,11 @@ export default function Order({ postdata }: any) {
               >
                 {item.confirm ? "Confirm" : "Cancel"}
               </button>
+              {(id == posts.length - 1
+                ? false
+                : posts[id + 1].full_name != item.full_name) && (
+                <div className="col-start-2 col-end-12 border-t border-black"></div>
+              )}
             </React.Fragment>
           ))}
 
