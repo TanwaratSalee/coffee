@@ -130,7 +130,7 @@ export default function Order({ postdata }: any) {
                 <div
                   className={`${
                     item.confirm ? "" : ""
-                  } pt-[30px] col-start-4	col-end-6	h-[150px] `}
+                  } pt-[30px] col-start-4	col-end-6	h-[150px] place-`}
                 >
                   {item.menu}
                 </div>

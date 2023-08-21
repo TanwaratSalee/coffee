@@ -9,10 +9,10 @@ module.exports = {
     fontSize: {
       heading: ["60px", "65px"],
       topic: ["50px", "55px"],
-      namedrink: ["25px", "40px"],
+      namedrink: ["20px", "40px"],
       maintopic: ["30px", "40px"],
       base: ["20px", "30px"],
-      mini: ["17px", "20px"],
+      mini: ["16px", "20px"],
     },
     extend: {
       fontFamily: {

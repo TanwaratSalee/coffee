@@ -27,6 +27,9 @@ export default async function handler(
         full_name: z.string({
           invalid_type_error: "name only string",
         }),
+        no_order: z.string({
+          invalid_type_error: "name only string",
+        }),
         temp: z.string({
           invalid_type_error: "name only string",
         }),
@@ -56,6 +59,7 @@ export default async function handler(
 
     const insertVal = response.data.map((it) => ({
       full_name: it.full_name,
+      no_order: it.no_order,
       menu: it.name,
       note: it.note,
       qty: it.qty,
