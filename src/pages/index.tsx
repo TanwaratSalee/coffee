@@ -56,7 +56,6 @@ export default function Profile({ user }: any) {
         const profileliff = await liff.getProfile();
         setProfile(profileliff);
         localStorage.setItem("userId", profileliff.userId);
-        console.log(liff.getAccessToken());
       }
     };
     initlfit();
