@@ -14,6 +14,7 @@ export const recoilorder = atom({
         short: "",
         sweeth: "",
         temp: "",
+        uid: "",
       },
     ],
   },

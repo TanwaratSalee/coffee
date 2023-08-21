@@ -20,7 +20,7 @@ export default async function handlerSentMessage(
     "Content-Type": "application/json",
     Authorization: `Bearer ${LINE_TOKEN}`,
   };
-  console.log(req.body, "12312313");
+  console.log(req.body.to, "12312313");
   const body = {
     to: req.body.to,
     messages: [

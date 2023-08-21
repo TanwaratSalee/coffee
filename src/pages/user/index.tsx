@@ -150,9 +150,9 @@ const Home = ({ group }: any) => {
 
     setAllmenude({ order_menu: [] });
   };
-  // useEffect(() => {
-  //   console.log("allmenude.order_menu", allmenude.order_menu[0]);
-  // }, [allmenude]);
+  useEffect(() => {
+    console.log("allmenude.order_menu", allmenude);
+  }, [allmenude]);
 
   return (
     <LayoutUser>
