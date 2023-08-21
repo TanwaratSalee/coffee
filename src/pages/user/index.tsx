@@ -158,8 +158,8 @@ const Home = ({ group }: any) => {
     <LayoutUser>
       <div className="max-w-[1080px] m-auto ">
         <div className="p-[60px_0px_30px_0px] flex flex-col justify-center items-center">
-          <h1 className="text-heading font-medium	lg:text-[80px]">CJ WORX</h1>
-          <h3 className="pt-[5px] font-normal	text-maintopic lg:text-[30px]">
+          <h1 className="text-heading font-medium	md:text-[80px]">CJ WORX</h1>
+          <h3 className="pt-[5px] font-normal	text-maintopic md:text-[30px]">
             CAFE
           </h3>
         </div>
@@ -167,7 +167,7 @@ const Home = ({ group }: any) => {
           <button
             className={`${
               typeorder == "All" ? "bg-[#C8E31C]" : "bg-[#F0EEEE]"
-            } cursor-pointer	text-center text-black } text-center text-black p-[3px_25px] font-light hover:text-white rounded-3xl mr-[20px] lg:text-[25px] lg:p-[7px_30px] `}
+            } cursor-pointer	text-center text-black } text-center text-black p-[3px_25px] font-light hover:text-white rounded-3xl mr-[20px] md:text-[25px] md:p-[7px_30px] `}
             onClick={(e) => {
               handleButtonClick("All");
             }}
@@ -180,7 +180,7 @@ const Home = ({ group }: any) => {
                 // className="pl-[10px] pr-[30px] border-r-[1px] border-[black] last:border-none"
                 className={`${
                   typeorder == group.name ? "bg-[#C8E31C]" : "bg-[#F0EEEE]"
-                } text-center text-black p-[4px_25px] font-light	rounded-3xl mr-[20px] last:mb-0 lg:text-[25px] lg:p-[7px_30px] `}
+                } text-center text-black p-[4px_25px] font-light	rounded-3xl mr-[20px] last:mb-0 md:text-[25px] md:p-[7px_30px] `}
                 key={group.id}
                 onClick={(e) => {
                   handleButtonClick(group.name);
@@ -213,7 +213,7 @@ const Home = ({ group }: any) => {
                           typeorder == group.name
                             ? "bg-[#f3f2f2]"
                             : "bg-[#f3f2f2]"
-                        } p-[10px] h-[230px] w-[150px] rounded-lg mr-[15px] last:mb-0 lg:h-[290px] lg:w-[222px] active:bg-[#C8E31C] bg-[#f3f2f2]`}
+                        } p-[10px] h-[230px] w-[150px] rounded-md mr-[15px] last:mb-0 md:h-[290px] md:w-[222px] active:bg-[#C8E31C] bg-[#f3f2f2]`}
                       >
                         <div className="flex flex-col justify-center items-center">
                           <Image
@@ -245,11 +245,9 @@ const Home = ({ group }: any) => {
             showorder
               ? "top-[100px] left-1/2 -translate-x-1/2  "
               : " top-[calc(100%-0px)] left-1/2 -translate-x-1/2 -translate-y-0 "
-          }fixed h-[calc(100vh-100px)] duration-1000  w-[90vw] max-w-[1110px] rounded-[20px_0px_20px_20px] text-center bg-[#f3f2f2] drop-shadow-lg
-
-          `}
+          }fixed h-[calc(100vh-100px)] duration-1000  w-[90vw] max-w-[1110px] rounded-[20px_0px_20px_20px] text-center bg-[#f3f2f2] drop-shadow-lg `}
         >
-          <div className="relative  mt-[40px]">
+          <div className="relative mt-[40px]">
             <div
               onClick={handleYourOrder}
               className="cursor-pointer rounded-t-lg text-center bg-[#f3f2f2] absolute p-[10px_20px] top-[-95px] right-[0px] w-[200px] text-namedrink "
@@ -267,17 +265,17 @@ const Home = ({ group }: any) => {
                 allmenude.order_menu.map((user: any, index: number) => (
                   <div key={index}>
                     {/* {user.name ? ( */}
-                    <div className="grid grid-cols-7 border-b-[2px] border-[#dedbdb] mx-[50px]">
-                      <div className="col-start-2	col-end-5 m-auto">
+                    <div className="grid md:grid-cols-7 border-b-[2px] border-[#dedbdb] md:mx-[50px] ">
+                      <div className="col-start-1	col-end-4 m-auto">
                         <Image
                           width={130}
                           height={130}
                           alt={user.name}
-                          className="w-auto h-[180px] py-[15px]"
+                          className="w-auto md:h-[180px] h-[100px] px-[15px]"
                           src={`https://dqpvcbseawfdldinabbp.supabase.co/storage/v1/object/public/images/${user.image_url}`}
                         />
                       </div>
-                      <div className="col-start-5	col-end-7 text-start text-mini py-[20px]">
+                      <div className="col-start-4	col-end-7 text-start text-mini py-[20px]">
                         <div className="flex justify-between">
                           <div className="text-[30px] pt-[25px] pb-[15px]">
                             {user.name}
@@ -301,7 +299,7 @@ const Home = ({ group }: any) => {
                           <div className="pb-[10px]">
                             Quantity :
                             <button
-                              className="ml-[20px]  bg-[#C8E31C] w-[40px] h-[40px] text-namedrink rounded-full"
+                              className="ml-[10px]  bg-[#C8E31C] w-[20px] h-[20px] text-namedrink rounded-full text-[20px] leading-[20px]"
                               onClick={() => handleAddMore(-1, index)}
                             >
                               -
@@ -310,7 +308,7 @@ const Home = ({ group }: any) => {
                               {user.qty}
                             </span>
                             <button
-                              className="bg-[#C8E31C] w-[40px] h-[40px] text-namedrink rounded-full"
+                              className="bg-[#C8E31C] w-[20px] h-[20px] text-namedrink rounded-full text-[20px] leading-[20px]"
                               onClick={() => handleAddMore(1, index)}
                             >
                               +
@@ -327,7 +325,7 @@ const Home = ({ group }: any) => {
                         onClick={(e) => {
                           handleDeleteMenu(index);
                         }}
-                        className="col-start-7 col-end-8 text-red-500 self-start pt-[20px]"
+                        className="col-start-7 col-end-8 text-red-500 self-start pt-[20px] mr-[10px]"
                       >
                         Delete
                       </button>

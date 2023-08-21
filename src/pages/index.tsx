@@ -90,9 +90,11 @@ export default function Profile({ user }: any) {
               Full Name
             </div>
             <input
+              required
+              minLength={5}
+              maxLength={20}
               className="bg-[#f3f1f1] rounded-lg text-black  p-[5px_10px] col-start-3	col-end-8 my-[10px]	row-start-3"
               type="text"
-              name="name"
               value={full_name ?? ""}
               placeholder="Enter Your Full Name"
               onChange={(e) => setFullName(e.target.value)}
@@ -103,7 +105,6 @@ export default function Profile({ user }: any) {
             <input
               className="bg-[#f3f1f1] rounded-lg  text-black  p-[5px_10px] col-start-3	col-end-8 my-[10px]	row-start-5"
               type="email"
-              name="email"
               value={email ?? ""}
               placeholder="Enter Your Email"
               onChange={(e) => setEmail(e.target.value)}
@@ -115,6 +116,8 @@ export default function Profile({ user }: any) {
               className="bg-[#f3f1f1] rounded-lg  text-black p-[5px_10px] col-start-3	col-end-8 my-[10px]	row-start-7"
               type="text"
               name="name"
+              pattern="\d{10}"
+              title="Please enter a 10-digit phone number."
               value={phone ?? ""}
               placeholder="Enter Your Phone Number"
               onChange={(e) => setPhone(e.target.value)}
