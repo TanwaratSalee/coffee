@@ -41,7 +41,6 @@ export default function addgroup() {
   // }, [id]);
 
   const onSubmit = async (e: React.FormEvent) => {
-    console.log(addonid);
     e.preventDefault();
     const response = await fetch("../../api/admin/add-on", {
       method: "POST",
@@ -62,7 +61,6 @@ export default function addgroup() {
     } else {
       const data = await response.json();
       setErrors([]);
-      console.log("POST: ", data);
     }
     router.push("../../admin");
   };

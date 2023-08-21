@@ -15,7 +15,6 @@ interface MeuName {
 // }
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { addonId } = ctx.query;
-  console.log("addonId:", addonId);
 
   const { data: addon } = await supabase
     .from("add_on")
@@ -30,7 +29,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 const Update = ({ addon }: any) => {
-  console.log(addon);
   const [addons, setAddon] = useState<MeuName[]>([]);
   const router = useRouter();
   const idaddon = router.query.addonId;

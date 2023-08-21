@@ -56,7 +56,6 @@ export default function AddgroupAddon() {
       setErrors(data.errors);
     } else {
       const data = await response.json();
-      console.log("POST: ", data);
     }
   };
   return (

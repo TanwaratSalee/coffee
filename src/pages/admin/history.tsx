@@ -4,6 +4,8 @@ import LayoutAdmin from "../../../components/layout-admin";
 import supabase from "../../../lib/supabase";
 
 export interface Post {
+  full_name: string;
+  qty: 0;
   id: string;
   menu: string;
   temp: string | null;
@@ -69,33 +71,52 @@ export default function Order({ postdata }: any) {
   return (
     <LayoutAdmin>
       <main className="text-topic ">
-        <h1 className="text-heading text-center font-medium">Order</h1>
-        <div className="grid grid-cols-10 text-base justify-center align-center">
-          <h1 className="col-start-2	col-end-4 ">Name</h1>
-          <h1 className="col-start-5">Add on</h1>
-          <h1 className="col-start-6">Price</h1>
+        <h1 className="text-heading text-center font-medium py-[40px]">
+          History
+        </h1>
+        <div className="grid grid-cols-12 text-base justify-center align-center">
+          <div className="col-start-2 text-namedrink pb-[20px]">Name</div>
+          <div className="col-start-4	col-end-4 text-namedrink ">Order</div>
+          <div className="col-start-6 col-end-7 text-namedrink ">Add on</div>
+          <div className="col-start-8 text-namedrink ">Qty</div>
+          <div className="col-start-9 text-namedrink ">Price</div>
+          <div className="col-start-2 col-end-12 border-t border-black"></div>
 
           {posts?.map((item, id): any => (
             <React.Fragment key={item.id}>
+              {(id == 0 ? true : posts[id - 1].full_name != item.full_name) && (
+                <div className="col-start-2 pt-[30px]">{item.full_name}</div>
+              )}
+
               <div
                 className={`${
-                  item.confirm ? " border-green-500 " : "border-red-500"
-                } border col-start-2	col-end-4	h-[150px] place-`}
+                  item.confirm ? "" : ""
+                } pt-[30px] col-start-4	col-end-6	h-[150px] `}
               >
                 {item.menu}
               </div>
-              <div className="col-start-5">
-                <div>{item.temp}</div>
-                <div>{item.shot}</div>
-                <div>{item.sweet}</div>
-              </div>
-              <div className="col-start-6">{item.price}</div>
-              <div className="col-start-8">
-                {item.confirm ? "Confirm" : "Cancel"}
-              </div>
 
-              {/* <button className=" text-green-500">Confirm</button>
-              <button className=" text-red-500">Cancel</button> */}
+              <div className="col-start-6	col-end-8">
+                <div className="pt-[30px]">Temperature : {item.temp}</div>
+                <div className="pt-[10px]">Shot : {item.shot}</div>
+                <div className="pt-[10px]">Sweet : {item.sweet}</div>
+                <div className="pt-[10px] pb-[20px]">Note : {item.note}</div>
+              </div>
+              <div className="pt-[30px] col-start-9">{item.qty}</div>
+
+              <div className="col-start-10	pt-[30px]">{item.price}</div>
+              <button
+                className={`col-start-11 h-1/3 w-5/6 rounded-xl pt-[30px] ${
+                  item.confirm ? "text-green-500" : "text-red-500"
+                }`}
+              >
+                {item.confirm ? "Confirm" : "Cancel"}
+              </button>
+              {(id == posts.length - 1
+                ? false
+                : posts[id + 1].full_name != item.full_name) && (
+                <div className="col-start-2 col-end-12 border-t border-black"></div>
+              )}
             </React.Fragment>
           ))}
 

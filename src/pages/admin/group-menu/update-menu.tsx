@@ -148,7 +148,6 @@ const Update = ({ group, addon, menuaddon }: any) => {
       const newMenuaddon = menuaddons.filter(
         (menu) => menu.group_add_on_id == checkaddon.id
       );
-      console.log(checkaddon.id, newMenuaddon.length);
       if (!newMenuaddon.length) {
         const response = await fetch("../../api/admin/menu_add_on", {
           method: "POST",
@@ -166,7 +165,6 @@ const Update = ({ group, addon, menuaddon }: any) => {
         } else {
           const data = await response.json();
           setErrors([]);
-          console.log("POST: ", data);
         }
       }
     });
@@ -176,7 +174,6 @@ const Update = ({ group, addon, menuaddon }: any) => {
         (menu) => menu.group_add_on_id == checkaddon.id
       );
       if (DeleteMenuaddon.length) {
-        console.log(group[0].menu[0].id, checkaddon.id);
         const { data: menuData, error: menuError } = await supabase
           .from("menu_add_on")
           .delete()

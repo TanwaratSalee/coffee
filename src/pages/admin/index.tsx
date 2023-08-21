@@ -136,7 +136,6 @@ const Home = ({ group, addon }: any) => {
         )
       `);
       setGroup((group as any) || null);
-      console.log("id", id);
     }
   };
   // const fetchDataMenu = async () => {
@@ -160,15 +159,15 @@ const Home = ({ group, addon }: any) => {
 
   return (
     <LayoutAdmin>
-      <div className="max-w-[1110px] m-auto">
-        <div className="text-heading text-center p-[30px-10px]">
+      <div className="max-w-[960px] m-auto">
+        <div className="text-heading text-center py-[30px] font-medium">
           Order And Menu
         </div>
-        <div className="flex justify-between m-[40px_50px_20px_50px]">
-          <div className="text-topic ">Menu</div>
+        <div className="flex justify-between p-[40px_50px_20px_50px]">
+          <div className="text-topic">Menu</div>
           <Link
             href="../admin/group-menu/addgroup"
-            className="border border-black rounded-xl text-base p-[10px_30px]"
+            className="border border-black rounded-xl text-base p-[10px_30px] cursor-pointer"
           >
             + Add Group
           </Link>
@@ -180,7 +179,7 @@ const Home = ({ group, addon }: any) => {
                 <div className="text-maintopic flex justify-between	items-center mt-[30px]">
                   <div className="flex items-center">
                     <input
-                      className="h-[18px] w-[18px] mr-[10px]"
+                      className="cursor-pointer	h-[18px] w-[18px] mr-[10px]"
                       type="checkbox"
                       id="publicCheckbox"
                       defaultChecked={group.is_public}
@@ -236,7 +235,7 @@ const Home = ({ group, addon }: any) => {
                       >
                         <div className="flex items-center	text-center">
                           <input
-                            className="w-[25px] h-[25px] mr-[8px]"
+                            className="w-[25px] h-[25px] mr-[8px] cursor-pointer	"
                             type="checkbox"
                             id="publicCheckbox"
                             name="vehicle1"
@@ -253,7 +252,7 @@ const Home = ({ group, addon }: any) => {
                             height={150}
                             alt={"images"}
                             src={`https://dqpvcbseawfdldinabbp.supabase.co/storage/v1/object/public/images/${menu.image_url}`}
-                            className="w-[150px] h-[150px] mx-[20px] "
+                            className="w-[150px] h-[150px] mx-[20px] object-cover"
                           />
                           <Link
                             href={`../admin/group-menu/update-menu?nameId=${menu.id}&imgname=${menu.image_url}`}
@@ -308,12 +307,13 @@ const Home = ({ group, addon }: any) => {
               <li className="text-base" key={addon.name}>
                 <div className="text-maintopic flex justify-between">
                   <div>
-                    <input
+                    {/* <input
+                      className="cursor-pointer	"
                       type="checkbox"
                       id="publicCheckbox"
                       name="vehicle1"
                       value="Bike"
-                    ></input>
+                    ></input> */}
                     {addon.name}
                   </div>
                   <Link
@@ -331,6 +331,7 @@ const Home = ({ group, addon }: any) => {
                         className="border border-black rounded-lg text-base p-[5px_20px] m-[20px_10px]"
                       >
                         <input
+                          className="cursor-pointer	"
                           type="checkbox"
                           id="publicCheckbox"
                           name="addon"

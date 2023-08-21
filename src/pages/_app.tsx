@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { Roboto } from "next/font/google";
 import { useEffect } from "react";
+import { RecoilRoot } from "recoil";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -31,7 +32,9 @@ export default function App({ Component, pageProps }: AppProps) {
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
       />
       <title>Coffee</title>
-      <Component {...pageProps} />
+      <RecoilRoot>
+        <Component {...pageProps} />
+      </RecoilRoot>
     </main>
   );
 }

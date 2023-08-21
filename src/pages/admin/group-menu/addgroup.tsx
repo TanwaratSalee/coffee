@@ -56,7 +56,6 @@ export default function AddgroupMenu() {
       setErrors(data.errors);
     } else {
       const data = await response.json();
-      console.log("POST: ", data);
     }
     router.push("../../admin");
   };
