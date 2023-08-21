@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { ZodIssue, z } from "zod";
+import { z, ZodIssue } from "zod";
 import supabase from "../../../../lib/supabase";
 
 type ResponseData = {
@@ -39,6 +39,7 @@ export default async function handler(
         price: z.number({
           invalid_type_error: "name only number",
         }),
+        uid: z.string(),
       })
     );
 
@@ -63,6 +64,7 @@ export default async function handler(
       shot: it.shot,
       sweet: it.sweet,
       price: it.price,
+      uid: it.uid,
     }));
 
     const { data: insertData, error: insertError } = await supabase

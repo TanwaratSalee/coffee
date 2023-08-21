@@ -16,6 +16,7 @@ export interface Post {
   price: string | null;
   confirm: boolean | null;
   created_at: string;
+  uid: string;
 }
 export const getServerSideProps: GetServerSideProps = async () => {
   const { data: postdata } = await supabase
@@ -28,6 +29,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 export default function Order({ postdata }: any) {
   const [posts, setPosts] = useState<Post[]>(postdata);
+  console.log(posts);
   useEffect(() => {
     const channel = supabase
       .channel("changes")
@@ -68,12 +70,13 @@ export default function Order({ postdata }: any) {
       channel.unsubscribe();
     };
   }, [posts]);
-
+  console.log(posts);
   const handleConfirm = async (
     id: string,
     confirm: boolean,
     menuname: string,
-    full_name: string
+    full_name: string,
+    uid: string
   ) => {
     if (!confirm) {
       const { data, error } = await supabase
@@ -96,9 +99,8 @@ export default function Order({ postdata }: any) {
       .select()
       .is("confirm", null);
     setPosts(posts as Post[]);
-    const userId = localStorage.getItem("userId") || "";
     await sendMessageToUUID(
-      userId,
+      uid,
       `${
         confirm
           ? menuname + " ทำเสร็จแล้วจ้า "
@@ -156,7 +158,13 @@ export default function Order({ postdata }: any) {
                   </button> */}
                   <button
                     onClick={(e) => {
-                      handleConfirm(item.id, false, item.menu, item.full_name);
+                      handleConfirm(
+                        item.id,
+                        false,
+                        item.menu,
+                        item.full_name,
+                        item.uid
+                      );
                     }}
                     className=" bg-red-300 h-3/4 w-full rounded-xl "
                   >
@@ -166,7 +174,13 @@ export default function Order({ postdata }: any) {
                 {(i == 0 ? true : posts[i - 1].full_name != item.full_name) && (
                   <button
                     onClick={async (e) => {
-                      handleConfirm(item.id, true, item.menu, item.full_name);
+                      handleConfirm(
+                        item.id,
+                        true,
+                        item.menu,
+                        item.full_name,
+                        item.uid
+                      );
                     }}
                     className="col-start-11 h-3/4 bg-green-300 w-full rounded-xl "
                   >

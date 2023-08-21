@@ -147,6 +147,7 @@ export default function Detailoreder({
           note: note ? note : "",
           qty: count ? count : "",
           price: users[0].price ? users[0].price : "",
+          uid: userId ? userId : "",
         },
       ]),
     });
@@ -158,7 +159,7 @@ export default function Detailoreder({
     }
     router.push("/user");
   };
-
+  console.log(fullname[0].uid, userId);
   const handleSubmitOrder = (image: any) => {
     if (!temp) {
       alert("Chosee Temperature");
@@ -176,6 +177,7 @@ export default function Detailoreder({
           note: note ? note : "",
           qty: count ? count : "",
           price: users[0].price ? users[0].price : "",
+          uid: userId ? userId : "",
         },
       ];
       setAllmenude({ order_menu: newVal as any });
