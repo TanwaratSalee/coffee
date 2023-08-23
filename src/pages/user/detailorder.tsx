@@ -76,7 +76,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 interface User {
   uid: string;
   full_name: string;
-  no_order: number;
 }
 interface Prop {
   addon: any;
@@ -105,7 +104,6 @@ export default function Detailoreder({
   const [count, setCount] = useState<number>(1);
   const userId = localStorage.getItem("userId") || "";
   const [fullname, setFullname] = useState(user);
-  const [no_order, SetNoOrder] = useState(user);
 
   useEffect(() => {
     const userfilter = user.filter((name: any) => name.uid == userId);
@@ -143,7 +141,6 @@ export default function Detailoreder({
         {
           full_name: fullname[0].full_name ? fullname[0].full_name : "",
           name: users[0].name ? users[0].name : "",
-          no_order: users[0].no_order ? users[0].no_order : "",
           temp: temp,
           shot: shot ? shot : "",
           sweet: sweet ? sweet : "",
@@ -174,7 +171,6 @@ export default function Detailoreder({
         {
           full_name: fullname[0].full_name ? fullname[0].full_name : "",
           name: users[0].name ? users[0].name : "",
-          no_order: users[0].no_order ? users[0].no_order : "",
           temp: temp,
           shot: shot ? shot : "",
           sweet: sweet ? sweet : "",
