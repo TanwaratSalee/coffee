@@ -29,7 +29,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 export default function Order({ postdata }: any) {
   const [posts, setPosts] = useState<Post[]>(postdata);
-  console.log(posts);
   useEffect(() => {
     const channel = supabase
       .channel("changes")
@@ -70,7 +69,7 @@ export default function Order({ postdata }: any) {
       channel.unsubscribe();
     };
   }, [posts]);
-  console.log(posts);
+
   const handleConfirm = async (
     id: string,
     confirm: boolean,
@@ -99,6 +98,7 @@ export default function Order({ postdata }: any) {
       .select()
       .is("confirm", null);
     setPosts(posts as Post[]);
+
     await sendMessageToUUID(
       uid,
       `${
